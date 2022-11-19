@@ -220,10 +220,144 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
+  // Manage_Product
+  public function product($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_product['name']             = $this->input->post('name', true);
+        $insert_product['email']       = $this->input->post('email', true);
+        $insert_product['phone']         = $this->input->post('phone', true);
+        $insert_product['status']         = $this->input->post('status', true);
+
+        $insert_product['insert_by']        = $_SESSION['userid'];
+        $insert_product['insert_time']      = date('Y-m-d H:i:s');
+
+        if (!empty($_FILES['photo_1']['name'])) {
+
+          $path_parts                 = pathinfo($_FILES["photo_3"]['name']);
+          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/productPhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo_3')) {
+          } else {
+
+            $upload_c = $this->upload->data();
+            $insert_student['photo_3'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_student['photo_3'], 400, 500);
+          }
+        }
+
+        $add_product = $this->db->insert('tbl_test_1', $insert_product);
+
+        if ($add_product) {
+
+          $this->session->set_flashdata('message', 'Product Added Successfully!');
+          redirect('admin/product/list', 'refresh');
+        } else {
+
+          $this->session->set_flashdata('message', 'Product Add Failed!');
+          redirect('admin/product/list', 'refresh');
+        }
+      }
+
+      $data['title']             = 'Add Product';
+      $data['activeMenu']        = 'add_product';
+      $data['page']              = 'backEnd/admin/product_add';
+    } elseif ($param1 == 'list') {
+
+      $data['product_list'] = $this->db->order_by('id', 'desc')->get('tbl_test_1')->result();
+
+      $data['title']        = 'Product List';
+      $data['activeMenu']   = 'product_list';
+      $data['page']         = 'backEnd/admin/product_list';
+    } elseif ($param1 == 'edit' && $param2 > 0) {
+
+      $data['edit_info']   = $this->db->get_where('tbl_test_1', array('id' => $param2));
+
+      if ($data['edit_info']->num_rows() > 0) {
+        $data['edit_info']    = $data['edit_info']->row();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+          $update_product['name']        = $this->input->post('name', true);
+          $update_product['email']       = $this->input->post('email', true);
+          $update_product['phone']       = $this->input->post('phone', true);
+          $update_product['status']      = $this->input->post('status', true);
+
+          $update_product['photo']       = $this->input->post('photo', true);
+          $update_product['insert_time'] = $this->input->post('insert_time', true);
+
+          if (!empty($_FILES['photo']['name'])) {
+
+            $path_parts                 = pathinfo($_FILES["photo"]['name']);
+            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $dir                        = date("YmdHis", time());
+            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['remove_spaces']  = TRUE;
+            $config_c['upload_path']    = 'assets/productPhoto/';
+            $config_c['max_size']       = '20000'; //  less than 20 MB
+            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+            $this->load->library('upload', $config_c);
+            $this->upload->initialize($config_c);
+            if (!$this->upload->do_upload('photo')) {
+            } else {
+
+              $upload_c = $this->upload->data();
+              $insert_student['photo_3'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($insert_student['photo'], 400, 500);
+            }
+          }
+
+
+          if ($this->AdminModel->update_data($update_product, $param2)) {
+
+            $this->session->set_flashdata('message', 'product Updated Successfully!');
+            redirect('admin/product/list', 'refresh');
+          } else {
+
+            $this->session->set_flashdata('message', 'Product Update Failed!');
+            redirect('admin/product/list', 'refresh');
+          }
+        }
+      } else {
+
+        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        redirect('admin/product/list', 'refresh');
+      }
+      $data['title']      = 'Product Edit';
+      $data['activeMenu'] = 'product_edit';
+      $data['page']       = 'backEnd/admin/product_edit';
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+
+      if ($this->AdminModel->delete_data($param2)) {
+        $this->session->set_flashdata('message', 'Product Deleted Successfully!');
+        redirect('admin/product/list', 'refresh');
+      } else {
+        $this->session->set_flashdata('message', 'Product Deleted Failed!');
+        redirect('admin/product/list', 'refresh');
+      }
+    } else {
+      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      redirect('admin/product/list', 'refresh');
+    }
+    $this->load->view('backEnd/master_page', $data);
+  }
+
   // Manage_Student
   public function student($param1 = 'add', $param2 = '', $param3 = '')
   {
-    // Add Data 
+    // Add Data
     if ($param1 == 'add') {
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -354,7 +488,6 @@ class Admin extends CI_Controller
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-          // $update_authors['first_name']    = $this->input->post('first_name', true);
           $update_student['first_name']    = $this->input->post('first_name', true);
           $update_student['last_name']     = $this->input->post('last_name', true);
           $update_student['email']         = $this->input->post('email', true);
