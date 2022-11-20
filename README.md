@@ -3,8 +3,8 @@
 ## Programming Languages
 ### PHP, HTML & CSS, JavaScript
 
-## Feature \
-- Support Laravel equivalent\
+## Feature 
+- Support Laravel equivalent
 - Support Route naming conventions\
 ###- Admin Login
 ###- Forget Password
