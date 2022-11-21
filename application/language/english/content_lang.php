@@ -54,6 +54,19 @@ $lang['inactive']               = 'Inactive';
 $lang['one_add']                = 'One Add';
 $lang['one_edit']               = 'One Edit';
 $lang['one_list']               = 'One List';
+//Manage Two
+$lang['status']                 = 'Status';
+$lang['manage_two']             = 'Manage Two';
+$lang['two_add']                = 'Two Add';
+$lang['two_edit']               = 'Two Edit';
+$lang['two_list']               = 'Two List';
+//Manage Three
+$lang['status']                 = 'Status';
+$lang['manage_three']           = 'Manage Three';
+$lang['three_add']              = 'Three Add';
+$lang['three_edit']             = 'Three Edit';
+$lang['three_list']             = 'Three List';
+
 
 
 // Manage Student

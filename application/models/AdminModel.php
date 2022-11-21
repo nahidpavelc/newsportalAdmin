@@ -232,6 +232,30 @@ class AdminModel extends CI_Model
     return $this->db->where('id', $param2)->delete('tbl_test_1');
   }
 
+    // Get Two Data 
+    public function get_two_($id)
+    {
+      $this->db->select('tbl_test_1.*, tbl_test_1.name')
+        ->from('tbl_test_1');
+  
+      $result = $this->db->get();
+  
+      if ($result->num_rows() > 0) {
+        return $result->result();
+      } else {
+        return array();
+      }
+    }
+    //Two Update 
+    public function update_two_data($update_data, $param2)
+    {
+      return $this->db->where('id', $param2)->update('tbl_test_1', $update_data);
+    }
+    //Two Delete 
+    public function delete_two_data($param2)
+    {
+      return $this->db->where('id', $param2)->delete('tbl_test_1');
+    }
 
 
   // Get Student Data 

@@ -343,6 +343,252 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
+  // Manage_TWO
+  public function two($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_two['name']             = $this->input->post('name', true);
+        $insert_two['email']            = $this->input->post('email', true);
+        $insert_two['phone']            = $this->input->post('phone', true);
+        $insert_two['status']           = $this->input->post('status', true);
+        $insert_two['insert_time']      = date('Y-m-d H:i:s');
+        // $update_one['insert_time']      = $this->input->post('insert_time', true);
+
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/twoPhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $insert_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_two['photo'], 400, 400);
+          }
+        }
+        $add_two = $this->db->insert('tbl_test_2', $insert_two);
+
+        if ($add_two) {
+          $this->session->set_flashdata('message', 'Two Added Successfully!');
+          redirect('admin/one/list', 'refresh');
+        } else {
+          $this->session->set_flashdata('message', 'two Add Failed!');
+          redirect('admin/one/list', 'refresh');
+        }
+      }
+      $data['title']             = 'Two Add';
+      $data['activeMenu']        = 'two_add';
+      $data['page']              = 'backEnd/admin/two_add';
+    } elseif ($param1 == 'list') {
+
+      $data['two_list']     = $this->db->order_by('id', 'desc')->get('tbl_test_2')->result();
+      $data['title']        = 'Two List';
+      $data['activeMenu']   = 'two_list';
+      $data['page']         = 'backEnd/admin/two_list';
+    } elseif ($param1 == 'edit' && $param2 > 0) {
+
+      $data['edit_info']      = $this->db->get_where('tbl_test_2', array('id' => $param2));
+
+      if ($data['edit_info']->num_rows() > 0) {
+        $data['edit_info']    =   $data['edit_info']->row();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+          $update_two['name']        = $this->input->post('name', true);
+          $update_two['email']       = $this->input->post('email', true);
+          $update_two['phone']       = $this->input->post('phone', true);
+          $update_two['status']      = $this->input->post('status', true);
+          $update_two['insert_time'] = $this->input->post('insert_time', true);
+
+          if (!empty($_FILES['photo']['name'])) {
+
+            $path_parts                 = pathinfo($_FILES["photo"]['name']);
+            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $dir                        = date("YmdHis", time());
+            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['remove_spaces']  = TRUE;
+            $config_c['upload_path']    = 'assets/twoPhoto/';
+            $config_c['max_size']       = '20000'; //  less than 20 MB
+            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+            $this->load->library('upload', $config_c);
+            $this->upload->initialize($config_c);
+            if (!$this->upload->do_upload('photo')) {
+            } else {
+
+              $upload_c = $this->upload->data();
+              $update_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_two['photo'], 400, 500);
+            }
+          }
+
+          if ($this->AdminModel->update_two_data($update_two, $param2)) {
+
+            $this->session->set_flashdata('message', 'Two Updated Successfully!');
+            redirect('admin/two/list', 'refresh');
+          } else {
+
+            $this->session->set_flashdata('message', 'Two Update Failed!');
+            redirect('admin/two/list', 'refresh');
+          }
+        }
+      } else {
+
+        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        redirect('admin/two/list', 'refresh');
+      }
+      $data['title']      = 'Two Edit';
+      $data['activeMenu'] = 'two_edit';
+      $data['page']       = 'backEnd/admin/two_edit';
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+
+      if ($this->AdminModel->delete_two_data($param2)) {
+        $this->session->set_flashdata('message', 'Two Deleted Successfully!');
+        redirect('admin/two/list', 'refresh');
+      } else {
+        $this->session->set_flashdata('message', 'Two Deleted Failed!');
+        redirect('admin/two/list', 'refresh');
+      }
+    } else {
+      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      redirect('admin/two/list', 'refresh');
+    }
+    $this->load->view('backEnd/master_page', $data);
+  }
+
+  // Manage_Three
+  public function three($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_three['name']             = $this->input->post('name', true);
+        $insert_three['email']            = $this->input->post('email', true);
+        $insert_three['phone']            = $this->input->post('phone', true);
+        $insert_three['status']           = $this->input->post('status', true);
+        $insert_three['insert_time']      = date('Y-m-d H:i:s');
+        // $update_one['insert_time']      = $this->input->post('insert_time', true);
+
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/threePhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $insert_three['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_three['photo'], 400, 400);
+          }
+        }
+        $add_three = $this->db->insert('tbl_test_2', $insert_three);
+
+        if ($add_three) {
+          $this->session->set_flashdata('message', 'Three Added Successfully!');
+          redirect('admin/one/list', 'refresh');
+        } else {
+          $this->session->set_flashdata('message', 'Three Add Failed!');
+          redirect('admin/one/list', 'refresh');
+        }
+      }
+      $data['title']             = 'Three Add';
+      $data['activeMenu']        = 'three_add';
+      $data['page']              = 'backEnd/admin/three_add';
+    } elseif ($param1 == 'list') {
+
+      $data['three_list']     = $this->db->order_by('id', 'desc')->get('tbl_test_3')->result();
+      $data['title']        = 'Three List';
+      $data['activeMenu']   = 'three_list';
+      $data['page']         = 'backEnd/admin/three_list';
+    } elseif ($param1 == 'edit' && $param2 > 0) {
+
+      $data['edit_info']      = $this->db->get_where('tbl_test_3', array('id' => $param2));
+
+      if ($data['edit_info']->num_rows() > 0) {
+        $data['edit_info']    =   $data['edit_info']->row();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+          $update_three['name']        = $this->input->post('name', true);
+          $update_three['email']       = $this->input->post('email', true);
+          $update_three['phone']       = $this->input->post('phone', true);
+          $update_three['status']      = $this->input->post('status', true);
+          $update_three['insert_time'] = $this->input->post('insert_time', true);
+
+          if (!empty($_FILES['photo']['name'])) {
+
+            $path_parts                 = pathinfo($_FILES["photo"]['name']);
+            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $dir                        = date("YmdHis", time());
+            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['remove_spaces']  = TRUE;
+            $config_c['upload_path']    = 'assets/threePhoto/';
+            $config_c['max_size']       = '20000'; //  less than 20 MB
+            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+            $this->load->library('upload', $config_c);
+            $this->upload->initialize($config_c);
+            if (!$this->upload->do_upload('photo')) {
+            } else {
+
+              $upload_c = $this->upload->data();
+              $update_three['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_three['photo'], 400, 500);
+            }
+          }
+
+          if ($this->AdminModel->update_three_data($update_three, $param2)) {
+
+            $this->session->set_flashdata('message', 'Three Updated Successfully!');
+            redirect('admin/three/list', 'refresh');
+          } else {
+
+            $this->session->set_flashdata('message', 'Three Update Failed!');
+            redirect('admin/three/list', 'refresh');
+          }
+        }
+      } else {
+
+        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        redirect('admin/three/list', 'refresh');
+      }
+      $data['title']      = 'Three Edit';
+      $data['activeMenu'] = 'three_edit';
+      $data['page']       = 'backEnd/admin/three_edit';
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+
+      if ($this->AdminModel->delete_two_data($param2)) {
+        $this->session->set_flashdata('message', 'Three Deleted Successfully!');
+        redirect('admin/three/list', 'refresh');
+      } else {
+        $this->session->set_flashdata('message', 'Three Deleted Failed!');
+        redirect('admin/three/list', 'refresh');
+      }
+    } else {
+      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      redirect('admin/three/list', 'refresh');
+    }
+    $this->load->view('backEnd/master_page', $data);
+  }
+
   // Manage_Student
   public function student($param1 = 'add', $param2 = '', $param3 = '')
   {

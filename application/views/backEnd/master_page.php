@@ -244,12 +244,36 @@
             <!-- Manage One List  -->
             <li class="treeview <?php if ($activeMenu === "one_list" || $activeMenu === "one_add" || $activeMenu === "one_edit") echo "active"; ?> ">
               <a href="#">
-                <i class="fa fa-user"></i> <span> <?php echo $this->lang->line("manage_one"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_one"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
               </a>
               <ul class="treeview-menu">
                 <li class=" <?php if ($activeMenu === "one_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/one/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("one_add") ?></a></li>
 
                 <li class=" <?php if ($activeMenu === "one_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/one/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("one_list") ?></a></li>
+              </ul>
+            </li>
+
+            <!-- Manage Two List  -->
+            <li class="treeview <?php if ($activeMenu === "two_list" || $activeMenu === "two_add" || $activeMenu === "two_edit") echo "active"; ?> ">
+              <a href="#">
+                <i class="fa fa-bolt"></i> <span> <?php echo $this->lang->line("manage_two"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+              </a>
+              <ul class="treeview-menu">
+                <li class=" <?php if ($activeMenu === "two_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/two/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("two_add") ?></a></li>
+
+                <li class=" <?php if ($activeMenu === "two_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/two/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("two_list") ?></a></li>
+              </ul>
+            </li>
+
+            <!-- Manage Three List  -->
+            <li class="treeview <?php if ($activeMenu === "three_list" || $activeMenu === "three_add" || $activeMenu === "three_edit") echo "active"; ?> ">
+              <a href="#">
+                <i class="fa fa-server"></i> <span> <?php echo $this->lang->line("manage_three"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+              </a>
+              <ul class="treeview-menu">
+                <li class=" <?php if ($activeMenu === "three_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/three/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("three_add") ?></a></li>
+
+                <li class=" <?php if ($activeMenu === "three_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/three/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("three_list") ?></a></li>
               </ul>
             </li>
 
