@@ -241,14 +241,15 @@
               </ul>
             </li>
 
-            <!-- Manage Product List  -->
-            <li class="treeview <?php if ($activeMenu === "product_list" || $activeMenu === "product_add" || $activeMenu === "product_edit") echo "active"; ?> ">
+            <!-- Manage One List  -->
+            <li class="treeview <?php if ($activeMenu === "one_list" || $activeMenu === "one_add" || $activeMenu === "one_edit") echo "active"; ?> ">
               <a href="#">
-                <i class="fa fa-user"></i> <span> <?php echo $this->lang->line("manage_product"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                <i class="fa fa-user"></i> <span> <?php echo $this->lang->line("manage_one"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
               </a>
               <ul class="treeview-menu">
-                <li class=" <?php if ($activeMenu === "product_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/product/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("product_add") ?></a> </li>
-                <li class=" <?php if ($activeMenu === "product_list") echo "active" ?> "><a href=" <?php echo base_url('admin/product/list'); ?>"><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("product_list") ?></a></li>
+                <li class=" <?php if ($activeMenu === "one_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/one/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("one_add") ?></a></li>
+
+                <li class=" <?php if ($activeMenu === "one_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/one/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("one_list") ?></a></li>
               </ul>
             </li>
 

@@ -35,17 +35,26 @@ $lang['file_library_add']     = 'File library add';
 $lang['file_library_edit']    = 'File library edit';
 
 // All User Part 
-$lang['manage_product']        = 'Manage Product';
-$lang['add_product']           = 'Add Product';
-$lang['product_list']          = 'Product List';
-$lang['product_edit']          = 'Product Edit';
+$lang['manage_one']        = 'Manage One';
+$lang['one_add']           = 'One Add';
+$lang['one_list']          = 'One List';
+$lang['one_edit']          = 'One Edit';
 
 // Manage College 
- $lang['manage_college']        = 'Manage College';
- $lang['add_college']           = 'Add College';
- $lang['college_edit']          = 'College Edit';
- $lang['college_list']          = 'College List';
- $lang['']                      = '';
+$lang['manage_college']        = 'Manage College';
+$lang['add_college']           = 'Add College';
+$lang['college_edit']          = 'College Edit';
+$lang['college_list']          = 'College List';
+$lang['']                      = '';
+
+//Manage One
+$lang['status']                 = 'Status';
+$lang['active']                 = 'active';
+$lang['inactive']               = 'Inactive';
+$lang['one_add']                = 'One Add';
+$lang['one_edit']               = 'One Edit';
+$lang['one_list']               = 'One List';
+
 
 // Manage Student
 $lang['manage_students']        = 'Manage Students';
@@ -60,7 +69,6 @@ $lang['product_edit']           = 'Product Edit';
 $lang['product_list']           = 'Product List';
 
 // user part
-
 $lang['manage_user']                = 'Manage User';
 $lang['add_user']                   = 'Add User';
 $lang['user_list']                  = 'User List';
@@ -86,8 +94,8 @@ $lang['user_photo_caption']         = 'Photo will be uploaded by User';
 $lang['suspend']                    = 'Suspend';
 $lang['active']                     = 'Active';
 $lang['address']                    = 'Address';
-//profile part
 
+//profile part
 $lang['profile']               = 'Profile';
 $lang['user_info']             = 'User Info';
 $lang['password_change']       = 'Password Change';

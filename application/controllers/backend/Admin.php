@@ -220,82 +220,72 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
-  // Manage_Product
-  public function product($param1 = 'add', $param2 = '', $param3 = '')
+  // Manage_One
+  public function one($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $insert_product['name']             = $this->input->post('name', true);
-        $insert_product['email']       = $this->input->post('email', true);
-        $insert_product['phone']         = $this->input->post('phone', true);
-        $insert_product['status']         = $this->input->post('status', true);
+        $insert_one['name']             = $this->input->post('name', true);
+        $insert_one['email']            = $this->input->post('email', true);
+        $insert_one['phone']            = $this->input->post('phone', true);
+        $insert_one['status']           = $this->input->post('status', true);
+        $insert_one['insert_time']      = date('Y-m-d H:i:s');
+        // $update_one['insert_time']      = $this->input->post('insert_time', true);
 
-        $insert_product['insert_by']        = $_SESSION['userid'];
-        $insert_product['insert_time']      = date('Y-m-d H:i:s');
-
-        if (!empty($_FILES['photo_1']['name'])) {
-
-          $path_parts                 = pathinfo($_FILES["photo_3"]['name']);
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
           $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
           $config_c['file_name']      = $newfile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
-          $config_c['upload_path']    = 'assets/productPhoto/';
+          $config_c['upload_path']    = 'assets/onePhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
           $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
           $this->load->library('upload', $config_c);
           $this->upload->initialize($config_c);
-          if (!$this->upload->do_upload('photo_3')) {
+          if (!$this->upload->do_upload('photo')) {
           } else {
-
             $upload_c = $this->upload->data();
-            $insert_student['photo_3'] = $config_c['upload_path'] . $upload_c['file_name'];
-            $this->image_size_fix($insert_student['photo_3'], 400, 500);
+            $insert_one['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_one['photo'], 400, 400);
           }
         }
+        $add_one = $this->db->insert('tbl_test_1', $insert_one);
 
-        $add_product = $this->db->insert('tbl_test_1', $insert_product);
-
-        if ($add_product) {
-
-          $this->session->set_flashdata('message', 'Product Added Successfully!');
-          redirect('admin/product/list', 'refresh');
+        if ($add_one) {
+          $this->session->set_flashdata('message', 'One Added Successfully!');
+          redirect('admin/one/list', 'refresh');
         } else {
-
-          $this->session->set_flashdata('message', 'Product Add Failed!');
-          redirect('admin/product/list', 'refresh');
+          $this->session->set_flashdata('message', 'One Add Failed!');
+          redirect('admin/one/list', 'refresh');
         }
       }
-
-      $data['title']             = 'Add Product';
-      $data['activeMenu']        = 'add_product';
-      $data['page']              = 'backEnd/admin/product_add';
+      $data['title']             = 'One Add';
+      $data['activeMenu']        = 'one_add';
+      $data['page']              = 'backEnd/admin/one_add';
     } elseif ($param1 == 'list') {
 
-      $data['product_list'] = $this->db->order_by('id', 'desc')->get('tbl_test_1')->result();
-
-      $data['title']        = 'Product List';
-      $data['activeMenu']   = 'product_list';
-      $data['page']         = 'backEnd/admin/product_list';
+      $data['one_list']     = $this->db->order_by('id', 'desc')->get('tbl_test_1')->result();
+      $data['title']        = 'One List';
+      $data['activeMenu']   = 'one_list';
+      $data['page']         = 'backEnd/admin/one_list';
     } elseif ($param1 == 'edit' && $param2 > 0) {
 
-      $data['edit_info']   = $this->db->get_where('tbl_test_1', array('id' => $param2));
+      $data['edit_info']      = $this->db->get_where('tbl_test_1', array('id' => $param2));
 
       if ($data['edit_info']->num_rows() > 0) {
-        $data['edit_info']    = $data['edit_info']->row();
+        $data['edit_info']    =   $data['edit_info']->row();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-          $update_product['name']        = $this->input->post('name', true);
-          $update_product['email']       = $this->input->post('email', true);
-          $update_product['phone']       = $this->input->post('phone', true);
-          $update_product['status']      = $this->input->post('status', true);
-
-          $update_product['photo']       = $this->input->post('photo', true);
-          $update_product['insert_time'] = $this->input->post('insert_time', true);
+          $update_one['name']        = $this->input->post('name', true);
+          $update_one['email']       = $this->input->post('email', true);
+          $update_one['phone']       = $this->input->post('phone', true);
+          $update_one['status']      = $this->input->post('status', true);
+          $update_one['insert_time'] = $this->input->post('insert_time', true);
 
           if (!empty($_FILES['photo']['name'])) {
 
@@ -304,7 +294,7 @@ class Admin extends CI_Controller
             $dir                        = date("YmdHis", time());
             $config_c['file_name']      = $newfile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
-            $config_c['upload_path']    = 'assets/productPhoto/';
+            $config_c['upload_path']    = 'assets/onePhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
             $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
@@ -314,42 +304,41 @@ class Admin extends CI_Controller
             } else {
 
               $upload_c = $this->upload->data();
-              $insert_student['photo_3'] = $config_c['upload_path'] . $upload_c['file_name'];
-              $this->image_size_fix($insert_student['photo'], 400, 500);
+              $update_one['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_one['photo'], 400, 500);
             }
           }
 
+          if ($this->AdminModel->update_one_data($update_one, $param2)) {
 
-          if ($this->AdminModel->update_data($update_product, $param2)) {
-
-            $this->session->set_flashdata('message', 'product Updated Successfully!');
-            redirect('admin/product/list', 'refresh');
+            $this->session->set_flashdata('message', 'One Updated Successfully!');
+            redirect('admin/one/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Product Update Failed!');
-            redirect('admin/product/list', 'refresh');
+            $this->session->set_flashdata('message', 'One Update Failed!');
+            redirect('admin/one/list', 'refresh');
           }
         }
       } else {
 
         $this->session->set_flashdata('message', 'Wrong Attempt!');
-        redirect('admin/product/list', 'refresh');
+        redirect('admin/one/list', 'refresh');
       }
-      $data['title']      = 'Product Edit';
-      $data['activeMenu'] = 'product_edit';
-      $data['page']       = 'backEnd/admin/product_edit';
+      $data['title']      = 'One Edit';
+      $data['activeMenu'] = 'one_edit';
+      $data['page']       = 'backEnd/admin/one_edit';
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
-      if ($this->AdminModel->delete_data($param2)) {
-        $this->session->set_flashdata('message', 'Product Deleted Successfully!');
-        redirect('admin/product/list', 'refresh');
+      if ($this->AdminModel->delete_one_data($param2)) {
+        $this->session->set_flashdata('message', 'One Deleted Successfully!');
+        redirect('admin/one/list', 'refresh');
       } else {
-        $this->session->set_flashdata('message', 'Product Deleted Failed!');
-        redirect('admin/product/list', 'refresh');
+        $this->session->set_flashdata('message', 'One Deleted Failed!');
+        redirect('admin/one/list', 'refresh');
       }
     } else {
       $this->session->set_flashdata('message', 'Wrong Attempt!');
-      redirect('admin/product/list', 'refresh');
+      redirect('admin/one/list', 'refresh');
     }
     $this->load->view('backEnd/master_page', $data);
   }
@@ -2634,7 +2623,6 @@ class Admin extends CI_Controller
 
     $this->load->view('backEnd/master_page', $data);
   }
-
 
   //Photo Album
   public function photo_album($param1 = 'add', $param2 = '', $param3 = '')

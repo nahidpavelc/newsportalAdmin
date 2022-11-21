@@ -71,6 +71,7 @@ class AdminModel extends CI_Model
     }
     return 1;
   }
+
   public function fetch_data_pageination($limit, $start, $table, $search = NULL, $approveStatus = NULL, $user_id = NULL)
   {
 
@@ -205,6 +206,34 @@ class AdminModel extends CI_Model
     $this->db->where('name', $name_index)->update('tbl_backend_theme', $update_theme);
     return true;
   }
+
+  // Get One Data 
+  public function get_one_($id)
+  {
+    $this->db->select('tbl_test_1.*, tbl_test_1.name')
+      ->from('tbl_test_1');
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() > 0) {
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
+  //One Update 
+  public function update_one_data($update_data, $param2)
+  {
+    return $this->db->where('id', $param2)->update('tbl_test_1', $update_data);
+  }
+  // One Delete 
+  public function delete_one_data($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_test_1');
+  }
+
+
+
   // Get Student Data 
   public function get_student_($id)
   {
