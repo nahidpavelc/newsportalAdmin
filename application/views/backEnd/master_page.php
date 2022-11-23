@@ -229,6 +229,28 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
+            <!-- Photo Album_2  -->
+            <li class="treeview <?php if ($activeMenu === "photo_album_2") echo "active"; ?>">
+              <a href=" <?php echo base_url('admin/photo_album_2'); ?> ">
+                <i class="fa fa-times-circle-o" aria-hidden="true"></i><span> <?php echo $this->lang->line('photo_album_2'); ?> </span>
+              </a>
+            </li>
+            <!-- Photo gallery_2  -->
+
+            <li class="treeview <?php if ($activeMenu === "photo_gallery_add_2" || $activeMenu === "photo_gallery_list_2" || $activeMenu === "photo_gallery_edit_2") echo "active"; ?>">
+              <a href="#">
+                <i class="fa fa-spinner"></i> <span> <?php echo $this->lang->line("photo_gallery_2"); ?> </span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li class=" <?php if ($activeMenu === "photo_gallery_add_2") echo "active"; ?> a"> <a href=" <?php echo base_url('admin/photo-gallery_2/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_photo_gallery_2"); ?> </a> </li>
+
+                <li class=" <?php if ($activeMenu === "photo_gallery_list_2") echo "active"; ?> "> <a href="<?php echo base_url('admin/photo_gallery_2/list'); ?> "><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("photo_gallery_list_2"); ?> </a> </li>
+              </ul>
+            </li>
+
             <!-- Manage Medical College -->
             <li class="treeview <?php if ($activeMenu === "college_list" || $activeMenu === "add_college" || $activeMenu === "college_edit") echo "active"; ?> ">
               <a href="#">
@@ -382,7 +404,7 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li class=" <?php if ($activeMenu === "photo_gallery_add") echo "active"; ?> "><a href="<?php echo base_url('admin/photo-gallery/add'); ?>"><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_photo_gallery"); ?> </a></li>
+                <li class=" <?php if ($activeMenu === "photo_gallery_add") echo "active"; ?> "><a href="<?php echo base_url('admin/photo-gallery/add'); ?>"><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_photo_gallery_2"); ?> </a></li>
                 <li class=" <?php if ($activeMenu === "photo_gallery_list") echo "active"; ?> "><a href="<?php echo base_url('admin/photo-gallery/list'); ?>"><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("photo_gallery_list"); ?> </a></li>
               </ul>
             </li>

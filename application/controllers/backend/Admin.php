@@ -131,6 +131,263 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
+  //Photo Album 2
+  public function photo_album_2($param1 = 'add', $param2 = '', $param3 = '')
+  {
+
+    if ($param1 == 'add') {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_photo_album_2['album_title']      = $this->input->post('album_title', true);
+        $insert_photo_album_2['priority']         = $this->input->post('priority', true);
+        $insert_photo_album_2['insert_time']      = date('Y-m-d H:i:s');
+        $insert_photo_album_2['insert_by']        = $_SESSION['userid'];
+
+
+        $photo_album_add = $this->db->insert('tbl_photo_album_2', $insert_photo_album_2);
+
+        if ($photo_album_add) {
+
+          $this->session->set_flashdata('message', "Data Added Successfully.");
+          redirect('admin/photo-album_2/', 'refresh');
+        } else {
+
+          $this->session->set_flashdata('message', "Data Add Failed.");
+          redirect('admin/photo-album_2/', 'refresh');
+        }
+      }
+    } else if ($param1 == 'edit' && $param2 > 0) {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $update_photo_album['album_title']      = $this->input->post('album_title', true);
+        $update_photo_album['priority']         = $this->input->post('priority', true);
+
+
+        if ($this->AdminModel->photo_album_update($update_photo_album, $param2)) {
+
+          $this->session->set_flashdata('message', "Data Updated Successfully.");
+          redirect('admin/photo-album_2', 'refresh');
+        } else {
+
+          $this->session->set_flashdata('message', "Data Update Failed.");
+          redirect('admin/photo-album_2', 'refresh');
+        }
+      }
+
+      $data['photo_album_info'] = $this->db->get_where('tbl_photo_album_2', array('id' => $param2));
+
+      if ($data['photo_album_info']->num_rows() > 0) {
+
+        $data['photo_album_info']    = $data['photo_album_info']->row();
+        $data['photo_album_id'] = $param2;
+      } else {
+
+        $this->session->set_flashdata('message', "Wrong Attempt !");
+        redirect('admin/photo-album_2', 'refresh');
+      }
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+
+      if ($this->AdminModel->delete_photo_album($param2)) {
+
+        $this->session->set_flashdata('message', "Data Deleted Successfully.");
+        redirect('admin/photo-album_2', 'refresh');
+      } else {
+
+        $this->session->set_flashdata('message', "Data Delete Failed.");
+        redirect('admin/photo-album_2', 'refresh');
+      }
+    }
+
+    $data['title']      = 'photo Album_2';
+    $data['activeMenu'] = 'photo_album_2';
+    $data['page']       = 'backEnd/admin/photo_album_2';
+    $data['photo_album_list_2'] = $this->db->order_by('priority', 'desc')->get('tbl_photo_album_2')->result();
+
+    $this->load->view('backEnd/master_page', $data);
+  }
+
+  //Photo Gallery 2
+  public function photo_gallery_2($param1 = 'add', $param2 = '', $param3 = '')
+  {
+
+    if ($param1 == 'add') {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_photo_gallery['photo_album_id']    = $this->input->post('photo_album_id', true);
+        $insert_photo_gallery['title']            = $this->input->post('title', true);
+        $insert_photo_gallery['insert_by']          = $_SESSION['userid'];
+        $insert_photo_gallery['insert_time']      = date('Y-m-d H:i:s');
+
+        if (!empty($_FILES['photo_file']['name'])) {
+
+          $path_parts                 = pathinfo($_FILES["photo_file"]['name']);
+          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/photoGallery/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo_file')) {
+          } else {
+
+            $upload_c = $this->upload->data();
+            $insert_photo_gallery['photo_file'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_photo_gallery['photo_file'], 400, 400);
+          }
+        }
+
+
+
+        $add_photo_gallery = $this->db->insert('tbl_photo_gallery', $insert_photo_gallery);
+
+        if ($add_photo_gallery) {
+
+          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          redirect('admin/photo-gallery/list', 'refresh');
+        } else {
+
+          $this->session->set_flashdata('message', 'Data Created Failed!');
+          redirect('admin/photo-gallery', 'refresh');
+        }
+      }
+
+      $data['photo_album_list']  = $this->db->order_by('id', 'desc')->get('tbl_photo_album')->result();
+
+      $data['title']         = 'Photo Gallery Add';
+      $data['page']          = 'backEnd/admin/photo_gallery_add';
+      $data['activeMenu']    = 'photo_gallery_add';
+    } elseif ($param1 == 'edit' && (int) $param2 > 0) {
+
+      $check_table_row = $this->db->where('id', $param2)->get('tbl_photo_gallery');
+
+      if ($check_table_row->num_rows() > 0) {
+
+        $data['photo_gallery_info'] = $check_table_row->row();
+
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+          $update_photo_gallery['photo_album_id']    = $this->input->post('photo_album_id', true);
+          $update_photo_gallery['title']            = $this->input->post('title', true);
+
+          if (!empty($_FILES['photo_file']['name'])) {
+
+            $path_parts                 = pathinfo($_FILES["photo_file"]['name']);
+            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $dir                        = date("YmdHis", time());
+            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['remove_spaces']  = TRUE;
+            $config_c['upload_path']    = 'assets/photoGallery/';
+            $config_c['max_size']       = '20000'; //  less than 20 MB
+            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+            $this->load->library('upload', $config_c);
+            $this->upload->initialize($config_c);
+            if (!$this->upload->do_upload('photo_file')) {
+            } else {
+
+              $upload_c = $this->upload->data();
+              $update_photo_gallery['photo_file'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_photo_gallery['photo_file'], 400, 400);
+            }
+          }
+
+
+          if ($this->AdminModel->photo_gallery_update($update_photo_gallery, $param2)) {
+
+            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            redirect('admin/photo-gallery/list', 'refresh');
+          } else {
+
+            $this->session->set_flashdata('message', 'Data Update Failed!');
+            redirect('admin/photo-gallery/list', 'refresh');
+          }
+
+          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          redirect('admin/photo-gallery/list', 'refresh');
+        }
+      }
+
+      $data['photo_album_list']  = $this->db->order_by('id', 'desc')->get('tbl_photo_album')->result();
+
+      $data['title']         = 'Photo Gallery Update';
+      $data['page']          = 'backEnd/admin/photo_gallery_edit';
+      $data['activeMenu']    = 'photo_gallery_edit';
+    } elseif ($param1 == 'list') {
+
+      $config = array();
+      $config["base_url"] = base_url("admin/photo-gallery/list");
+      $config["total_rows"] = $this->db->get(' tbl_photo_gallery')->num_rows();
+      $config["per_page"] = 10;
+      $config["uri_segment"] = 4;
+
+      //custom
+      $config['full_tag_open'] = '<ul class="pagination">';
+      $config['full_tag_close'] = '</ul>';
+
+      $config['first_link'] = "First";
+      $config['last_link'] = "Last";
+
+      $config['first_tag_open'] = '<li>';
+      $config['first_tag_close'] = '</li>';
+
+      $config['prev_link'] = '«';
+      $config['prev_tag_open'] = '<li class="prev">';
+      $config['prev_tag_close'] = '</li>';
+
+      $config['next_link'] = '»';
+      $config['next_tag_open'] = '<li>';
+      $config['next_tag_close'] = '</li>';
+
+      $config['last_tag_open'] = '<li>';
+      $config['last_tag_close'] = '</li>';
+
+      $config['cur_tag_open'] = '<li class="active"><a href="#">';
+      $config['cur_tag_close'] = '</a></li>';
+      $config['num_tag_open'] = '<li>';
+      $config['num_tag_close'] = '</li>';
+
+      $this->pagination->initialize($config);
+
+      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
+      $data["links"] = $this->pagination->create_links();
+
+      $data['photo_gallery_list'] = $this->AdminModel->get_photo_gallery_list($config["per_page"], $page);
+
+      $data['new_serial'] = $page;
+
+      $data['title']      = 'Photo Gallery List';
+      $data['page']       = 'backEnd/admin/photo_gallery_list';
+      $data['activeMenu'] = 'photo_gallery_list';
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+
+      if ($this->AdminModel->photo_gallery_delete($param2)) {
+
+        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        redirect('admin/photo-gallery/list', 'refresh');
+      } else {
+
+        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        redirect('admin/photo-gallery/list', 'refresh');
+      }
+    } else {
+
+      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      redirect('admin/photo-gallery/list', 'refresh');
+    }
+
+
+    $this->load->view('backEnd/master_page', $data);
+  }
+
   // Manage_College
   public function college($param1 = 'add', $param2 = '', $param3 = '')
   {
@@ -351,47 +608,50 @@ class Admin extends CI_Controller
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $insert_two['name']             = $this->input->post('name', true);
-        $insert_two['email']            = $this->input->post('email', true);
+        $insert_two['user_id']          = $this->input->post('user_id', true);
         $insert_two['phone']            = $this->input->post('phone', true);
-        $insert_two['status']           = $this->input->post('status', true);
+        $insert_two['description']      = $this->input->post('description', true);
         $insert_two['insert_time']      = date('Y-m-d H:i:s');
-        // $update_one['insert_time']      = $this->input->post('insert_time', true);
 
-        if (!empty($_FILES['photo']['name'])) {
-          $path_parts                 = pathinfo($_FILES["photo"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-          $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
-          $config_c['remove_spaces']  = TRUE;
-          $config_c['upload_path']    = 'assets/twoPhoto/';
-          $config_c['max_size']       = '20000'; //  less than 20 MB
-          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+        // if (!empty($_FILES['photo']['name'])) {
+        //   $path_parts                 = pathinfo($_FILES["photo"]['name']);
+        //   $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        //   $dir                        = date("YmdHis", time());
+        //   $config_c['file_name']      = $newfile_name . '_' . $dir;
+        //   $config_c['remove_spaces']  = TRUE;
+        //   $config_c['upload_path']    = 'assets/twoPhoto/';
+        //   $config_c['max_size']       = '20000'; //  less than 20 MB
+        //   $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
-          $this->load->library('upload', $config_c);
-          $this->upload->initialize($config_c);
-          if (!$this->upload->do_upload('photo')) {
-          } else {
-            $upload_c = $this->upload->data();
-            $insert_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-            $this->image_size_fix($insert_two['photo'], 400, 400);
-          }
-        }
+        //   $this->load->library('upload', $config_c);
+        //   $this->upload->initialize($config_c);
+        //   if (!$this->upload->do_upload('photo')) {
+        //   } else {
+        //     $upload_c = $this->upload->data();
+        //     $insert_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+        //     $this->image_size_fix($insert_two['photo'], 400, 400);
+        //   }
+        // }
+
         $add_two = $this->db->insert('tbl_test_2', $insert_two);
 
         if ($add_two) {
           $this->session->set_flashdata('message', 'Two Added Successfully!');
-          redirect('admin/one/list', 'refresh');
+          redirect('admin/two/list', 'refresh');
         } else {
           $this->session->set_flashdata('message', 'two Add Failed!');
-          redirect('admin/one/list', 'refresh');
+          redirect('admin/two/list', 'refresh');
         }
       }
+
+      $data['test1_list'] = $this->db->order_by('id', 'desc')->get('tbl_test_1')->result();
       $data['title']             = 'Two Add';
       $data['activeMenu']        = 'two_add';
       $data['page']              = 'backEnd/admin/two_add';
     } elseif ($param1 == 'list') {
 
-      $data['two_list']     = $this->db->order_by('id', 'desc')->get('tbl_test_2')->result();
+      $data['two_list']     = $this->db->select('tbl_test_2.*,tbl_test_1.name as test1_name')
+        ->join('tbl_test_1', 'tbl_test_1.id = tbl_test_2.user_id', 'left')->order_by('id', 'desc')->get('tbl_test_2')->result();
       $data['title']        = 'Two List';
       $data['activeMenu']   = 'two_list';
       $data['page']         = 'backEnd/admin/two_list';
@@ -405,32 +665,32 @@ class Admin extends CI_Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
           $update_two['name']        = $this->input->post('name', true);
-          $update_two['email']       = $this->input->post('email', true);
+          $update_two['user_id']       = $this->input->post('user_id', true);
           $update_two['phone']       = $this->input->post('phone', true);
-          $update_two['status']      = $this->input->post('status', true);
+          $update_two['description']      = $this->input->post('description', true);
           $update_two['insert_time'] = $this->input->post('insert_time', true);
 
-          if (!empty($_FILES['photo']['name'])) {
+          // if (!empty($_FILES['photo']['name'])) {
 
-            $path_parts                 = pathinfo($_FILES["photo"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-            $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
-            $config_c['remove_spaces']  = TRUE;
-            $config_c['upload_path']    = 'assets/twoPhoto/';
-            $config_c['max_size']       = '20000'; //  less than 20 MB
-            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+          //   $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          //   $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          //   $dir                        = date("YmdHis", time());
+          //   $config_c['file_name']      = $newfile_name . '_' . $dir;
+          //   $config_c['remove_spaces']  = TRUE;
+          //   $config_c['upload_path']    = 'assets/twoPhoto/';
+          //   $config_c['max_size']       = '20000'; //  less than 20 MB
+          //   $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
-            $this->load->library('upload', $config_c);
-            $this->upload->initialize($config_c);
-            if (!$this->upload->do_upload('photo')) {
-            } else {
+          //   $this->load->library('upload', $config_c);
+          //   $this->upload->initialize($config_c);
+          //   if (!$this->upload->do_upload('photo')) {
+          //   } else {
 
-              $upload_c = $this->upload->data();
-              $update_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-              $this->image_size_fix($update_two['photo'], 400, 500);
-            }
-          }
+          //     $upload_c = $this->upload->data();
+          //     $update_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+          //     $this->image_size_fix($update_two['photo'], 400, 500);
+          //   }
+          // }
 
           if ($this->AdminModel->update_two_data($update_two, $param2)) {
 
@@ -716,7 +976,6 @@ class Admin extends CI_Controller
     } elseif ($param1 == 'edit' && $param2 > 0) {
 
       $data['edit_info']   = $this->db->get_where('tbl_test', array('id' => $param2));
-
       if ($data['edit_info']->num_rows() > 0) {
 
         $data['edit_info']    = $data['edit_info']->row();
@@ -743,7 +1002,7 @@ class Admin extends CI_Controller
 
             $this->load->library('upload', $config_c);
             $this->upload->initialize($config_c);
-            if (!$this->upload->do_upload('photo')) {
+            if (!$this->upload->do_upload('photo_1')) {
             } else {
 
               $upload_c = $this->upload->data();
@@ -989,7 +1248,7 @@ class Admin extends CI_Controller
     $data['activeMenu'] = 'user_list';
     $this->load->view('backEnd/master_page', $data);
   }
-
+  // Image Size Fix 
   public function image_size_fix($filename, $width = 600, $height = 400, $destination = '')
   {
 
@@ -1023,28 +1282,28 @@ class Admin extends CI_Controller
     }
     return true;
   }
-
+  //Get Division
   public function get_division()
   {
 
     $result = $this->db->select('id, name')->get('tbl_divission')->result();
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
-
+  //Get Zilla from Division
   public function get_zilla_from_division($division_id = 1)
   {
 
     $result = $this->db->select('id, name')->where('divission_id', $division_id)->get('tbl_zilla')->result();
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
-
+  //Get Upzilla from Division
   public function get_upozilla_from_division_zilla($zilla_id = 1)
   {
 
     $result = $this->db->select('id, name')->where('zilla_id', $zilla_id)->get('tbl_upozilla')->result();
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
-
+  //Get download file
   public function download_file($file_name = '', $fullpath = '')
   {
 

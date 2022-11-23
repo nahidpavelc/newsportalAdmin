@@ -48,11 +48,6 @@
                       <label><?php echo $this->lang->line("status"); ?></label>
                       <select name="status" class="form-control">
                         <option value="1" <?php if ($edit_info->status == 1) echo 'selected'; ?>>Active</option>
-                        
-                        <!-- <?php if ($value->status == 1) echo '<?php echo $this->lang->line("active"); ?>'
-                        else echo '<?php echo $this->lang->line("inactive"); ?>' ?> -->
-                        
-
                         <option value="0" <?php if ($edit_info->status == 0) echo 'selected'; ?>>Inactive</option>
                       </select>
                     </div>

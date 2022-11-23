@@ -31,15 +31,15 @@
                 <tr>
                   <td> <?= $sl++; ?> </td>
                   <td> <?= $value->name; ?> </td>
-                  <td> <?= $value->user_id; ?> </td>
+                  <td> <?= $value->test1_name; ?> </td>
                   <td> <?= $value->phone; ?> </td>
                   <td> <?= $value->description; ?> </td>
                   <!-- <td>
                     <img src="<?= base_url($value->photo) ?>" alt="" width="50px" height="50px">
                   </td> -->
                   <td>
-                    <a href="<?php echo base_url('admin/one/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
-                    <a href="<?php echo base_url('admin/one/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
+                    <a href="<?php echo base_url('admin/two/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
+                    <a href="<?php echo base_url('admin/two/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
               <?php

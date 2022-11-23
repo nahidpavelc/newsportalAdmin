@@ -4,7 +4,7 @@
       <!-- Horizontal Form -->
       <div class="box box-purple box-solid">
         <div class="box-header with-border">
-          <h3 class="box-title"> <?php echo $this->lang->line('photo_album'); ?> </h3>
+          <h3 class="box-title"> <?php echo $this->lang->line('photo_album_2'); ?> </h3>
           <div class="box-tools pull-right">
           </div>
         </div>
@@ -47,9 +47,9 @@
           <?php } else { ?>
             <div class="row">
               <div class="col-md-12" style="margin:18px ;">
-                <form action="<?php echo base_url('admin/photo-album/add/') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <form action="<?php echo base_url('admin/photo-album_2/add/') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
                   <div class="col-md-1"></div>
-                  <div class="col-md-10" style="box-shadow: 0px 0px 10px 0px purple;padding: 20px;">
+                  <div class="col-md-10" style="box-shadow: 0px 0px 10px 0px purple; padding: 20px; ">
                     <div class="col-md-6">
                       <div class="form-group">
                         <div class="col-sm-12">
@@ -92,7 +92,7 @@
                   </thead>
                   <tbody>
                     <?php
-                    foreach ($photo_album_list as $key => $value) {
+                    foreach ($photo_album_list_2 as $key => $value) {
                     ?>
                       <tr>
                         <td><?php echo $key + 1; ?></td>
@@ -101,7 +101,7 @@
                         <td>
                           <center>
                             <a href="<?= base_url('admin/photo-album/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"> <i class="fa fa-edit"></i> </a>
-                            
+
                             <a href="<?= base_url('admin/photo-album/delete/' . $value->id); ?>" onclick="return confirm('Are you sure?')" class="btn btn-sm bg-red"> <i class="fa fa-trash"></i> </a>
                           </center>
                         </td>

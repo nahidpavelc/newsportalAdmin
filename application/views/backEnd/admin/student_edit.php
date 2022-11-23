@@ -6,13 +6,13 @@
         <div class="box-header with-border">
           <h3 class="box-title">Author Edit </h3>
           <div class="box-tools pull-right">
-            <a href="<?php echo base_url() ?>admin/author/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> Author List </a>
+            <a href="<?php echo base_url() ?>admin/student/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> Author List </a>
           </div>
         </div>
         <div class="box-body">
 
           <div class="row">
-            <form action="<?php echo base_url("admin/author/edit/" . $edit_info->id); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <form action="<?php echo base_url("admin/student/edit/" . $edit_info->id); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
 
               <div class="col-md-12" style="margin-bottom: 20px;">
                 <div class="col-md-6">
@@ -67,7 +67,7 @@
                         <!-- image_1-->
                         <div class="col-md-6">
                           <center>
-                            <img name="photo_1" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo_1"><br>
+                            <img name="photo_1" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url($edit_info->photo_1) ?>" id="photo_1"><br>
                             <small>width : 400px, Height : 400px</small>
                             <input id="photo_1" type="file" name="photo_1" onchange="readphoto1(this)">
                           </center>
@@ -75,7 +75,7 @@
                         <!-- image_2  -->
                         <div class="col-md-6">
                           <center>
-                            <img name="photo_2" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo_2"><br>
+                            <img name="photo_2" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url($edit_info->photo_2) ?>" id="photo_2"><br>
                             <small>width : 400px, Height : 400px</small>
                             <input id="photo_2" type="file" name="photo_2" onchange="readphoto2(this)">
                           </center>
@@ -88,7 +88,7 @@
                         <!-- image_3-->
                         <div class="col-md-6">
                           <center>
-                            <img name="photo_3" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo_3"><br>
+                            <img name="photo_3" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url($edit_info->photo_3) ?>" id="photo_3"><br>
                             <small>width : 400px, Height : 400px</small>
                             <input id="photo_3" type="file" name="photo_3" onchange="readphoto3(this)">
                           </center>
@@ -96,7 +96,7 @@
                         <!-- image_4  -->
                         <div class="col-md-6">
                           <center>
-                            <img name="photo_4" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo_4"><br>
+                            <img name="photo_4" style="height:100px; width:100px; margin-bottom:10px;" src="<?php echo base_url($edit_info->photo_4) ?>" id="photo_4"><br>
                             <small>width : 400px, Height : 400px</small>
                             <input id="photo_4" type="file" name="photo_4" onchange="readphoto4(this)">
                           </center>
@@ -115,13 +115,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
-
-              <div class="col-md-4">
-
-
-
               </div>
 
               <div class="col-md-12">

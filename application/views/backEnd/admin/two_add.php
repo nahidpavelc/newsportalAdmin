@@ -16,38 +16,38 @@
             <form action="<?php echo base_url("admin/two/add"); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
 
               <div class="col-md-6">
-
-                  <div class="form-group">
-                    <div class="col-sm-12">
-                      <label>Name *</label>
-                      <input name="name" placeholder="Name" class="form-control inner_shadow_teal" required="" type="text">
-                    </div>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>Name *</label>
+                    <input name="name" placeholder="Name" class="form-control inner_shadow_teal" required="" type="text">
                   </div>
-
-                  <div class="form-group">
-                    <div class="col-sm-12">
-                      <label>User Id *</label>
-                      <input name="user_id" placeholder="User Id" class="form-control inner_shadow_teal" required="" type="number">
-                    </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>User Id *</label>
+                    <select name="user_id" id="user_id" class="form-control select2">
+                      <option value="0">Select One</option>
+                      <?php foreach($test1_list as $key =>$value) {?>
+                        <option value="<?php echo $value->id?>"><?php echo $value->name?></option>
+                      <?php }?>  
+                    </select>
                   </div>
-
-
-
-                  <div class="form-group">
-                    <div class="col-sm-12">
-                      <label>Phone </label>
-                      <input name="phone" placeholder="Phone" class="form-control inner_shadow_teal"  type="text">
-                    </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label>Phone </label>
+                    <input name="phone" placeholder="Phone" class="form-control inner_shadow_teal" type="text">
                   </div>
-                
-
+                </div>
               </div>
+
               <div class="col-md-6">
-                <center>
-                  <img name="photo" style="height:150px; width:150px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo"><br>
-                  <small>width : 400px, Height : 400px</small>
-                  <input id="photo" type="file" name="photo" onchange="readphoto1(this)">
-                </center>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <label for="description"><?php echo $this->lang->line("description"); ?></label>
+                    <textarea id="description" name="description" class="form-control"></textarea>
+                  </div>
+                </div>
               </div>
 
               <div class="col-md-12">
@@ -56,6 +56,7 @@
                   <button type="submit" class="btn btn-sm bg-teal"><?php echo $this->lang->line('save'); ?></button>
                 </center>
               </div>
+
             </form>
           </div>
 
@@ -67,7 +68,12 @@
     </div>
 </section>
 
-<script>
+<!-- Description -->
+<script type="text/javascript">
+  CKEDITOR.replace('description');
+</script>
+
+<!-- <script>
   //Read & Show User photo
   function readphoto1(input) {
     if (input.files && input.files[0]) {
@@ -83,4 +89,4 @@
       reader.readAsDataURL(input.files[0]);
     }
   }
-</script>
+</script> -->

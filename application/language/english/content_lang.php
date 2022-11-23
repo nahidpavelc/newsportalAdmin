@@ -47,6 +47,12 @@ $lang['college_edit']          = 'College Edit';
 $lang['college_list']          = 'College List';
 $lang['']                      = '';
 
+// Manage_Photo_album_2 
+$lang['photo_album_2']          = 'Photo Album 2';
+$lang['photo_gallery_2']        = 'Photo Gallery 2';
+$lang['add_photo_gallery_2']    = 'Add Photo Gallery 2';
+$lang['photo_gallery_list_2']   = 'Photo Gallery List 2';
+
 //Manage One
 $lang['status']                 = 'Status';
 $lang['active']                 = 'active';

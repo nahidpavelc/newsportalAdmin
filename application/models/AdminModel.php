@@ -235,8 +235,8 @@ class AdminModel extends CI_Model
     // Get Two Data 
     public function get_two_($id)
     {
-      $this->db->select('tbl_test_1.*, tbl_test_1.name')
-        ->from('tbl_test_1');
+      $this->db->select('tbl_test_2.*, tbl_test_2.name')
+        ->from('tbl_test_2');
   
       $result = $this->db->get();
   
@@ -249,12 +249,12 @@ class AdminModel extends CI_Model
     //Two Update 
     public function update_two_data($update_data, $param2)
     {
-      return $this->db->where('id', $param2)->update('tbl_test_1', $update_data);
+      return $this->db->where('id', $param2)->update('tbl_test_2', $update_data);
     }
     //Two Delete 
     public function delete_two_data($param2)
     {
-      return $this->db->where('id', $param2)->delete('tbl_test_1');
+      return $this->db->where('id', $param2)->delete('tbl_test_2');
     }
 
 
