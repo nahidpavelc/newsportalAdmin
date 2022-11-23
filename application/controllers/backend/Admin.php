@@ -189,7 +189,7 @@ class Admin extends CI_Controller
       }
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
-      if ($this->AdminModel->delete_photo_album($param2)) {
+      if ($this->AdminModel->delete_photo_album_2($param2)) {
 
         $this->session->set_flashdata('message', "Data Deleted Successfully.");
         redirect('admin/photo-album_2', 'refresh');
@@ -200,7 +200,7 @@ class Admin extends CI_Controller
       }
     }
 
-    $data['title']      = 'photo Album_2';
+    $data['title']      = 'photo Album 2';
     $data['activeMenu'] = 'photo_album_2';
     $data['page']       = 'backEnd/admin/photo_album_2';
     $data['photo_album_list_2'] = $this->db->order_by('priority', 'desc')->get('tbl_photo_album_2')->result();

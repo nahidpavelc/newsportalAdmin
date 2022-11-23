@@ -147,7 +147,6 @@ class AdminModel extends CI_Model
 
     return $query->row();
   }
-
   public function update_pro_info($update_data, $user_id)
   {
     return $this->db->where('id', $user_id)->update('user', $update_data);
@@ -184,7 +183,6 @@ class AdminModel extends CI_Model
 
     return $this->db->where('id', $param2)->delete('tbl_testimonial');
   }
-
   public function theme_text_update($name_index, $value)
   {
 
@@ -205,6 +203,73 @@ class AdminModel extends CI_Model
     $update_theme['value'] = $value;
     $this->db->where('name', $name_index)->update('tbl_backend_theme', $update_theme);
     return true;
+  }
+
+  //Photo Album Delete
+  public function delete_photo_album_2($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_photo_album');
+  }
+  //Photo Album list
+  public function get_photo_album_list_2($limit = 10, $start = 0)
+  {
+    $results = array();
+
+    $this->db->select('tbl_photo_album.id,tbl_photo_album.album_title,tbl_photo_album.priority');
+    $this->db->limit($limit, $start);
+    $this->db->order_by('priority', 'desc');
+    $results = $this->db->get('tbl_photo_album')->result();
+
+    return $results;
+  }
+
+  //Photo Gallery Update
+  public function photo_gallery_update_2($update_photo_gallery, $param2)
+  {
+    if (isset($update_photo_gallery['photo_file']) && file_exists($update_photo_gallery['photo_file'])) {
+
+      $result = $this->db->select('photo_file')
+        ->from('tbl_photo_gallery')
+        ->where('id', $param2)
+        ->get()
+        ->row()->photo_file;
+
+      if (file_exists($result)) {
+        unlink($result);
+      }
+    }
+
+    return $this->db->where('id', $param2)->update('tbl_photo_gallery', $update_photo_gallery);
+  }
+  //Photo Gallery List
+  public function get_photo_gallery_list_2($limit = 10, $start = 0)
+  {
+    $results = array();
+
+    $this->db->select('tbl_photo_gallery.id,tbl_photo_gallery.photo_file,tbl_photo_gallery.title,tbl_photo_album.album_title as album_name');
+    $this->db->join('tbl_photo_album', 'tbl_photo_album.id  = tbl_photo_gallery.photo_album_id', 'left');
+
+    $this->db->limit($limit, $start);
+    $this->db->order_by('id', 'desc');
+    $results = $this->db->get('tbl_photo_gallery')->result();
+
+    return $results;
+  }
+  //Photo Gallery Delete
+  public function photo_gallery_delete_2($param2)
+  {
+
+    $result = $this->db->select('photo_file')
+      ->from('tbl_photo_gallery')
+      ->where('id', $param2)
+      ->get()
+      ->row()->photo_file;
+
+    if (file_exists($result)) {
+      unlink($result);
+    }
+
+    return $this->db->where('id', $param2)->delete('tbl_photo_gallery');
   }
 
   // Get One Data 
@@ -232,30 +297,30 @@ class AdminModel extends CI_Model
     return $this->db->where('id', $param2)->delete('tbl_test_1');
   }
 
-    // Get Two Data 
-    public function get_two_($id)
-    {
-      $this->db->select('tbl_test_2.*, tbl_test_2.name')
-        ->from('tbl_test_2');
-  
-      $result = $this->db->get();
-  
-      if ($result->num_rows() > 0) {
-        return $result->result();
-      } else {
-        return array();
-      }
+  // Get Two Data 
+  public function get_two_($id)
+  {
+    $this->db->select('tbl_test_2.*, tbl_test_2.name')
+      ->from('tbl_test_2');
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() > 0) {
+      return $result->result();
+    } else {
+      return array();
     }
-    //Two Update 
-    public function update_two_data($update_data, $param2)
-    {
-      return $this->db->where('id', $param2)->update('tbl_test_2', $update_data);
-    }
-    //Two Delete 
-    public function delete_two_data($param2)
-    {
-      return $this->db->where('id', $param2)->delete('tbl_test_2');
-    }
+  }
+  //Two Update 
+  public function update_two_data($update_data, $param2)
+  {
+    return $this->db->where('id', $param2)->update('tbl_test_2', $update_data);
+  }
+  //Two Delete 
+  public function delete_two_data($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_test_2');
+  }
 
 
   // Get Student Data 
@@ -469,6 +534,11 @@ class AdminModel extends CI_Model
     return $this->db->where('id', $param2)->delete('tbl_video_gallery');
   }
 
+  //Photo album Delete
+  public function delete_photo_album($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_photo_album');
+  }
   //Photo Album Delete
   public function photo_album_delete($param2)
   {
@@ -505,7 +575,7 @@ class AdminModel extends CI_Model
 
     return $this->db->where('id', $param2)->update('tbl_photo_gallery', $update_photo_gallery);
   }
-  //Photo gallery List
+  //Photo Gallery List
   public function get_photo_gallery_list($limit = 10, $start = 0)
   {
     $results = array();
@@ -541,11 +611,7 @@ class AdminModel extends CI_Model
   {
     return $this->db->where('id', $param2)->update('tbl_photo_album', $update_photo_album);
   }
-  //Photo album Delete
-  public function delete_photo_album($param2)
-  {
-    return $this->db->where('id', $param2)->delete('tbl_photo_album');
-  }
+
 
   //Video Gallery Update
   public function get_video_gallery_update($update_video_gallery, $param2)
