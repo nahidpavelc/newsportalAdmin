@@ -131,6 +131,35 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
+  // Manage Question 
+  public function queation($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $insert_question['exam_id'] = $this->input->post('exam_id', true);
+        $insert_question['question_title'] =  $this->input->post('question_title', true);
+        $insert_question['question_photo'] =  $this->input->post('question_photo', true);
+        $insert_question['insert_time'] =  date('Y-m-d H:i:s');
+        $insert_question['insert_by'] =  $this->input->post('', true);
+
+        $add_question = $this->db->insert('tbl_question', $insert_question);
+
+        if($add_question){
+          $this->session->set_flashdata('message', 'Question Added Successfully!');
+          redirect('admin/question/list', 'refresh');
+        } else {
+          $this->session->set_flashdata('message', 'Question Add Failed!');
+        }
+      }
+      $data['question_list'] = $this->db->order_by('id', 'desc') ->get('tbl_question')->result();
+      $data['title'] = 'Add Question';
+      $data['activeMenu'] = 'add_question';
+      $data['page'] = 'backend/admin/add_question';
+    } elseif ($param1 == 'list') {
+      $data['question_list'] = $this->db->select
+    }
+  }
+
   //Photo Album 2
   public function photo_album_2($param1 = 'add', $param2 = '', $param3 = '')
   {
