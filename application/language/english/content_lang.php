@@ -40,18 +40,25 @@ $lang['one_add']           = 'One Add';
 $lang['one_list']          = 'One List';
 $lang['one_edit']          = 'One Edit';
 
-// Manage College 
-$lang['manage_college']        = 'Manage College';
-$lang['add_college']           = 'Add College';
-$lang['college_edit']          = 'College Edit';
-$lang['college_list']          = 'College List';
-$lang['']                      = '';
+// Manage Question
+$lang['manage_question'] = 'Manage Question';
+$lang['add_question'] = 'Add Question';
+$lang['question_list'] = 'Question List';
+$lang[''] = '';
+$lang[''] = '';
 
 // Manage_Photo_album_2 
 $lang['photo_album_2']          = 'Photo Album 2';
 $lang['photo_gallery_2']        = 'Photo Gallery 2';
 $lang['add_photo_gallery_2']    = 'Add Photo Gallery 2';
 $lang['photo_gallery_list_2']   = 'Photo Gallery List 2';
+
+// Manage College 
+$lang['manage_college']        = 'Manage College';
+$lang['add_college']           = 'Add College';
+$lang['college_edit']          = 'College Edit';
+$lang['college_list']          = 'College List';
+$lang['']                      = '';
 
 //Manage One
 $lang['status']                 = 'Status';

@@ -229,6 +229,18 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
+            <!-- Manage Question List  -->
+            <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit") echo "active"; ?> ">
+              <a href="#">
+                <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_question"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+              </a>
+              <ul class="treeview-menu">
+                <li class=" <?php if ($activeMenu === "add_question") echo "active"; ?> "><a href=" <?php echo base_url('admin/question/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_question") ?></a></li>
+
+                <li class=" <?php if ($activeMenu === "question_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/question/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("question_list") ?></a></li>
+              </ul>
+            </li>
+
             <!-- Photo Album_2  -->
             <li class="treeview <?php if ($activeMenu === "photo_album_2") echo "active"; ?>">
               <a href=" <?php echo base_url('admin/photo_album_2'); ?> ">
