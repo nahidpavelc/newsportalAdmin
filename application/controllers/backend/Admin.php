@@ -71,9 +71,9 @@ class Admin extends CI_Controller
       if (!empty($_FILES['logo']['name'])) {
 
         $path_parts                 = pathinfo($_FILES["logo"]['name']);
-        $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         $dir                        = date("YmdHis", time());
-        $config_c['file_name']      = $newfile_name . '_' . $dir;
+        $config_c['file_name']      = $newFile_name . '_' . $dir;
         $config_c['remove_spaces']  = TRUE;
         $config_c['upload_path']    = 'assets/themeLogo/';
         $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -96,13 +96,13 @@ class Admin extends CI_Controller
       if (!empty($_FILES['share_banner']['name'])) {
 
         $path_parts                 = pathinfo($_FILES["share_banner"]['name']);
-        $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         $dir                        = date("YmdHis", time());
-        $config['file_name']      = $newfile_name . '_' . $dir;
-        $config['remove_spaces']  = TRUE;
-        $config['upload_path']    = 'assets/themeBanner/';
-        $config['max_size']       = '20000'; //  less than 20 MB
-        $config['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+        $config['file_name']        = $newFile_name . '_' . $dir;
+        $config['remove_spaces']    = TRUE;
+        $config['upload_path']      = 'assets/themeBanner/';
+        $config['max_size']         = '20000'; //  less than 20 MB
+        $config['allowed_types']    = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
@@ -118,7 +118,7 @@ class Admin extends CI_Controller
 
 
 
-      $this->session->set_flashdata('message', 'Theme Info Updated Successfully!');
+      $this->session->set_flashData('message', 'Theme Info Updated Successfully!');
       redirect('admin/theme-setting', 'refresh');
     }
 
@@ -142,9 +142,9 @@ class Admin extends CI_Controller
 
         if (!empty($_FILES['question_photo']['name'])) {
           $path_parts                 = pathinfo($_FILES["question_photo"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/quePhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -163,10 +163,10 @@ class Admin extends CI_Controller
         $add_question = $this->db->insert('tbl_question', $insert_question);
 
         if ($add_question) {
-          $this->session->set_flashdata('message', 'Question Added Successfully!');
+          $this->session->set_flashData('message', 'Question Added Successfully!');
           redirect('admin/question/list', 'refresh');
         } else {
-          $this->session->set_flashdata('message', 'Question Add Failed!');
+          $this->session->set_flashData('message', 'Question Add Failed!');
         }
       }
       $data['question_list'] = $this->db->order_by('id', 'desc')->get('tbl_question')->result();
@@ -194,9 +194,9 @@ class Admin extends CI_Controller
 
           if (!empty($_FILES['question_photo']['name'])) {
             $path_parts                 = pathinfo($_FILES["question_photo"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/quePhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -216,33 +216,152 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_question($update_question, $param2)) {
 
-            $this->session->set_flashdata('message', 'Two Updated Successfully!');
+            $this->session->set_flashData('message', 'Two Updated Successfully!');
             redirect('admin/question/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Two Update Failed!');
+            $this->session->set_flashData('message', 'Two Update Failed!');
             redirect('admin/question/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/question/list', 'refresh');
       }
       $data['title']      = 'Question Edit';
       $data['activeMenu'] = 'question_edit';
       $data['page']       = 'backEnd/admin/question_edit';
     } elseif ($param1 == 'delete' && $param2 > 0) {
-      if ($this->AdminModel->delete_two_data($param2)) {
-        $this->session->set_flashdata('message', 'Question Successfully Deleted!');
+      if ($this->AdminModel->delete_question($param2)) {
+        $this->session->set_flashData('message', 'Question Successfully Deleted!');
         redirect('admin/question/list', 'refresh');
       } else {
-        $this->session->set_flashdata('message', 'Question Deleted Failed');
+        $this->session->set_flashData('message', 'Question Deleted Failed');
         redirect('admin/question/list', 'refresh');
       }
     } else {
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/question/list', 'refresh');
+    }
+    $this->load->view('backEnd/master_page', $data);
+  }
+  // Manage Question_Option
+  public function question_op($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_question['exam_id']        = $this->input->post('exam_id', true);
+        $insert_question['question_title'] =  $this->input->post('question_title', true);
+        $insert_question['status']         =  $this->input->post('status', true);
+        $insert_question['insert_time']    =  date('Y-m-d H:i:s');
+        $insert_question['insert_by']      =  $_SESSION['userid'];
+
+        if (!empty($_FILES['question_photo']['name'])) {
+          $path_parts                 =   pathinfo($_FILES["question_photo"]['name']);
+          $newFile_name               =   preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        =   date("YmdHis", time());
+          $config_c['file_name']      =   $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  =   TRUE;
+          $config_c['upload_path']    =   'assets/quePhoto/';
+          $config_c['max_size']       =   '20000'; //  less than 20 MB
+          $config_c['allowed_types']  =   'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('question_photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $insert_question['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_question['question_photo'], 400, 400);
+          }
+        }
+
+        $add_question = $this->db->insert('tbl_question', $insert_question);
+
+        if ($add_question) {
+          $this->session->set_flashData('message', 'Question Added Successfully!');
+          redirect('admin/question/list', 'refresh');
+        } else {
+          $this->session->set_flashData('message', 'Question Add Failed!');
+        }
+      }
+      $data['question_list'] = $this->db->order_by('id', 'desc')->get('tbl_question')->result();
+      $data['title']         = 'Que Option Add';
+      $data['activeMenu']    = 'que_option_add';
+      $data['page']          = 'backend/admin/que_option_add';
+    } elseif ($param1 == 'list') {
+      $data['que_option_list'] = $this->db->order_by('id', 'desc')->get('tbl_question_options')->result();
+      $data['title']        = 'Que Option List';
+      $data['activeMenu']   = 'que_option_list';
+      $data['page']         = 'backEnd/admin/que_option_list';
+    } elseif ($param1 == 'edit' && $param2 > 0) {
+      $data['edit_info']      = $this->db->get_where('tbl_question', array('id' => $param2));
+
+      if ($data['edit_info']->num_rows() > 0) {
+        $data['edit_info']    =   $data['edit_info']->row();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+          $update_question['exam_id']          = $this->input->post('exam_id', true);
+          $update_question['question_title']   = $this->input->post('question_title', true);
+          $update_question['status']           = $this->input->post('status', true);
+          $insert_question['insert_time']      =  date('Y-m-d H:i:s');
+          $insert_question['insert_by']        =  $_SESSION['userid'];
+
+          if (!empty($_FILES['question_photo']['name'])) {
+            $path_parts                 = pathinfo($_FILES["question_photo"]['name']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $dir                        = date("YmdHis", time());
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
+            $config_c['remove_spaces']  = TRUE;
+            $config_c['upload_path']    = 'assets/quePhoto/';
+            $config_c['max_size']       = '20000'; //  less than 20 MB
+            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+            $this->load->library('upload', $config_c);
+            $this->upload->initialize($config_c);
+            if (!$this->upload->do_upload('question_photo')) {
+            } else {
+
+              $upload_c = $this->upload->data();
+
+              $update_question['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_question['question_photo'], 400, 500);
+            }
+          }
+
+          if ($this->AdminModel->update_question($update_question, $param2)) {
+
+            $this->session->set_flashData('message', 'Two Updated Successfully!');
+            redirect('admin/que-option/list', 'refresh');
+          } else {
+
+            $this->session->set_flashData('message', 'Two Update Failed!');
+            redirect('admin/que-option/list', 'refresh');
+          }
+        }
+      } else {
+
+        $this->session->set_flashData('message', 'Wrong Attempt!');
+        redirect('admin/que-option/list', 'refresh');
+      }
+      $data['title']      = 'Que Option Edit';
+      $data['activeMenu'] = 'que_option_edit';
+      $data['page']       = 'backEnd/admin/que_option_edit';
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+      if ($this->AdminModel->delete_question($param2)) {
+        $this->session->set_flashData('message', 'Question Successfully Deleted!');
+        redirect('admin/que-option/list', 'refresh');
+      } else {
+        $this->session->set_flashData('message', 'Question Deleted Failed');
+        redirect('admin/que-option/list', 'refresh');
+      }
+    } else {
+      $this->session->set_flashData('message', 'Wrong Attempt!');
+      redirect('admin/que-option/list', 'refresh');
     }
     $this->load->view('backEnd/master_page', $data);
   }
@@ -265,11 +384,11 @@ class Admin extends CI_Controller
 
         if ($photo_album_add) {
 
-          $this->session->set_flashdata('message', "Data Added Successfully.");
+          $this->session->set_flashData('message', "Data Added Successfully.");
           redirect('admin/photo-album_2/', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Add Failed.");
+          $this->session->set_flashData('message', "Data Add Failed.");
           redirect('admin/photo-album_2/', 'refresh');
         }
       }
@@ -283,11 +402,11 @@ class Admin extends CI_Controller
 
         if ($this->AdminModel->photo_album_update($update_photo_album, $param2)) {
 
-          $this->session->set_flashdata('message', "Data Updated Successfully.");
+          $this->session->set_flashData('message', "Data Updated Successfully.");
           redirect('admin/photo-album_2', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Update Failed.");
+          $this->session->set_flashData('message', "Data Update Failed.");
           redirect('admin/photo-album_2', 'refresh');
         }
       }
@@ -300,18 +419,18 @@ class Admin extends CI_Controller
         $data['photo_album_id'] = $param2;
       } else {
 
-        $this->session->set_flashdata('message', "Wrong Attempt !");
+        $this->session->set_flashData('message', "Wrong Attempt !");
         redirect('admin/photo-album_2', 'refresh');
       }
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_photo_album_2($param2)) {
 
-        $this->session->set_flashdata('message', "Data Deleted Successfully.");
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
         redirect('admin/photo-album_2', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', "Data Delete Failed.");
+        $this->session->set_flashData('message', "Data Delete Failed.");
         redirect('admin/photo-album_2', 'refresh');
       }
     }
@@ -340,9 +459,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['photo_file']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["photo_file"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/photoGallery/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -365,11 +484,11 @@ class Admin extends CI_Controller
 
         if ($add_photo_gallery) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/photo-gallery/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/photo-gallery', 'refresh');
         }
       }
@@ -396,9 +515,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['photo_file']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["photo_file"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/photoGallery/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -418,15 +537,15 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->photo_gallery_update($update_photo_gallery, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/photo-gallery/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/photo-gallery/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/photo-gallery/list', 'refresh');
         }
       }
@@ -487,16 +606,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->photo_gallery_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/photo-gallery/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/photo-gallery/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/photo-gallery/list', 'refresh');
     }
 
@@ -521,11 +640,11 @@ class Admin extends CI_Controller
 
         if ($add_college) {
 
-          $this->session->set_flashdata('message', 'college Added Successfully!');
+          $this->session->set_flashData('message', 'college Added Successfully!');
           redirect('admin/college/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'college Add Failed!');
+          $this->session->set_flashData('message', 'college Add Failed!');
           redirect('admin/college/list', 'refresh');
         }
       }
@@ -559,17 +678,17 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_data($update_data, $param2)) {
 
-            $this->session->set_flashdata('message', 'Medical College Updated Successfully!');
+            $this->session->set_flashData('message', 'Medical College Updated Successfully!');
             redirect('admin/college/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Medical College Update Failed!');
+            $this->session->set_flashData('message', 'Medical College Update Failed!');
             redirect('admin/college/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/college/list', 'refresh');
       }
       $data['title']      = 'College Edit';
@@ -578,14 +697,14 @@ class Admin extends CI_Controller
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_data($param2)) {
-        $this->session->set_flashdata('message', 'Medical College Deleted Successfully!');
+        $this->session->set_flashData('message', 'Medical College Deleted Successfully!');
         redirect('admin/college/list', 'refresh');
       } else {
-        $this->session->set_flashdata('message', 'Medical College Deleted Failed!');
+        $this->session->set_flashData('message', 'Medical College Deleted Failed!');
         redirect('admin/college/list', 'refresh');
       }
     } else {
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/college/list', 'refresh');
     }
     $this->load->view('backEnd/master_page', $data);
@@ -607,9 +726,9 @@ class Admin extends CI_Controller
 
         if (!empty($_FILES['photo']['name'])) {
           $path_parts                 = pathinfo($_FILES["photo"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/onePhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -627,10 +746,10 @@ class Admin extends CI_Controller
         $add_one = $this->db->insert('tbl_test_1', $insert_one);
 
         if ($add_one) {
-          $this->session->set_flashdata('message', 'One Added Successfully!');
+          $this->session->set_flashData('message', 'One Added Successfully!');
           redirect('admin/one/list', 'refresh');
         } else {
-          $this->session->set_flashdata('message', 'One Add Failed!');
+          $this->session->set_flashData('message', 'One Add Failed!');
           redirect('admin/one/list', 'refresh');
         }
       }
@@ -661,9 +780,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['photo']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["photo"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/onePhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -682,17 +801,17 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_one_data($update_one, $param2)) {
 
-            $this->session->set_flashdata('message', 'One Updated Successfully!');
+            $this->session->set_flashData('message', 'One Updated Successfully!');
             redirect('admin/one/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'One Update Failed!');
+            $this->session->set_flashData('message', 'One Update Failed!');
             redirect('admin/one/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/one/list', 'refresh');
       }
       $data['title']      = 'One Edit';
@@ -701,14 +820,14 @@ class Admin extends CI_Controller
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_one_data($param2)) {
-        $this->session->set_flashdata('message', 'One Deleted Successfully!');
+        $this->session->set_flashData('message', 'One Deleted Successfully!');
         redirect('admin/one/list', 'refresh');
       } else {
-        $this->session->set_flashdata('message', 'One Deleted Failed!');
+        $this->session->set_flashData('message', 'One Deleted Failed!');
         redirect('admin/one/list', 'refresh');
       }
     } else {
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/one/list', 'refresh');
     }
     $this->load->view('backEnd/master_page', $data);
@@ -729,9 +848,9 @@ class Admin extends CI_Controller
 
         // if (!empty($_FILES['photo']['name'])) {
         //   $path_parts                 = pathinfo($_FILES["photo"]['name']);
-        //   $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        //   $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         //   $dir                        = date("YmdHis", time());
-        //   $config_c['file_name']      = $newfile_name . '_' . $dir;
+        //   $config_c['file_name']      = $newFile_name . '_' . $dir;
         //   $config_c['remove_spaces']  = TRUE;
         //   $config_c['upload_path']    = 'assets/twoPhoto/';
         //   $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -750,10 +869,10 @@ class Admin extends CI_Controller
         $add_two = $this->db->insert('tbl_test_2', $insert_two);
 
         if ($add_two) {
-          $this->session->set_flashdata('message', 'Two Added Successfully!');
+          $this->session->set_flashData('message', 'Two Added Successfully!');
           redirect('admin/two/list', 'refresh');
         } else {
-          $this->session->set_flashdata('message', 'two Add Failed!');
+          $this->session->set_flashData('message', 'two Add Failed!');
           redirect('admin/two/list', 'refresh');
         }
       }
@@ -788,9 +907,9 @@ class Admin extends CI_Controller
           // if (!empty($_FILES['photo']['name'])) {
 
           //   $path_parts                 = pathinfo($_FILES["photo"]['name']);
-          //   $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          //   $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           //   $dir                        = date("YmdHis", time());
-          //   $config_c['file_name']      = $newfile_name . '_' . $dir;
+          //   $config_c['file_name']      = $newFile_name . '_' . $dir;
           //   $config_c['remove_spaces']  = TRUE;
           //   $config_c['upload_path']    = 'assets/twoPhoto/';
           //   $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -809,17 +928,17 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_two_data($update_two, $param2)) {
 
-            $this->session->set_flashdata('message', 'Two Updated Successfully!');
+            $this->session->set_flashData('message', 'Two Updated Successfully!');
             redirect('admin/two/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Two Update Failed!');
+            $this->session->set_flashData('message', 'Two Update Failed!');
             redirect('admin/two/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/two/list', 'refresh');
       }
       $data['title']      = 'Two Edit';
@@ -828,14 +947,14 @@ class Admin extends CI_Controller
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_two_data($param2)) {
-        $this->session->set_flashdata('message', 'Two Deleted Successfully!');
+        $this->session->set_flashData('message', 'Two Deleted Successfully!');
         redirect('admin/two/list', 'refresh');
       } else {
-        $this->session->set_flashdata('message', 'Two Deleted Failed!');
+        $this->session->set_flashData('message', 'Two Deleted Failed!');
         redirect('admin/two/list', 'refresh');
       }
     } else {
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/two/list', 'refresh');
     }
     $this->load->view('backEnd/master_page', $data);
@@ -857,9 +976,9 @@ class Admin extends CI_Controller
 
         if (!empty($_FILES['photo']['name'])) {
           $path_parts                 = pathinfo($_FILES["photo"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/threePhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -877,10 +996,10 @@ class Admin extends CI_Controller
         $add_three = $this->db->insert('tbl_test_2', $insert_three);
 
         if ($add_three) {
-          $this->session->set_flashdata('message', 'Three Added Successfully!');
+          $this->session->set_flashData('message', 'Three Added Successfully!');
           redirect('admin/one/list', 'refresh');
         } else {
-          $this->session->set_flashdata('message', 'Three Add Failed!');
+          $this->session->set_flashData('message', 'Three Add Failed!');
           redirect('admin/one/list', 'refresh');
         }
       }
@@ -911,9 +1030,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['photo']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["photo"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/threePhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -932,17 +1051,17 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_three_data($update_three, $param2)) {
 
-            $this->session->set_flashdata('message', 'Three Updated Successfully!');
+            $this->session->set_flashData('message', 'Three Updated Successfully!');
             redirect('admin/three/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Three Update Failed!');
+            $this->session->set_flashData('message', 'Three Update Failed!');
             redirect('admin/three/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/three/list', 'refresh');
       }
       $data['title']      = 'Three Edit';
@@ -951,14 +1070,14 @@ class Admin extends CI_Controller
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_two_data($param2)) {
-        $this->session->set_flashdata('message', 'Three Deleted Successfully!');
+        $this->session->set_flashData('message', 'Three Deleted Successfully!');
         redirect('admin/three/list', 'refresh');
       } else {
-        $this->session->set_flashdata('message', 'Three Deleted Failed!');
+        $this->session->set_flashData('message', 'Three Deleted Failed!');
         redirect('admin/three/list', 'refresh');
       }
     } else {
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/three/list', 'refresh');
     }
     $this->load->view('backEnd/master_page', $data);
@@ -982,9 +1101,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['photo_1']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["photo_1"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/studentPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1003,9 +1122,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['photo_2']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["photo_2"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/studentPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1024,9 +1143,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['photo_3']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["photo_3"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/studentPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1045,9 +1164,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['photo_4']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["photo_4"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/studentPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1069,11 +1188,11 @@ class Admin extends CI_Controller
 
         if ($add_student) {
 
-          $this->session->set_flashdata('message', 'Student Added Successfully!');
+          $this->session->set_flashData('message', 'Student Added Successfully!');
           redirect('admin/student/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Student Add Failed!');
+          $this->session->set_flashData('message', 'Student Add Failed!');
           redirect('admin/student/list', 'refresh');
         }
       }
@@ -1107,9 +1226,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['photo_1']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["photo_1"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/studentPhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1128,17 +1247,17 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_student($update_student, $param2)) {
 
-            $this->session->set_flashdata('message', 'Student Updated Successfully!');
+            $this->session->set_flashData('message', 'Student Updated Successfully!');
             redirect('admin/student/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Student Update Failed!');
+            $this->session->set_flashData('message', 'Student Update Failed!');
             redirect('admin/student/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/student/list', 'refresh');
       }
 
@@ -1149,16 +1268,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->delete_student($param2)) {
 
-        $this->session->set_flashdata('message', 'Student Deleted Successfully!');
+        $this->session->set_flashData('message', 'Student Deleted Successfully!');
         redirect('admin/student/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Student Deleted Failed!');
+        $this->session->set_flashData('message', 'Student Deleted Failed!');
         redirect('admin/student/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/student/list', 'refresh');
     }
 
@@ -1168,7 +1287,7 @@ class Admin extends CI_Controller
   // Add User
   public function add_user($param1 = '')
   {
-    $messagePage['divissions'] = $this->db->get('tbl_divission')->result_array();
+    $messagePage['divisions'] = $this->db->get('tbl_division')->result_array();
     $messagePage['userType']   = $this->db->get('user_type')->result();
 
     $messagePage['title']      = 'Add User Admin Panel • HRSOFTBD News Portal Admin Panel';
@@ -1191,9 +1310,9 @@ class Admin extends CI_Controller
       if (!empty($_FILES['photo']['name'])) {
 
         $path_parts                 = pathinfo($_FILES["photo"]['name']);
-        $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         $dir                        = date("YmdHis", time());
-        $config_c['file_name']      = $newfile_name . '_' . $dir;
+        $config_c['file_name']      = $newFile_name . '_' . $dir;
         $config_c['remove_spaces']  = TRUE;
         $config_c['upload_path']    = 'assets/userPhoto/';
         $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1268,9 +1387,9 @@ class Admin extends CI_Controller
       if (!empty($_FILES['photo']['name'])) {
 
         $path_parts                 = pathinfo($_FILES["photo"]['name']);
-        $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         $dir                        = date("YmdHis", time());
-        $config_c['file_name']      = $newfile_name . '_' . $dir;
+        $config_c['file_name']      = $newFile_name . '_' . $dir;
         $config_c['remove_spaces']  = TRUE;
         $config_c['upload_path']    = 'assets/userPhoto/';
         $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1335,7 +1454,7 @@ class Admin extends CI_Controller
   {
     $this->db->where('id', $id);
     $this->db->update('user', array('status' => $setvalue));
-    $this->session->set_flashdata('message', 'Data Saved Successfully.');
+    $this->session->set_flashData('message', 'Data Saved Successfully.');
 
     redirect('admin/user_list', 'refresh');
   }
@@ -1349,7 +1468,7 @@ class Admin extends CI_Controller
       unlink($old_image_url->photo);
     }
 
-    $this->session->set_flashdata('message', 'Data Deleted.');
+    $this->session->set_flashData('message', 'Data Deleted.');
     redirect('admin/user_list', 'refresh');
   }
 
@@ -1438,7 +1557,7 @@ class Admin extends CI_Controller
       die('The provided file path is not valid.');
     }
   }
-
+  // Profile
   public function profile($param1 = '')
   {
 
@@ -1461,9 +1580,9 @@ class Admin extends CI_Controller
 
         //exta work
         $path_parts               = pathinfo($_FILES["photo"]['name']);
-        $newfile_name             = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        $newFile_name             = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         $dir                      = date("YmdHis", time());
-        $config['file_name']      = $newfile_name . '_' . $dir;
+        $config['file_name']      = $newFile_name . '_' . $dir;
         $config['remove_spaces']  = TRUE;
         //exta work
         $config['upload_path']    = 'assets/userPhoto/';
@@ -1476,7 +1595,7 @@ class Admin extends CI_Controller
 
           // case - failure
           $upload_error = array('error' => $this->upload->display_errors());
-          $this->session->set_flashdata('message', "Failed to update image.");
+          $this->session->set_flashData('message', "Failed to update image.");
         } else {
 
           $upload                 = $this->upload->data();
@@ -1491,7 +1610,7 @@ class Admin extends CI_Controller
           $this->db->where('id', $user_id)->update('user', $newphotoadd);
 
           $this->session->set_userdata('userPhoto', $newphotoadd['photo']);
-          $this->session->set_flashdata('message', 'User Photo Updated Successfully!');
+          $this->session->set_flashData('message', 'User Photo Updated Successfully!');
 
           redirect('admin/profile', 'refresh');
         }
@@ -1511,11 +1630,11 @@ class Admin extends CI_Controller
 
           $this->db->where('id', $user_id)
             ->update('user', array('password' => $new_pass));
-          $this->session->set_flashdata('message', 'Password Updated Successfully');
+          $this->session->set_flashData('message', 'Password Updated Successfully');
           redirect('admin/profile', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Password Update Failed');
+          $this->session->set_flashData('message', 'Password Update Failed');
           redirect('admin/profile', 'refresh');
         }
       }
@@ -1555,16 +1674,16 @@ class Admin extends CI_Controller
             $this->session->set_userdata('username_last', $update_data['lastname']);
             $this->session->set_userdata('username', $update_data['username']);
 
-            $this->session->set_flashdata('message', 'Information Updated Successfully!');
+            $this->session->set_flashData('message', 'Information Updated Successfully!');
             redirect('admin/profile', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Information Update Failed!');
+            $this->session->set_flashData('message', 'Information Update Failed!');
             redirect('admin/profile', 'refresh');
           }
         } else {
 
-          $this->session->set_flashdata('message', 'Current Password Does Not Match!');
+          $this->session->set_flashData('message', 'Current Password Does Not Match!');
           redirect('admin/profile', 'refresh');
         }
       }
@@ -1607,9 +1726,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['journal_pdf']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["journal_pdf"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/journalsPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1628,9 +1747,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['journal_cover_photo']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["journal_cover_photo"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/journalsPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1668,11 +1787,11 @@ class Admin extends CI_Controller
 
         if ($add_journals) {
 
-          $this->session->set_flashdata('message', 'Journals Added Successfully!');
+          $this->session->set_flashData('message', 'Journals Added Successfully!');
           redirect('admin/journal/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Journals Add Failed!');
+          $this->session->set_flashData('message', 'Journals Add Failed!');
           redirect('admin/journal/list', 'refresh');
         }
       }
@@ -1794,9 +1913,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['journal_pdf']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["journal_pdf"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/journalsPhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1815,9 +1934,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['journal_cover_photo']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["journal_cover_photo"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/journalsPhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1851,9 +1970,9 @@ class Admin extends CI_Controller
               if (!empty($_FILES['contribution_pdf']['name'][$key])) {
 
                 $path_parts                 = pathinfo($_FILES["contribution_pdf"]['name'])[$key];
-                $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename'])[$key];
+                $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename'])[$key];
                 $dir                        = date("YmdHis", time())[$key];
-                $config_c['file_name']      = $newfile_name . '_' . $dir[$key];
+                $config_c['file_name']      = $newFile_name . '_' . $dir[$key];
                 $config_c['remove_spaces']  = TRUE;
                 $config_c['upload_path']    = 'assets/journalsPhoto/';
                 $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -1873,17 +1992,17 @@ class Admin extends CI_Controller
               $this->db->insert('tbl_journal_authors', $author_data);
             }
 
-            $this->session->set_flashdata('message', 'Journals Updated Successfully!');
+            $this->session->set_flashData('message', 'Journals Updated Successfully!');
             redirect('admin/journal/edit/' . $param2, 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Journals Update Failed!');
+            $this->session->set_flashData('message', 'Journals Update Failed!');
             redirect('admin/journal/edit/' . $param2, 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/journal/list', 'refresh');
       }
 
@@ -1901,27 +2020,27 @@ class Admin extends CI_Controller
 
         $this->db->where('journal_id', $param2)->delete('tbl_journal_authors');
 
-        $this->session->set_flashdata('message', 'Journals  Deleted Successfully!');
+        $this->session->set_flashData('message', 'Journals  Deleted Successfully!');
         redirect('admin/journal/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Journals Deleted Failed!');
+        $this->session->set_flashData('message', 'Journals Deleted Failed!');
         redirect('admin/journal/list', 'refresh');
       }
     } elseif ($param1 == 'delete-author' && $param2 > 0) {
 
       if ($this->db->where('id', $param2)->delete('tbl_journal_authors')) {
 
-        $this->session->set_flashdata('message', 'Author Info Deleted Successfully!');
+        $this->session->set_flashData('message', 'Author Info Deleted Successfully!');
         redirect('admin/journal/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Author Info Deleted Failed!');
+        $this->session->set_flashData('message', 'Author Info Deleted Failed!');
         redirect('admin/journal/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/journal/list', 'refresh');
     }
 
@@ -1945,11 +2064,11 @@ class Admin extends CI_Controller
 
         $this->db->where('id', $id)->update('tbl_journal_authors', $update_journal_authors);
 
-        $this->session->set_flashdata('message', 'Update Completed.');
+        $this->session->set_flashData('message', 'Update Completed.');
         redirect('admin/journal-authors/' . $id, 'refresh');
       }
     } else {
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/journal-authors/' . $id, 'refresh');
     }
 
@@ -1982,9 +2101,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['author_photo']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["author_photo"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/authorsPhoto/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -2005,11 +2124,11 @@ class Admin extends CI_Controller
 
         if ($add_authors) {
 
-          $this->session->set_flashdata('message', 'Author Added Successfully!');
+          $this->session->set_flashData('message', 'Author Added Successfully!');
           redirect('admin/author/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Author Add Failed!');
+          $this->session->set_flashData('message', 'Author Add Failed!');
           redirect('admin/author/list', 'refresh');
         }
       }
@@ -2043,9 +2162,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['author_photo']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["author_photo"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/authorsPhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -2064,17 +2183,17 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->update_authors($update_authors, $param2)) {
 
-            $this->session->set_flashdata('message', 'Author Updated Successfully!');
+            $this->session->set_flashData('message', 'Author Updated Successfully!');
             redirect('admin/author/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Author Update Failed!');
+            $this->session->set_flashData('message', 'Author Update Failed!');
             redirect('admin/author/list', 'refresh');
           }
         }
       } else {
 
-        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        $this->session->set_flashData('message', 'Wrong Attempt!');
         redirect('admin/author/list', 'refresh');
       }
 
@@ -2085,16 +2204,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->delete_authors($param2)) {
 
-        $this->session->set_flashdata('message', 'Author Deleted Successfully!');
+        $this->session->set_flashData('message', 'Author Deleted Successfully!');
         redirect('admin/author/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Author Deleted Failed!');
+        $this->session->set_flashData('message', 'Author Deleted Failed!');
         redirect('admin/author/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/author/list', 'refresh');
     }
 
@@ -2118,11 +2237,11 @@ class Admin extends CI_Controller
 
         if ($division_add) {
 
-          $this->session->set_flashdata('message', "Data Added Successfully.");
+          $this->session->set_flashData('message', "Data Added Successfully.");
           redirect('admin/division/', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Add Failed.");
+          $this->session->set_flashData('message', "Data Add Failed.");
           redirect('admin/division/', 'refresh');
         }
       }
@@ -2136,11 +2255,11 @@ class Admin extends CI_Controller
 
         if ($this->AdminModel->division_update($update_division, $param2)) {
 
-          $this->session->set_flashdata('message', "Data Updated Successfully.");
+          $this->session->set_flashData('message', "Data Updated Successfully.");
           redirect('admin/division', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Update Failed.");
+          $this->session->set_flashData('message', "Data Update Failed.");
           redirect('admin/division', 'refresh');
         }
       }
@@ -2153,18 +2272,18 @@ class Admin extends CI_Controller
         $data['division_id'] = $param2;
       } else {
 
-        $this->session->set_flashdata('message', "Wrong Attempt !");
+        $this->session->set_flashData('message', "Wrong Attempt !");
         redirect('admin/division', 'refresh');
       }
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_division($param2)) {
 
-        $this->session->set_flashdata('message', "Data Deleted Successfully.");
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
         redirect('admin/division', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', "Data Delete Failed.");
+        $this->session->set_flashData('message', "Data Delete Failed.");
         redirect('admin/division', 'refresh');
       }
     }
@@ -2194,11 +2313,11 @@ class Admin extends CI_Controller
 
         if ($add_zilla) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/zilla/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/zilla', 'refresh');
         }
       }
@@ -2228,15 +2347,15 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->get_zilla_update($update_zilla, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/zilla/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/zilla/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/zilla/list', 'refresh');
         }
       }
@@ -2297,16 +2416,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->zilla_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/zilla/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/zilla/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/zilla/list', 'refresh');
     }
 
@@ -2332,11 +2451,11 @@ class Admin extends CI_Controller
 
         if ($add_upazila) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/upazila/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/upazila', 'refresh');
         }
       }
@@ -2368,15 +2487,15 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->get_upazila_update($update_upazila, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/upazila/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/upazila/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/upazila/list', 'refresh');
         }
       }
@@ -2438,16 +2557,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->upazila_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/upazila/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/upazila/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/upazila/list', 'refresh');
     }
 
@@ -2473,11 +2592,11 @@ class Admin extends CI_Controller
 
         if ($video_album_add) {
 
-          $this->session->set_flashdata('message', "Data Added Successfully.");
+          $this->session->set_flashData('message', "Data Added Successfully.");
           redirect('admin/video-album/', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Add Failed.");
+          $this->session->set_flashData('message', "Data Add Failed.");
           redirect('admin/video-album/', 'refresh');
         }
       }
@@ -2491,11 +2610,11 @@ class Admin extends CI_Controller
 
         if ($this->AdminModel->video_album_update($update_video_album, $param2)) {
 
-          $this->session->set_flashdata('message', "Data Updated Successfully.");
+          $this->session->set_flashData('message', "Data Updated Successfully.");
           redirect('admin/video-album', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Update Failed.");
+          $this->session->set_flashData('message', "Data Update Failed.");
           redirect('admin/video-album', 'refresh');
         }
       }
@@ -2508,18 +2627,18 @@ class Admin extends CI_Controller
         $data['video_album_id'] = $param2;
       } else {
 
-        $this->session->set_flashdata('message', "Wrong Attempt !");
+        $this->session->set_flashData('message', "Wrong Attempt !");
         redirect('admin/video-album', 'refresh');
       }
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_video_album($param2)) {
 
-        $this->session->set_flashdata('message', "Data Deleted Successfully.");
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
         redirect('admin/video-album', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', "Data Delete Failed.");
+        $this->session->set_flashData('message', "Data Delete Failed.");
         redirect('admin/video-album', 'refresh');
       }
     }
@@ -2549,11 +2668,11 @@ class Admin extends CI_Controller
 
         if ($session_year_add) {
 
-          $this->session->set_flashdata('message', "Data Added Successfully.");
+          $this->session->set_flashData('message', "Data Added Successfully.");
           redirect('admin/session-year/', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Add Failed.");
+          $this->session->set_flashData('message', "Data Add Failed.");
           redirect('admin/session-year/', 'refresh');
         }
       }
@@ -2567,11 +2686,11 @@ class Admin extends CI_Controller
 
         if ($this->AccountsModel->session_year_update($update_session_year, $param2)) {
 
-          $this->session->set_flashdata('message', "Data Updated Successfully.");
+          $this->session->set_flashData('message', "Data Updated Successfully.");
           redirect('admin/session_year', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Update Failed.");
+          $this->session->set_flashData('message', "Data Update Failed.");
           redirect('admin/session_year', 'refresh');
         }
       }
@@ -2584,18 +2703,18 @@ class Admin extends CI_Controller
         $data['session_year_id'] = $param2;
       } else {
 
-        $this->session->set_flashdata('message', "Wrong Attempt !");
+        $this->session->set_flashData('message', "Wrong Attempt !");
         redirect('admin/session_year', 'refresh');
       }
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AccountsModel->delete_session_year($param2)) {
 
-        $this->session->set_flashdata('message', "Data Deleted Successfully.");
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
         redirect('admin/session_year', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', "Data Delete Failed.");
+        $this->session->set_flashData('message', "Data Delete Failed.");
         redirect('admin/session_year', 'refresh');
       }
     }
@@ -2631,11 +2750,11 @@ class Admin extends CI_Controller
 
         if ($add_income_invoice) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/income-invoice/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/income-invoice', 'refresh');
         }
       }
@@ -2669,15 +2788,15 @@ class Admin extends CI_Controller
 
           if ($this->AccountsModel->get_income_invoice_update($update_income_invoice, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/income-invoice/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/income-invoice/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/income-invoice/list', 'refresh');
         }
       }
@@ -2737,16 +2856,16 @@ class Admin extends CI_Controller
 
       if ($this->AccountsModel->income_invoice_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/income-invoice/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/income-invoice/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/income-invoice/list', 'refresh');
     }
 
@@ -2771,9 +2890,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['icon']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["icon"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/incomeCategory/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -2794,11 +2913,11 @@ class Admin extends CI_Controller
 
         if ($income_category) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/income_category/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/income_category', 'refresh');
         }
       }
@@ -2825,9 +2944,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['icon']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["icon"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/incomeCategory/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -2847,15 +2966,15 @@ class Admin extends CI_Controller
 
           if ($this->AccountsModel->get_income_category_update($update_income_category, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/income-category/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/income-category/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/income-category/list', 'refresh');
         }
       }
@@ -2915,16 +3034,16 @@ class Admin extends CI_Controller
 
       if ($this->AccountsModel->income_category_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/income-category/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/income-category/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/income-category/list', 'refresh');
     }
 
@@ -2940,21 +3059,21 @@ class Admin extends CI_Controller
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $insert_video_gallery['video_album_id']    = $this->input->post('video_album_id', true);
+        $insert_video_gallery['video_album_id']       = $this->input->post('video_album_id', true);
         $insert_video_gallery['youtube_video_link']   = $this->input->post('youtube_video_link', true);
-        $insert_video_gallery['title']   = $this->input->post('title', true);
-        $insert_video_gallery['insert_by']          = $_SESSION['userid'];
-        $insert_video_gallery['insert_time']      = date('Y-m-d H:i:s');
+        $insert_video_gallery['title']                = $this->input->post('title', true);
+        $insert_video_gallery['insert_by']            = $_SESSION['userid'];
+        $insert_video_gallery['insert_time']          = date('Y-m-d H:i:s');
 
         $add_video_gallery = $this->db->insert('tbl_video_gallery', $insert_video_gallery);
 
         if ($add_video_gallery) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/video-gallery/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/video-gallery', 'refresh');
         }
       }
@@ -2984,15 +3103,15 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->get_video_gallery_update($update_video_gallery, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/video-gallery/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/video-gallery/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/video-gallery/list', 'refresh');
         }
       }
@@ -3053,16 +3172,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->video_gallery_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/video-gallery/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/video-gallery/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/video-gallery/list', 'refresh');
     }
 
@@ -3085,9 +3204,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['file_path']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["file_path"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/fileLibrary/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -3108,11 +3227,11 @@ class Admin extends CI_Controller
 
         if ($add_file_path) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/file-library/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/file-library', 'refresh');
         }
       }
@@ -3137,9 +3256,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['file_path']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["file_path"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/fileLibrary/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -3160,15 +3279,15 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->get_file_library_update($update_file_library, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/file-library/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/file-library/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/file-library/list', 'refresh');
         }
       }
@@ -3227,16 +3346,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->file_library_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/file-library/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/file-library/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/file-library/list', 'refresh');
     }
 
@@ -3262,11 +3381,11 @@ class Admin extends CI_Controller
 
         if ($video_album_add) {
 
-          $this->session->set_flashdata('message', "Data Added Successfully.");
+          $this->session->set_flashData('message', "Data Added Successfully.");
           redirect('admin/photo-album/', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Add Failed.");
+          $this->session->set_flashData('message', "Data Add Failed.");
           redirect('admin/photo-album/', 'refresh');
         }
       }
@@ -3280,11 +3399,11 @@ class Admin extends CI_Controller
 
         if ($this->AdminModel->photo_album_update($update_photo_album, $param2)) {
 
-          $this->session->set_flashdata('message', "Data Updated Successfully.");
+          $this->session->set_flashData('message', "Data Updated Successfully.");
           redirect('admin/photo-album', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', "Data Update Failed.");
+          $this->session->set_flashData('message', "Data Update Failed.");
           redirect('admin/photo-album', 'refresh');
         }
       }
@@ -3297,18 +3416,18 @@ class Admin extends CI_Controller
         $data['photo_album_id'] = $param2;
       } else {
 
-        $this->session->set_flashdata('message', "Wrong Attempt !");
+        $this->session->set_flashData('message', "Wrong Attempt !");
         redirect('admin/photo-album', 'refresh');
       }
     } elseif ($param1 == 'delete' && $param2 > 0) {
 
       if ($this->AdminModel->delete_photo_album($param2)) {
 
-        $this->session->set_flashdata('message', "Data Deleted Successfully.");
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
         redirect('admin/photo-album', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', "Data Delete Failed.");
+        $this->session->set_flashData('message', "Data Delete Failed.");
         redirect('admin/photo-album', 'refresh');
       }
     }
@@ -3337,9 +3456,9 @@ class Admin extends CI_Controller
         if (!empty($_FILES['photo_file']['name'])) {
 
           $path_parts                 = pathinfo($_FILES["photo_file"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
           $config_c['upload_path']    = 'assets/photoGallery/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -3362,11 +3481,11 @@ class Admin extends CI_Controller
 
         if ($add_photo_gallery) {
 
-          $this->session->set_flashdata('message', 'Data Created Successfully!');
+          $this->session->set_flashData('message', 'Data Created Successfully!');
           redirect('admin/photo-gallery/list', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Data Created Failed!');
+          $this->session->set_flashData('message', 'Data Created Failed!');
           redirect('admin/photo-gallery', 'refresh');
         }
       }
@@ -3393,9 +3512,9 @@ class Admin extends CI_Controller
           if (!empty($_FILES['photo_file']['name'])) {
 
             $path_parts                 = pathinfo($_FILES["photo_file"]['name']);
-            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['file_name']      = $newFile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
             $config_c['upload_path']    = 'assets/photoGallery/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
@@ -3415,15 +3534,15 @@ class Admin extends CI_Controller
 
           if ($this->AdminModel->photo_gallery_update($update_photo_gallery, $param2)) {
 
-            $this->session->set_flashdata('message', 'Data Updated Successfully!');
+            $this->session->set_flashData('message', 'Data Updated Successfully!');
             redirect('admin/photo-gallery/list', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Data Update Failed!');
+            $this->session->set_flashData('message', 'Data Update Failed!');
             redirect('admin/photo-gallery/list', 'refresh');
           }
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/photo-gallery/list', 'refresh');
         }
       }
@@ -3484,16 +3603,16 @@ class Admin extends CI_Controller
 
       if ($this->AdminModel->photo_gallery_delete($param2)) {
 
-        $this->session->set_flashdata('message', 'Data Deleted Successfully!');
+        $this->session->set_flashData('message', 'Data Deleted Successfully!');
         redirect('admin/photo-gallery/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Data Deleted Failed!');
+        $this->session->set_flashData('message', 'Data Deleted Failed!');
         redirect('admin/photo-gallery/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/photo-gallery/list', 'refresh');
     }
 
@@ -3519,9 +3638,9 @@ class Admin extends CI_Controller
 
           //exta work
           $path_parts                 = pathinfo($_FILES["attatched"]['name']);
-          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
           $dir                        = date("YmdHis", time());
-          $config['file_name']      = $newfile_name . '_' . $dir;
+          $config['file_name']      = $newFile_name . '_' . $dir;
           $config['remove_spaces']  = TRUE;
           $config['upload_path']    = 'assets/pageSettings/';
           $config['max_size']       = '20000'; //  less than 20 MB
@@ -3545,7 +3664,7 @@ class Admin extends CI_Controller
         $check_name_exist = $this->db->where('name', $page_settings_data['name'])->get('tbl_common_pages');
         if ($check_name_exist->num_rows() > 0) {
 
-          $this->session->set_flashdata('message', 'This Page Already Exists!');
+          $this->session->set_flashData('message', 'This Page Already Exists!');
           redirect('admin/page_settings', 'refresh');
         } else {
 
@@ -3553,11 +3672,11 @@ class Admin extends CI_Controller
 
           if ($page_settings) {
 
-            $this->session->set_flashdata('message', 'Page Created Successfully!');
+            $this->session->set_flashData('message', 'Page Created Successfully!');
             redirect('admin/page_settings', 'refresh');
           } else {
 
-            $this->session->set_flashdata('message', 'Page Create Failed!');
+            $this->session->set_flashData('message', 'Page Create Failed!');
             redirect('admin/page_settings', 'refresh');
           }
         }
@@ -3574,9 +3693,9 @@ class Admin extends CI_Controller
 
         //exta work
         $path_parts                   = pathinfo($_FILES["attatched"]['name']);
-        $newfile_name                 = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+        $newFile_name                 = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
         $dir                          = date("YmdHis", time());
-        $config['file_name']          = $newfile_name . '_' . $dir;
+        $config['file_name']          = $newFile_name . '_' . $dir;
         $config['remove_spaces']      = TRUE;
         $config['max_size']           = '20000'; //  less than 20 MB
         $config['allowed_types']      = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG|pdf|docx';
@@ -3592,7 +3711,7 @@ class Admin extends CI_Controller
         $this->load->library('upload', $config);
         if (!$this->upload->do_upload('attatched')) {
 
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           $this->db->where('id', $param2)->update('tbl_common_pages', $update_data);
 
           redirect('admin/page_settings/list', 'refresh');
@@ -3607,7 +3726,7 @@ class Admin extends CI_Controller
             $this->image_size_fix($update_data['attatched'], $width = 440, $height = 320);
           }
           if (file_exists($old_file_url->attatched)) unlink($old_file_url->attatched);
-          $this->session->set_flashdata('message', 'Data Updated Successfully');
+          $this->session->set_flashData('message', 'Data Updated Successfully');
           redirect('admin/page_settings/list', 'refresh');
         }
       }
@@ -3642,16 +3761,16 @@ class Admin extends CI_Controller
 
       if ($page_settings_delete) {
 
-        $this->session->set_flashdata('message', 'Page Deleted Successfully!');
+        $this->session->set_flashData('message', 'Page Deleted Successfully!');
         redirect('admin/page_settings/list', 'refresh');
       } else {
 
-        $this->session->set_flashdata('message', 'Page Delete Failed!');
+        $this->session->set_flashData('message', 'Page Delete Failed!');
         redirect('admin/page_settings/list', 'refresh');
       }
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/page_settings/list', 'refresh');
     }
 
@@ -3679,11 +3798,11 @@ class Admin extends CI_Controller
 
         if ($update_setting) {
 
-          $this->session->set_flashdata('message', 'SMS Setting Updated Successfully!');
+          $this->session->set_flashData('message', 'SMS Setting Updated Successfully!');
           redirect('admin/sms_send/setting', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'SMS Setting Update Failed!');
+          $this->session->set_flashData('message', 'SMS Setting Update Failed!');
           redirect('admin/sms_send/setting', 'refresh');
         }
       }
@@ -3706,11 +3825,11 @@ class Admin extends CI_Controller
 
         if ($sms_send_add) {
 
-          $this->session->set_flashdata('message', 'Message Send Successfully!');
+          $this->session->set_flashData('message', 'Message Send Successfully!');
           redirect('admin/sms_send/new_sms', 'refresh');
         } else {
 
-          $this->session->set_flashdata('message', 'Message Send Failed!');
+          $this->session->set_flashData('message', 'Message Send Failed!');
           redirect('admin/sms_send/new_sms', 'refresh');
         }
       }
@@ -3720,7 +3839,7 @@ class Admin extends CI_Controller
       $data['page']          = 'backEnd/admin/sms_send_new';
     } else {
 
-      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      $this->session->set_flashData('message', 'Wrong Attempt!');
       redirect('admin/sms_send/list', 'refresh');
     }
 
@@ -3770,7 +3889,7 @@ class Admin extends CI_Controller
         $this->db->where('id', $id)->update('tbl_mail_send_setting', array('value' => $value));
       }
 
-      $this->session->set_flashdata('message', 'Mail Send Setting Updated Successfully!');
+      $this->session->set_flashData('message', 'Mail Send Setting Updated Successfully!');
       redirect('admin/mail_setting', 'refresh');
     }
 

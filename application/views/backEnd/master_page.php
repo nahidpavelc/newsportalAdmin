@@ -229,6 +229,41 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
+            <!-- TEST Manage Question List  -->
+            <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit" || $activeMenu === "que_option_add" || $activeMenu === "que_option_list" || $activeMenu === "que_option_edit") echo "active"; ?> ">
+              <a href="#">
+                <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_question"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+              </a>
+              <ul class="treeview-menu">
+                <!--  Question  -->
+                <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit") echo "active"; ?> ">
+                  <a href="#">
+                    <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("question"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li class=" <?php if ($activeMenu === "add_question") echo "active"; ?> "><a href=" <?php echo base_url('admin/question/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_question") ?></a></li>
+
+                    <li class=" <?php if ($activeMenu === "question_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/question/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("question_list") ?></a></li>
+                  </ul>
+                </li>
+                <!-- Question_Option  -->
+                <li class="treeview <?php if ($activeMenu === "que_option_list" || $activeMenu === "que_option_add" || $activeMenu === "que_option_edit") echo "active"; ?> ">
+                  <a href="#">
+                    <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("question_option"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li class=" <?php if ($activeMenu === "que_option_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/question_op/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("que_option_add") ?></a></li>
+
+                    <li class=" <?php if ($activeMenu === "que_option_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/question_op/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("que_option_list") ?></a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+
+
+
+
             <!-- Manage Question List  -->
             <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit") echo "active"; ?> ">
               <a href="#">
@@ -248,7 +283,6 @@
               </a>
             </li>
             <!-- Photo gallery_2  -->
-
             <li class="treeview <?php if ($activeMenu === "photo_gallery_add_2" || $activeMenu === "photo_gallery_list_2" || $activeMenu === "photo_gallery_edit_2") echo "active"; ?>">
               <a href="#">
                 <i class="fa fa-spinner"></i> <span> <?php echo $this->lang->line("photo_gallery_2"); ?> </span>
@@ -437,6 +471,7 @@
 
             <!-------Division Zila and Upazila------>
             <li class="treeview  <?php if ($activeMenu === "division" || $activeMenu === "zilla_add" || $activeMenu === "zilla_list" || $activeMenu === 'zilla_edit' || $activeMenu === 'upazila_add' || $activeMenu == 'upazila_list' || $activeMenu === 'upazila_edit') echo "active"; ?> ">
+
               <a href="#">
                 <i class="fa fa-cube"></i> <span> <?php echo $this->lang->line("division_zilla_upazila"); ?> </span>
                 <span class="pull-right-container">
@@ -476,7 +511,10 @@
                   </ul>
                 </li>
               </ul>
+
             </li>
+
+
             <li class="treeview <?php if ($activeMenu === "testimonials_add" || $activeMenu === "testimonials_list" || $activeMenu === "testimonials_edit") echo "active"; ?> ">
               <a href="#">
                 <i class="fa fa-star"></i> <span> <?php echo $this->lang->line('manage_testimonial'); ?> </span>
@@ -562,14 +600,14 @@
               </a>
             </li>
           </ul>
-          <h3 class="control-sidebar-heading">General Settings</h3>
+          <h3 class="control-sidebar-heading"> General Settings </h3>
           <!-- /.control-sidebar-menu -->
         </div>
         <!-- /.tab-pane -->
         <!-- Settings tab content -->
         <div class="tab-pane active" id="control-sidebar-settings-tab">
           <form method="post">
-            <h3 class="control-sidebar-heading">Offers from HRSOFTBD</h3>
+            <h3 class="control-sidebar-heading"> Offers from HRSOFTBD </h3>
             <div class="form-group">
               <label class="control-sidebar-subheading">
                 Make Website

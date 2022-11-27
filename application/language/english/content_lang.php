@@ -6,24 +6,24 @@ $lang['main_navigation'] = 'MAIN NAVIGATION';
 
 //common part
 
-$lang['sl']       = 'SL';
-$lang['name']     = 'Name';
-$lang['title']    = 'Title';
-$lang['subtitle'] = 'Subtitle';
-$lang['priority'] = 'Priority';
-$lang['cancel']   = 'Cancel';
-$lang['reset']    = 'Reset';
-$lang['save']     = 'Save';
-$lang['image']    = 'Image';
-$lang['action']   = 'Action';
-$lang['delete']   = 'Delete';
-$lang['update']   = 'Update';
-$lang['submit']   = 'Submit';
+$lang['sl']         = 'SL';
+$lang['name']       = 'Name';
+$lang['title']      = 'Title';
+$lang['subtitle']   = 'Subtitle';
+$lang['priority']   = 'Priority';
+$lang['cancel']     = 'Cancel';
+$lang['reset']      = 'Reset';
+$lang['save']       = 'Save';
+$lang['image']      = 'Image';
+$lang['action']     = 'Action';
+$lang['delete']     = 'Delete';
+$lang['update']     = 'Update';
+$lang['submit']     = 'Submit';
 
 // dashboard part
 
-$lang['dashboard']          = 'Dashboard';
-$lang['mail_send_setting']  = 'Mail Send Setting';
+$lang['dashboard']            = 'Dashboard';
+$lang['mail_send_setting']    = 'Mail Send Setting';
 
 //File Library
 $lang['title']                = 'Title';
@@ -35,20 +35,26 @@ $lang['file_library_add']     = 'File library add';
 $lang['file_library_edit']    = 'File library edit';
 
 // All User Part 
-$lang['manage_one']        = 'Manage One';
-$lang['one_add']           = 'One Add';
-$lang['one_list']          = 'One List';
-$lang['one_edit']          = 'One Edit';
+$lang['manage_one']         = 'Manage One';
+$lang['one_add']            = 'One Add';
+$lang['one_list']           = 'One List';
+$lang['one_edit']           = 'One Edit';
 
 // Manage Question
-$lang['manage_question']  = 'Manage Question';
-$lang['add_question']     = 'Add Question';
-$lang['question_list']    = 'Question List';
-$lang['question_edit']    = 'Question Edit';
-$lang['publish']          = 'Publish';
-$lang['unpublish']        = 'Unpublish';
-$lang['select']           = 'Select';
-$lang['exam_id']          = 'Exam ID';
+$lang['manage_question']        = 'Manage Question';
+$lang['add_question']           = 'Add Question';
+$lang['question_list']          = 'Question List';
+$lang['question_edit']          = 'Question Edit';
+$lang['publish']                = 'Publish';
+$lang['unpublish']              = 'Unpublish';
+$lang['select']                 = 'Select';
+$lang['exam_id']                = 'Exam ID';
+$lang['question']               = 'Question';
+$lang['question_option']        = 'Que Option';
+$lang['que_option_add']         = 'Que Option Add';
+$lang['que_option_list']        = 'Que Option list';
+$lang['que_option_edit']        = 'Que Option Edit';
+
 
 // Manage_Photo_album_2 
 $lang['photo_album_2']          = 'Photo Album 2';

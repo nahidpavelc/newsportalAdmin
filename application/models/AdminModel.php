@@ -228,6 +228,20 @@ class AdminModel extends CI_Model
   {
     return $this->db->where('id', $param2)->delete('tbl_question');
   }
+  // Get Que-op
+  public function get_que_option($id)
+  {
+    $this->db->select('tbl_question_option.*, tbl_question_option.name')
+      ->from('tbl_question_option');
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() > 0) {
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
 
   //Photo Album Delete
   public function delete_photo_album_2($param2)
