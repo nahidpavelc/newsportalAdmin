@@ -14,36 +14,36 @@
             <thead>
               <tr>
                 <th style="width: 5%;"><?php echo $this->lang->line('sl'); ?></th>
-                <th style="width: 10%;"> Name</th>
-                <th style="width: 10%;"> Email</th>
-                <th style="width: 10%;"> Phone</th>
-                <th style="width: 10%;"> Status</th>
+                <th style="width: 20%;"> Exam ID</th>
+                <th style="width: 45%;"> Question</th>
                 <th style="width: 10%;"> Photo</th>
-                <th style="width: 8%;"><?php echo $this->lang->line('action'); ?></th>
+                <th style="width: 10%;"> Status</th>
+                <th style="width: 10%;"><?php echo $this->lang->line('action'); ?></th>
 
               </tr>
             </thead>
             <tbody>
               <?php
               $sl = 1;
-              foreach ($one_list as $value) {
+              foreach ($question_list as $value) {
               ?>
                 <tr>
                   <td> <?= $sl++; ?> </td>
-                  <td> <?= $value->name; ?> </td>
-                  <td> <?= $value->email; ?> </td>
-                  <td> <?= $value->phone; ?> </td>
-                  <td> <?php if ($value->status == 1) {
-                          echo '<span class="label bg-green">Active</span>';
-                        } else {
-                          echo '<span class="label bg-red">Inactive</span>';
-                        } ?> </td>
+                  <td> <?= $value->exam_id; ?> </td>
+                  <td> <?= $value->question_title; ?> </td>
                   <td>
-                    <img src="<?= base_url($value->photo) ?>" alt="" width="50px" height="50px">
+                    <img src="<?= base_url($value->question_photo) ?>" alt="" width="50px" height="50px">
                   </td>
+                  <td> <?php if ($value->status == 1) {
+                          echo '<span class="label bg-green">Publish</span>';
+                        } else {
+                          echo '<span class="label bg-red">Unpublish</span>';
+                        } ?>
+                  </td>
+
                   <td>
-                    <a href="<?php echo base_url('admin/one/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
-                    <a href="<?php echo base_url('admin/one/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
+                    <a href="<?php echo base_url('admin/question/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
+                    <a href="<?php echo base_url('admin/question/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
               <?php

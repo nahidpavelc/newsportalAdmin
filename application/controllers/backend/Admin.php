@@ -41,9 +41,6 @@ class Admin extends CI_Controller
   //Theme setting
   public function theme_setting($param1 = '', $param2 = '', $param3 = '')
   {
-
-
-
     $theme_data_temp    = $this->db->get('tbl_backend_theme')->result();
     $data['theme_data'] = array();
     foreach ($theme_data_temp as $value) {
@@ -131,15 +128,17 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
-  // Manage Question 
+  // Manage Question
   public function question($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
         $insert_question['exam_id']        = $this->input->post('exam_id', true);
         $insert_question['question_title'] =  $this->input->post('question_title', true);
+        $insert_question['status']         =  $this->input->post('status', true);
         $insert_question['insert_time']    =  date('Y-m-d H:i:s');
-        $insert_question['insert_by']      =  $this->input->post('', true);
+        $insert_question['insert_by']      =  $_SESSION['userid'];
 
         if (!empty($_FILES['question_photo']['name'])) {
           $path_parts                 = pathinfo($_FILES["question_photo"]['name']);
@@ -153,11 +152,11 @@ class Admin extends CI_Controller
 
           $this->load->library('upload', $config_c);
           $this->upload->initialize($config_c);
-          if (!$this->upload->do_upload('photo')) {
+          if (!$this->upload->do_upload('question_photo')) {
           } else {
             $upload_c = $this->upload->data();
-            $insert_one['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-            $this->image_size_fix($insert_one['question_photo'], 400, 400);
+            $insert_question['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_question['question_photo'], 400, 400);
           }
         }
 
@@ -180,59 +179,59 @@ class Admin extends CI_Controller
       $data['activeMenu']   = 'question_list';
       $data['page']         = 'backEnd/admin/question_list';
     } elseif ($param1 == 'edit' && $param2 > 0) {
-      $data['edit_info']      = $this->db->get_where('tbl_test_2', array('id' => $param2));
+      $data['edit_info']      = $this->db->get_where('tbl_question', array('id' => $param2));
 
       if ($data['edit_info']->num_rows() > 0) {
         $data['edit_info']    =   $data['edit_info']->row();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-          $update_two['name']        = $this->input->post('name', true);
-          $update_two['user_id']       = $this->input->post('user_id', true);
-          $update_two['phone']       = $this->input->post('phone', true);
-          $update_two['description']      = $this->input->post('description', true);
-          $update_two['insert_time'] = $this->input->post('insert_time', true);
+          $update_question['exam_id']          = $this->input->post('exam_id', true);
+          $update_question['question_title']   = $this->input->post('question_title', true);
+          $update_question['status']           = $this->input->post('status', true);
+          $insert_question['insert_time']      =  date('Y-m-d H:i:s');
+          $insert_question['insert_by']        =  $_SESSION['userid'];
 
-          if (!empty($_FILES['photo']['name'])) {
-
-            $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          if (!empty($_FILES['question_photo']['name'])) {
+            $path_parts                 = pathinfo($_FILES["question_photo"]['name']);
             $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
             $dir                        = date("YmdHis", time());
             $config_c['file_name']      = $newfile_name . '_' . $dir;
             $config_c['remove_spaces']  = TRUE;
-            $config_c['upload_path']    = 'assets/twoPhoto/';
+            $config_c['upload_path']    = 'assets/quePhoto/';
             $config_c['max_size']       = '20000'; //  less than 20 MB
             $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
             $this->load->library('upload', $config_c);
             $this->upload->initialize($config_c);
-            if (!$this->upload->do_upload('photo')) {
+            if (!$this->upload->do_upload('question_photo')) {
             } else {
 
               $upload_c = $this->upload->data();
-              $update_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-              $this->image_size_fix($update_two['photo'], 400, 500);
+
+              $update_question['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_question['question_photo'], 400, 500);
             }
           }
 
-          if ($this->AdminModel->update_two_data($update_two, $param2)) {
+          if ($this->AdminModel->update_question($update_question, $param2)) {
 
             $this->session->set_flashdata('message', 'Two Updated Successfully!');
-            redirect('admin/two/list', 'refresh');
+            redirect('admin/question/list', 'refresh');
           } else {
 
             $this->session->set_flashdata('message', 'Two Update Failed!');
-            redirect('admin/two/list', 'refresh');
+            redirect('admin/question/list', 'refresh');
           }
         }
       } else {
 
         $this->session->set_flashdata('message', 'Wrong Attempt!');
-        redirect('admin/two/list', 'refresh');
+        redirect('admin/question/list', 'refresh');
       }
-      $data['title']      = 'Two Edit';
-      $data['activeMenu'] = 'two_edit';
-      $data['page']       = 'backEnd/admin/two_edit';
+      $data['title']      = 'Question Edit';
+      $data['activeMenu'] = 'question_edit';
+      $data['page']       = 'backEnd/admin/question_edit';
     } elseif ($param1 == 'delete' && $param2 > 0) {
       if ($this->AdminModel->delete_two_data($param2)) {
         $this->session->set_flashdata('message', 'Question Successfully Deleted!');

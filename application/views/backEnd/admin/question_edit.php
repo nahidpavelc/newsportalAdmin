@@ -20,35 +20,27 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <label>Name *</label>
-                      <input name="name" value="<?= $edit_info->name; ?>" placeholder="Name" class="form-control inner_shadow_teal" required="" type="text">
+                      <label>Exam Id</label>
+                      <input name="exam_id" value="<?= $edit_info->exam_id; ?>" placeholder="Exam Id" class="form-control inner_shadow_teal" required="" type="text">
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <label>Email *</label>
-                      <input name="email" value="<?= $edit_info->email; ?>" placeholder="Email" class="form-control inner_shadow_teal" required="" type="email">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <div class="col-sm-12">
-                      <label>Phone *</label>
-                      <input name="phone" value="<?= $edit_info->phone; ?>" placeholder="Phone" class="form-control inner_shadow_teal" required="" type="text">
+                      <label>Question Title *</label>
+                      <input name="question_title" value="<?= $edit_info->question_title; ?>" placeholder="Question Title" class="form-control inner_shadow_teal" required="" type="text">
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <label><?php echo $this->lang->line("status"); ?></label>
+                      <label for="title_one"><?php echo $this->lang->line("status"); ?></label>
                       <select name="status" class="form-control">
-                        <option value="1" <?php if ($edit_info->status == 1) echo 'selected'; ?>>Active</option>
-                        <option value="0" <?php if ($edit_info->status == 0) echo 'selected'; ?>>Inactive</option>
+                        <option value="1">Select</option>
+                        <option value="1" <?php if ($edit_info->status == 1) echo 'selected'; ?>>Publish</option>
+                        <option value="0" <?php if ($edit_info->status == 0) echo 'selected'; ?>>Unpublish</option>
                       </select>
                     </div>
                   </div>
@@ -57,11 +49,12 @@
               </div>
               <div class="col-md-4">
                 <center>
-                  <img name="photo" style="height:150px; width:150px; margin-bottom:10px;" src="<?php echo base_url($edit_info->photo); ?>" id="photo"><br>
+                  <img name="que_photo" style="height:150px; width:150px; margin-bottom:10px;" src="<?php echo base_url($edit_info->question_photo); ?>" id="que_photo"><br>
                   <small>width : 400px, Height : 400px</small>
-                  <input id="photo" type="file" name="photo" onchange="readphoto1(this)">
+                  <input id="photo1" type="file" name="question_photo" onchange="readphoto1(this)">
                 </center>
               </div>
+
 
               <div class="col-md-12">
                 <center>
@@ -70,6 +63,7 @@
                 </center>
               </div>
             </form>
+
           </div>
 
 
@@ -87,7 +81,7 @@
       var reader = new FileReader();
 
       reader.onload = function(e) {
-        $('#photo')
+        $('#que_photo')
           .attr('src', e.target.result)
           .width(150)
           .height(150);

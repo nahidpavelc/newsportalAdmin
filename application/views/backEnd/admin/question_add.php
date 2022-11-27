@@ -4,15 +4,13 @@
       <!-- Horizontal Form -->
       <div class="box box-teal box-solid">
         <div class="box-header with-border">
-          <h3 class="box-title"><?php echo $this->lang->line("question_add"); ?> </h3>
+          <h3 class="box-title"><?php echo $this->lang->line("add_question"); ?> </h3>
           <div class="box-tools pull-right">
             <a href="<?php echo base_url() ?>admin/question/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> <?php echo $this->lang->line("question_list"); ?> </a>
           </div>
         </div>
 
         <div class="box-body">
-
-
           <div class="row">
             <form action="<?php echo base_url("admin/question/add"); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
 
@@ -60,6 +58,7 @@
                   <button type="submit" class="btn btn-sm bg-teal"><?php echo $this->lang->line('save'); ?></button>
                 </center>
               </div>
+
             </form>
           </div>
         </div>

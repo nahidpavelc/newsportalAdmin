@@ -24,7 +24,6 @@ class AdminModel extends CI_Model
   // saveDataInTable table name , array, and return type is null or last inserted ID.
   public function saveDataInTable($tableName, $data, $returnInsertId = 'false')
   {
-
     $this->db->insert($tableName, $data);
     if ($returnInsertId == 'true') {
       return $this->db->insert_id();
@@ -203,6 +202,31 @@ class AdminModel extends CI_Model
     $update_theme['value'] = $value;
     $this->db->where('name', $name_index)->update('tbl_backend_theme', $update_theme);
     return true;
+  }
+
+  // Get Question 
+  public function get_question_($id)
+  {
+    $this->db->select('tbl_question.*, tbl_question.name')
+      ->from('tbl_question');
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() > 0) {
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
+  //Update_Question
+  public function update_question($update_data, $param2)
+  {
+    return $this->db->where('id', $param2)->update('tbl_question', $update_data);
+  }
+  //Delete_Question
+  public function delete_question($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_question');
   }
 
   //Photo Album Delete

@@ -48,6 +48,7 @@ $lang['question_edit']    = 'Question Edit';
 $lang['publish']          = 'Publish';
 $lang['unpublish']        = 'Unpublish';
 $lang['select']           = 'Select';
+$lang['exam_id']          = 'Exam ID';
 
 // Manage_Photo_album_2 
 $lang['photo_album_2']          = 'Photo Album 2';
