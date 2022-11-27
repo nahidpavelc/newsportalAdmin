@@ -4,9 +4,9 @@
       <!-- Horizontal Form -->
       <div class="box box-teal box-solid">
         <div class="box-header with-border">
-          <h3 class="box-title"><?php echo $this->lang->line("one_edit"); ?> </h3>
+          <h3 class="box-title"><?php echo $this->lang->line("question_edit"); ?> </h3>
           <div class="box-tools pull-right">
-            <a href="<?php echo base_url() ?>admin/one/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> <?php echo $this->lang->line("one_list"); ?> </a>
+            <a href="<?php echo base_url() ?>admin/question/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> <?php echo $this->lang->line("question_list"); ?> </a>
           </div>
         </div>
 
@@ -14,7 +14,7 @@
 
 
           <div class="row">
-            <form action="<?php echo base_url("admin/one/edit/" . $edit_info->id); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <form action="<?php echo base_url("admin/question/edit/" . $edit_info->id); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
 
               <div class="col-md-8">
                 <div class="col-md-6">

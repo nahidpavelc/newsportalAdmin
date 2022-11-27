@@ -132,32 +132,120 @@ class Admin extends CI_Controller
   }
 
   // Manage Question 
-  public function queation($param1 = 'add', $param2 = '', $param3 = '')
+  public function question($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $insert_question['exam_id'] = $this->input->post('exam_id', true);
+        $insert_question['exam_id']        = $this->input->post('exam_id', true);
         $insert_question['question_title'] =  $this->input->post('question_title', true);
-        $insert_question['question_photo'] =  $this->input->post('question_photo', true);
-        $insert_question['insert_time'] =  date('Y-m-d H:i:s');
-        $insert_question['insert_by'] =  $this->input->post('', true);
+        $insert_question['insert_time']    =  date('Y-m-d H:i:s');
+        $insert_question['insert_by']      =  $this->input->post('', true);
+
+        if (!empty($_FILES['question_photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["question_photo"]['name']);
+          $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newfile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/quePhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $insert_one['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_one['question_photo'], 400, 400);
+          }
+        }
 
         $add_question = $this->db->insert('tbl_question', $insert_question);
 
-        if($add_question){
+        if ($add_question) {
           $this->session->set_flashdata('message', 'Question Added Successfully!');
           redirect('admin/question/list', 'refresh');
         } else {
           $this->session->set_flashdata('message', 'Question Add Failed!');
         }
       }
-      $data['question_list'] = $this->db->order_by('id', 'desc') ->get('tbl_question')->result();
-      $data['title'] = 'Add Question';
-      $data['activeMenu'] = 'add_question';
-      $data['page'] = 'backend/admin/add_question';
+      $data['question_list'] = $this->db->order_by('id', 'desc')->get('tbl_question')->result();
+      $data['title']         = 'Add Question';
+      $data['activeMenu']    = 'add_question';
+      $data['page']          = 'backend/admin/question_add';
     } elseif ($param1 == 'list') {
-      $data['question_list'] = $this->db->select
+      $data['question_list'] = $this->db->order_by('id', 'desc')->get('tbl_question')->result();
+      $data['title']        = 'Question List';
+      $data['activeMenu']   = 'question_list';
+      $data['page']         = 'backEnd/admin/question_list';
+    } elseif ($param1 == 'edit' && $param2 > 0) {
+      $data['edit_info']      = $this->db->get_where('tbl_test_2', array('id' => $param2));
+
+      if ($data['edit_info']->num_rows() > 0) {
+        $data['edit_info']    =   $data['edit_info']->row();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+          $update_two['name']        = $this->input->post('name', true);
+          $update_two['user_id']       = $this->input->post('user_id', true);
+          $update_two['phone']       = $this->input->post('phone', true);
+          $update_two['description']      = $this->input->post('description', true);
+          $update_two['insert_time'] = $this->input->post('insert_time', true);
+
+          if (!empty($_FILES['photo']['name'])) {
+
+            $path_parts                 = pathinfo($_FILES["photo"]['name']);
+            $newfile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+            $dir                        = date("YmdHis", time());
+            $config_c['file_name']      = $newfile_name . '_' . $dir;
+            $config_c['remove_spaces']  = TRUE;
+            $config_c['upload_path']    = 'assets/twoPhoto/';
+            $config_c['max_size']       = '20000'; //  less than 20 MB
+            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+            $this->load->library('upload', $config_c);
+            $this->upload->initialize($config_c);
+            if (!$this->upload->do_upload('photo')) {
+            } else {
+
+              $upload_c = $this->upload->data();
+              $update_two['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+              $this->image_size_fix($update_two['photo'], 400, 500);
+            }
+          }
+
+          if ($this->AdminModel->update_two_data($update_two, $param2)) {
+
+            $this->session->set_flashdata('message', 'Two Updated Successfully!');
+            redirect('admin/two/list', 'refresh');
+          } else {
+
+            $this->session->set_flashdata('message', 'Two Update Failed!');
+            redirect('admin/two/list', 'refresh');
+          }
+        }
+      } else {
+
+        $this->session->set_flashdata('message', 'Wrong Attempt!');
+        redirect('admin/two/list', 'refresh');
+      }
+      $data['title']      = 'Two Edit';
+      $data['activeMenu'] = 'two_edit';
+      $data['page']       = 'backEnd/admin/two_edit';
+    } elseif ($param1 == 'delete' && $param2 > 0) {
+      if ($this->AdminModel->delete_two_data($param2)) {
+        $this->session->set_flashdata('message', 'Question Successfully Deleted!');
+        redirect('admin/question/list', 'refresh');
+      } else {
+        $this->session->set_flashdata('message', 'Question Deleted Failed');
+        redirect('admin/question/list', 'refresh');
+      }
+    } else {
+      $this->session->set_flashdata('message', 'Wrong Attempt!');
+      redirect('admin/question/list', 'refresh');
     }
+    $this->load->view('backEnd/master_page', $data);
   }
 
   //Photo Album 2
@@ -427,14 +515,12 @@ class Admin extends CI_Controller
         $insert_data['name']             = $this->input->post('name', true);
         $insert_data['short_name']       = $this->input->post('short_name', true);
         $insert_data['priority']         = $this->input->post('priority', true);
-
         $insert_data['insert_by']        = $_SESSION['userid'];
         $insert_data['insert_time']      = date('Y-m-d H:i:s');
 
+        $add_college = $this->db->insert('tbl_medical_collage_list_2', $insert_data);
 
-        $add_authors = $this->db->insert('tbl_medical_collage_list_2', $insert_data);
-
-        if ($add_authors) {
+        if ($add_college) {
 
           $this->session->set_flashdata('message', 'college Added Successfully!');
           redirect('admin/college/list', 'refresh');
@@ -681,6 +767,7 @@ class Admin extends CI_Controller
 
       $data['two_list']     = $this->db->select('tbl_test_2.*,tbl_test_1.name as test1_name')
         ->join('tbl_test_1', 'tbl_test_1.id = tbl_test_2.user_id', 'left')->order_by('id', 'desc')->get('tbl_test_2')->result();
+
       $data['title']        = 'Two List';
       $data['activeMenu']   = 'two_list';
       $data['page']         = 'backEnd/admin/two_list';
@@ -1079,7 +1166,7 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
-  //Add User
+  // Add User
   public function add_user($param1 = '')
   {
     $messagePage['divissions'] = $this->db->get('tbl_divission')->result_array();
@@ -1161,7 +1248,7 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $messagePage);
   }
 
-  //Edit User
+  // Edit User
   public function edit_user($param1 = '')
   {
     // Update using post method 

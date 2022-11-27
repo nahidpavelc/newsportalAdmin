@@ -41,11 +41,13 @@ $lang['one_list']          = 'One List';
 $lang['one_edit']          = 'One Edit';
 
 // Manage Question
-$lang['manage_question'] = 'Manage Question';
-$lang['add_question'] = 'Add Question';
-$lang['question_list'] = 'Question List';
-$lang[''] = '';
-$lang[''] = '';
+$lang['manage_question']  = 'Manage Question';
+$lang['add_question']     = 'Add Question';
+$lang['question_list']    = 'Question List';
+$lang['question_edit']    = 'Question Edit';
+$lang['publish']          = 'Publish';
+$lang['unpublish']        = 'Unpublish';
+$lang['select']           = 'Select';
 
 // Manage_Photo_album_2 
 $lang['photo_album_2']          = 'Photo Album 2';

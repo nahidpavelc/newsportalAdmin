@@ -3,9 +3,9 @@
     <div class="col-xs-12">
       <div class="box box-teal box-solid">
         <div class="box-header with-border">
-          <h3 class="box-title"> One List</h3>
+          <h3 class="box-title"> Question List</h3>
           <div class="box-tools pull-right">
-            <a href="<?php echo base_url('admin/one/add') ?>" class="btn bg-purple btn-sm"><i class="fa fa-plus"></i> Add One</a>
+            <a href="<?php echo base_url('admin/question/add') ?>" class="btn bg-purple btn-sm"><i class="fa fa-plus"></i> Add Question</a>
           </div>
         </div>
         <!-- /.box-header -->
