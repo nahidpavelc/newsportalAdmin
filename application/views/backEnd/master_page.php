@@ -229,7 +229,7 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
-            <!-- TEST Manage Question List  -->
+            <!-- Manage Question List  -->
             <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit" || $activeMenu === "que_option_add" || $activeMenu === "que_option_list" || $activeMenu === "que_option_edit") echo "active"; ?> ">
               <a href="#">
                 <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_question"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -252,27 +252,11 @@
                     <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("question_option"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                   </a>
                   <ul class="treeview-menu">
-                    <li class=" <?php if ($activeMenu === "que_option_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/question_op/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("que_option_add") ?></a></li>
+                    <li class=" <?php if ($activeMenu === "que_option_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/que_option/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("que_option_add") ?></a></li>
 
-                    <li class=" <?php if ($activeMenu === "que_option_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/question_op/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("que_option_list") ?></a></li>
+                    <li class=" <?php if ($activeMenu === "que_option_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/que_option/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("que_option_list") ?></a></li>
                   </ul>
                 </li>
-              </ul>
-            </li>
-
-
-
-
-
-            <!-- Manage Question List  -->
-            <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit") echo "active"; ?> ">
-              <a href="#">
-                <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_question"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-              </a>
-              <ul class="treeview-menu">
-                <li class=" <?php if ($activeMenu === "add_question") echo "active"; ?> "><a href=" <?php echo base_url('admin/question/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_question") ?></a></li>
-
-                <li class=" <?php if ($activeMenu === "question_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/question/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("question_list") ?></a></li>
               </ul>
             </li>
 
@@ -282,18 +266,18 @@
                 <i class="fa fa-times-circle-o" aria-hidden="true"></i><span> <?php echo $this->lang->line('photo_album_2'); ?> </span>
               </a>
             </li>
-            <!-- Photo gallery_2  -->
-            <li class="treeview <?php if ($activeMenu === "photo_gallery_add_2" || $activeMenu === "photo_gallery_list_2" || $activeMenu === "photo_gallery_edit_2") echo "active"; ?>">
+            <!-- Photo gal  -->
+            <li class="treeview <?php if ($activeMenu === "photo_gal_add" || $activeMenu === "photo_gal_list" || $activeMenu === "photo_gal_edit" ) echo "active"; ?>">
               <a href="#">
-                <i class="fa fa-spinner"></i> <span> <?php echo $this->lang->line("photo_gallery_2"); ?> </span>
+                <i class="fa fa-spinner"></i> <span> <?php echo $this->lang->line("photo_gal"); ?> </span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li class=" <?php if ($activeMenu === "photo_gallery_add_2") echo "active"; ?> a"> <a href=" <?php echo base_url('admin/photo-gallery_2/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_photo_gallery_2"); ?> </a> </li>
+                <li class=" <?php if ($activeMenu === "photo_gal_add") echo "active"; ?> a"> <a href=" <?php echo base_url('admin/photo-gal/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_photo_gal"); ?> </a> </li>
 
-                <li class=" <?php if ($activeMenu === "photo_gallery_list_2") echo "active"; ?> "> <a href="<?php echo base_url('admin/photo_gallery_2/list'); ?> "><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("photo_gallery_list_2"); ?> </a> </li>
+                <li class=" <?php if ($activeMenu === "photo_gal_list") echo "active"; ?> "> <a href="<?php echo base_url('admin/photo_gal/list'); ?> "><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("photo_gal_list"); ?> </a> </li>
               </ul>
             </li>
 

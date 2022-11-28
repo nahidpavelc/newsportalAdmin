@@ -48,7 +48,7 @@
               <div class="col-md-4">
                 <center>
                   <img name="que_photo" style="height:150px; width:150px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="que_photo"><br>
-                  <small>width : 400px, Height : 400px</small>
+                  <small>Upload Photo : 400px X 400px</small>
                   <input id="photo_1" type="file" name="question_photo" onchange="readphoto1(this)">
                 </center>
               </div>

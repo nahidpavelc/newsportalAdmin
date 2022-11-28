@@ -47,20 +47,33 @@ $lang['question_list']          = 'Question List';
 $lang['question_edit']          = 'Question Edit';
 $lang['publish']                = 'Publish';
 $lang['unpublish']              = 'Unpublish';
+
+// Manage Que_Option 
 $lang['select']                 = 'Select';
 $lang['exam_id']                = 'Exam ID';
 $lang['question']               = 'Question';
 $lang['question_option']        = 'Que Option';
+$lang['add_que_options']        = 'Add Que Options';
 $lang['que_option_add']         = 'Que Option Add';
 $lang['que_option_list']        = 'Que Option list';
 $lang['que_option_edit']        = 'Que Option Edit';
+$lang['option_1']               = 'Option 1';
+$lang['option_2']               = 'Option 2';
+$lang['option_3']               = 'Option 3';
+$lang['option_4']               = 'Option 4 ';
+$lang['correct_option']         = 'Correct Option';
+$lang['option_type']            = 'Option Type';
+$lang['physics']                = 'Physics';
+$lang['bio-logy']               = 'Bio-logy';
 
 
 // Manage_Photo_album_2 
 $lang['photo_album_2']          = 'Photo Album 2';
-$lang['photo_gallery_2']        = 'Photo Gallery 2';
-$lang['add_photo_gallery_2']    = 'Add Photo Gallery 2';
-$lang['photo_gallery_list_2']   = 'Photo Gallery List 2';
+$lang['photo_gal']              = 'Photo Gal';
+$lang['add_photo_gal']          = 'Add Photo Gal';
+$lang['photo_gal_list']         = 'Photo Gal List';
+$lang['photo_gal_list']         = 'Photo Gal List';
+
 
 // Manage College 
 $lang['manage_college']        = 'Manage College';
@@ -95,7 +108,6 @@ $lang['three_list']             = 'Three List';
 $lang['manage_students']        = 'Manage Students';
 $lang['add_student']            = 'Add Student';
 $lang['student_list']           = 'Student List';
-$lang['']                       = '';
 
 // Manage Product 
 $lang['manage_product']         = 'Manage Product';

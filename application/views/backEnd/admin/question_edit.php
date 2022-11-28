@@ -39,8 +39,8 @@
                       <label for="title_one"><?php echo $this->lang->line("status"); ?></label>
                       <select name="status" class="form-control">
                         <option value="1">Select</option>
-                        <option value="1" <?php if ($edit_info->status == 1) echo 'selected'; ?>>Publish</option>
-                        <option value="0" <?php if ($edit_info->status == 0) echo 'selected'; ?>>Unpublish</option>
+                        <option value="1" <?php if ($edit_info->status == 1) echo 'selected'; ?> >Publish</option>
+                        <option value="0" <?php if ($edit_info->status == 0) echo 'selected'; ?> >Unpublish</option>
                       </select>
                     </div>
                   </div>

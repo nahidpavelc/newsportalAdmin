@@ -100,9 +100,9 @@
                         <td><?php echo $value->priority; ?></td>
                         <td>
                           <center>
-                            <a href="<?= base_url('admin/photo-album/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"> <i class="fa fa-edit"></i> </a>
+                            <a href="<?= base_url('admin/photo-album_2/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"> <i class="fa fa-edit"></i> </a>
 
-                            <a href="<?= base_url('admin/photo-album/delete/' . $value->id); ?>" onclick="return confirm('Are you sure?')" class="btn btn-sm bg-red"> <i class="fa fa-trash"></i> </a>
+                            <a href="<?= base_url('admin/photo-album_2/delete/' . $value->id); ?>" onclick="return confirm('Are you sure?')" class="btn btn-sm bg-red"> <i class="fa fa-trash"></i> </a>
                           </center>
                         </td>
                       </tr>

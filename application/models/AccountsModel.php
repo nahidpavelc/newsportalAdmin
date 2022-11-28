@@ -6,20 +6,20 @@
 
         //Update Session Year
         public function session_year_update($update_session_year, $param2)
-		{
-			return $this->db->where('id',$param2)->update('tbl_session_year',$update_session_year);
-		}
+		    {
+			  return $this->db->where('id',$param2)->update('tbl_session_year',$update_session_year);
+		    }
 
         //Delete Session year
         public function delete_session_year($param2)
-		{
-			return $this->db->where('id',$param2)->delete('tbl_session_year');
-		}
+		    {
+			  return $this->db->where('id',$param2)->delete('tbl_session_year');
+		    }
 
         //Income Invoice Update
-        public function get_income_invoice_update($update_income_invoice, $param2){
-
-            return $this->db->where('id', $param2)->update('tbl_income_invoice', $update_income_invoice);
+        public function get_income_invoice_update($update_income_invoice, $param2)
+        {
+        return $this->db->where('id', $param2)->update('tbl_income_invoice', $update_income_invoice);
         }
 
         //Income Invoice List
@@ -33,18 +33,15 @@
             $results = $this->db->get('tbl_income_invoice')->result();
 
             return $results;
-            
         }
 
         //Income Invoice Delete
         public function income_invoice_delete($param2){
-
             return $this->db->where('id',$param2)->delete('tbl_income_invoice');
         }
 
         //Income Category Update
         public function get_income_category_update($update_income_category, $param2){
-
             if (isset($update_income_category['icon']) && file_exists($update_income_category['icon'])) {
 
 				$result = $this->db->select('icon')

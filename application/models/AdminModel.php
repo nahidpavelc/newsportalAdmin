@@ -228,12 +228,11 @@ class AdminModel extends CI_Model
   {
     return $this->db->where('id', $param2)->delete('tbl_question');
   }
-  // Get Que-op
+  // Get Que-Option
   public function get_que_option($id)
   {
-    $this->db->select('tbl_question_option.*, tbl_question_option.name')
-      ->from('tbl_question_option');
-
+    $this->db->select('tbl_question_options.*, tbl_question_options.name')
+      ->from('tbl_question_options');
     $result = $this->db->get();
 
     if ($result->num_rows() > 0) {
@@ -242,32 +241,41 @@ class AdminModel extends CI_Model
       return array();
     }
   }
+  //Update Que-Option
+  public function update_que_options($update_data, $param2)
+  {
+    return $this->db->where('id', $param2)->update('tbl_question_options', $update_data);
+  }
+  // Delete Que-Option
+  public function delete_que_options($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_question_options');
+  }
 
-  //Photo Album Delete
+  //Delete Photo Album 2
   public function delete_photo_album_2($param2)
   {
-    return $this->db->where('id', $param2)->delete('tbl_photo_album');
+    return $this->db->where('id', $param2)->delete('tbl_photo_album_2');
   }
-  //Photo Album list
+  //list Photo Album 2
   public function get_photo_album_list_2($limit = 10, $start = 0)
   {
     $results = array();
 
-    $this->db->select('tbl_photo_album.id,tbl_photo_album.album_title,tbl_photo_album.priority');
+    $this->db->select('tbl_photo_album_2.id,tbl_photo_album_2.album_title,tbl_photo_album_2.priority');
     $this->db->limit($limit, $start);
     $this->db->order_by('priority', 'desc');
-    $results = $this->db->get('tbl_photo_album')->result();
-
+    $results = $this->db->get('tbl_photo_album_2')->result();
     return $results;
   }
 
-  //Photo Gallery Update
-  public function photo_gallery_update_2($update_photo_gallery, $param2)
+  //Photo Gal Update
+  public function photo_gal_update($update_photo_gallery, $param2)
   {
-    if (isset($update_photo_gallery['photo_file']) && file_exists($update_photo_gallery['photo_file'])) {
+    if (isset($update_photo_gal['photo_file']) && file_exists($update_photo_gal['photo_file'])) {
 
       $result = $this->db->select('photo_file')
-        ->from('tbl_photo_gallery')
+        ->from('tbl_photo_gallery_2')
         ->where('id', $param2)
         ->get()
         ->row()->photo_file;
@@ -279,26 +287,36 @@ class AdminModel extends CI_Model
 
     return $this->db->where('id', $param2)->update('tbl_photo_gallery', $update_photo_gallery);
   }
-  //Photo Gallery List
-  public function get_photo_gallery_list_2($limit = 10, $start = 0)
+  //Photo Gal List
+  public function get_photo_gal_list($limit = 10, $start = 0)
   {
     $results = array();
 
-    $this->db->select('tbl_photo_gallery.id,tbl_photo_gallery.photo_file,tbl_photo_gallery.title,tbl_photo_album.album_title as album_name');
-    $this->db->join('tbl_photo_album', 'tbl_photo_album.id  = tbl_photo_gallery.photo_album_id', 'left');
+    $this->db->select(
+      'tbl_photo_gallery_2.id,
+       tbl_photo_gallery_2.photo_file,
+       tbl_photo_gallery_2.title,
+       tbl_photo_album_2.album_title as album_name'
+    );
+
+    $this->db->join(
+      'tbl_photo_album_2',
+      'tbl_photo_album_2.id  = tbl_photo_gallery_2.photo_album_id',
+      'left'
+    );
 
     $this->db->limit($limit, $start);
     $this->db->order_by('id', 'desc');
-    $results = $this->db->get('tbl_photo_gallery')->result();
+    $results = $this->db->get('tbl_photo_gallery_2')->result();
 
     return $results;
   }
-  //Photo Gallery Delete
-  public function photo_gallery_delete_2($param2)
+  //Photo Gal Delete
+  public function photo_gal_delete($param2)
   {
 
     $result = $this->db->select('photo_file')
-      ->from('tbl_photo_gallery')
+      ->from('tbl_photo_gallery_2')
       ->where('id', $param2)
       ->get()
       ->row()->photo_file;
@@ -307,7 +325,7 @@ class AdminModel extends CI_Model
       unlink($result);
     }
 
-    return $this->db->where('id', $param2)->delete('tbl_photo_gallery');
+    return $this->db->where('id', $param2)->delete('tbl_photo_gallery_2');
   }
 
   // Get One Data 

@@ -3,9 +3,9 @@
     <div class="col-xs-12">
       <div class="box box-purple box-solid">
         <div class="box-header with-border">
-          <h3 class="box-title"><?php echo $this->lang->line("photo_gallery_list"); ?></h3>
+          <h3 class="box-title"><?php echo $this->lang->line("photo_gal_list"); ?></h3>
           <div class="box-tools pull-right">
-            <a href="<?php echo base_url("admin/photo-gallery/add"); ?>" class="btn bg-orange btn-sm" style="color: white; "><i class="fa fa-plus"></i> <?php echo $this->lang->line('photo_gallery_add') ?> </a>
+            <a href="<?php echo base_url("admin/photo-gal/add"); ?>" class="btn bg-orange btn-sm" style="color: white; "><i class="fa fa-plus"></i> <?php echo $this->lang->line('add_photo_gal') ?> </a>
           </div>
         </div>
         <div class="box-body">
@@ -24,7 +24,7 @@
 
               <tbody>
                 <?php
-                foreach ($photo_gallery_list as $key => $value) {
+                foreach ($photo_gal_list as $key => $value) {
                 ?>
                   <tr>
 
@@ -35,8 +35,8 @@
                       <img src="<?php echo base_url($value->photo_file) ?>" alt="" width="50px" height="50px">
                     </td>
                     <td>
-                      <a href="<?php echo base_url('admin/photo-gallery/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
-                      <a href="<?php echo base_url('admin/photo-gallery/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
+                      <a href="<?php echo base_url('admin/photo-gal/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
+                      <a href="<?php echo base_url('admin/photo-gal/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
                     </td>
 
                   </tr>
@@ -55,6 +55,5 @@
     </div>
     <!-- /.col -->
   </div>
-
 
 </section>
