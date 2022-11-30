@@ -204,6 +204,31 @@ class AdminModel extends CI_Model
     return true;
   }
 
+  // Get Slider Data 
+  public function get_slider_($id)
+  {
+    $this->db->select('tbl_top_slider.*, tbl_top_slider.weblink')
+      ->from('tbl_top_slider');
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() > 0) {
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
+  // SLider Update 
+  public function update_slider_data($update_data, $param2)
+  {
+    return $this->db->where('id', $param2)->update('tbl_top_slider', $update_data);
+  }
+  // Slider Delete 
+  public function delete_slider_data($param2)
+  {
+    return $this->db->where('id', $param2)->delete('tbl_top_slider');
+  }
+
   // Get Question 
   public function get_question_($id)
   {

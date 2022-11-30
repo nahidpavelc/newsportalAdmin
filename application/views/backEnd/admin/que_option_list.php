@@ -13,14 +13,14 @@
           <table id="userListTable" class="table table-bordered table-striped table_th_teal">
             <thead>
               <tr>
-                <th style="width: 5%;"><?php echo $this->lang->line('sl'); ?></th>
-                <th style="width: 15%;"> Question ID</th>
-                <th style="width: 15%;"> Option Type</th>
-                <th style="width: 10%;"> Option 1 </th>
-                <th style="width: 10%;"> Option 2 </th>
-                <th style="width: 10%;"> Option 3 </th>
-                <th style="width: 10%;"> Option 4 </th>
-                <th style="width: 15%;"> Correct Option</th>
+                <th style="width: 4%;"><?php echo $this->lang->line('sl'); ?></th>
+                <th style="width: 12%;"> Question ID</th>
+                <th style="width: 13%;"> Option Type</th>
+                <th style="width: 12%;"> Option 1 </th>
+                <th style="width: 12%;"> Option 2 </th>
+                <th style="width: 12%;"> Option 3 </th>
+                <th style="width: 12%;"> Option 4 </th>
+                <th style="width: 13%;"> Correct Option</th>
                 <th style="width: 10%;"><?php echo $this->lang->line('action'); ?></th>
               </tr>
             </thead>
@@ -30,16 +30,16 @@
               foreach ($que_option_list as $value) {
               ?>
                 <tr>
-                  <td> <?= $sl++; ?> </td>
-                  <td> <?= $value->question_id; ?> </td>
-                  <td> <?= $value->option_type; ?> </td>
-                  <td> <?= $value-> option_1 ; ?> </td>
-                  <td> <?= $value->option_2; ?></td>
-                  <td> <?= $value->option_3; ?> </td>
-                  <td> <?= $value->option_4; ?> </td>
-                  <td> <?= $value->correct_option; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $sl++; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->question_id; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->option_type; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->option_1; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->option_2; ?></td>
+                  <td style="vertical-align: middle;"> <?= $value->option_3; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->option_4; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->correct_option; ?> </td>
 
-                  <td>
+                  <td style="vertical-align: middle;">
                     <a href="<?php echo base_url('admin/que_option/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
                     <a href="<?php echo base_url('admin/que_option/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
                   </td>

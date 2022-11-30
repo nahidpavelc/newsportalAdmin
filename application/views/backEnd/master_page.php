@@ -229,6 +229,18 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
+            <!-- Manage Top Slider -->
+            <li class="treeview <?php if ($activeMenu === "slider_list" || $activeMenu === "slider_add" || $activeMenu === "slider_edit") echo "active"; ?> ">
+              <a href="#">
+                <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_slider"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+              </a>
+              <ul class="treeview-menu">
+                <li class=" <?php if ($activeMenu === "slider_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/slider/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_slider") ?></a></li>
+
+                <li class=" <?php if ($activeMenu === "slider_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/slider/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("slider_list") ?></a></li>
+              </ul>
+            </li>
+
             <!-- Manage Question List  -->
             <li class="treeview <?php if ($activeMenu === "question_list" || $activeMenu === "add_question" || $activeMenu === "question_edit" || $activeMenu === "que_option_add" || $activeMenu === "que_option_list" || $activeMenu === "que_option_edit") echo "active"; ?> ">
               <a href="#">

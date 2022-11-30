@@ -28,7 +28,7 @@
                   <div class="form-group">
                     <div class="col-sm-12">
                       <label for="title_one"><?php echo $this->lang->line("option_type"); ?></label>
-                      <select name="option_type" id="" class="form-control select2" style="widows: 100%;" required>
+                      <select name="option_type" id="" class="form-control select2" style="widows: 100%;" required="">
                         <option value=""><?php echo $this->lang->line("select"); ?></option>
                         <option value="Physics"><?php echo $this->lang->line("physics"); ?></option>
                         <option value="Bio-logy"><?php echo $this->lang->line("bio-logy"); ?></option>

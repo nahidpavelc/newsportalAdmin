@@ -21,7 +21,6 @@ $lang['update']     = 'Update';
 $lang['submit']     = 'Submit';
 
 // dashboard part
-
 $lang['dashboard']            = 'Dashboard';
 $lang['mail_send_setting']    = 'Mail Send Setting';
 
@@ -39,6 +38,16 @@ $lang['manage_one']         = 'Manage One';
 $lang['one_add']            = 'One Add';
 $lang['one_list']           = 'One List';
 $lang['one_edit']           = 'One Edit';
+
+// Manage Top Slider 
+$lang['manage_slider']      = 'Manage Slider';
+$lang['add_slider']         = 'Add Slider';
+$lang['slider_list']        = 'Slider List';
+$lang['slider_edit']        = 'Slider Edit';
+$lang['weblink']            = 'Weblink';
+$lang['']                   = '';
+$lang['']            =  '';
+$lang['']            =  '';
 
 // Manage Question
 $lang['manage_question']        = 'Manage Question';
