@@ -138,7 +138,7 @@ class CI_Config {
 					return TRUE;
 				}
 
-				if ( ! file_exists($file_path))
+				if ( ! file_exists($file_path)) 
 				{
 					continue;
 				}

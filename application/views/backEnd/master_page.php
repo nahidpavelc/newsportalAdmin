@@ -260,14 +260,8 @@
               </ul>
             </li>
 
-            <!-- Photo Album_2  -->
-            <li class="treeview <?php if ($activeMenu === "photo_album_2") echo "active"; ?>">
-              <a href=" <?php echo base_url('admin/photo_album_2'); ?> ">
-                <i class="fa fa-times-circle-o" aria-hidden="true"></i><span> <?php echo $this->lang->line('photo_album_2'); ?> </span>
-              </a>
-            </li>
             <!-- Photo gal  -->
-            <li class="treeview <?php if ($activeMenu === "photo_gal_add" || $activeMenu === "photo_gal_list" || $activeMenu === "photo_gal_edit" ) echo "active"; ?>">
+            <li class="treeview <?php if ($activeMenu === "photo_gal_add" || $activeMenu === "photo_gal_list" || $activeMenu === "photo_gal_edit" || $activeMenu === "photo_album_2") echo "active"; ?>">
               <a href="#">
                 <i class="fa fa-spinner"></i> <span> <?php echo $this->lang->line("photo_gal"); ?> </span>
                 <span class="pull-right-container">
@@ -275,6 +269,12 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+                <!-- Photo Album_2  -->
+                <li class="treeview <?php if ($activeMenu === "photo_album_2") echo "active"; ?>">
+                  <a href=" <?php echo base_url('admin/photo_album_2'); ?> ">
+                    <i class="fa fa-times-circle-o" aria-hidden="true"></i><span> <?php echo $this->lang->line('photo_album_2'); ?> </span>
+                  </a>
+                </li>
                 <li class=" <?php if ($activeMenu === "photo_gal_add") echo "active"; ?> a"> <a href=" <?php echo base_url('admin/photo-gal/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_photo_gal"); ?> </a> </li>
 
                 <li class=" <?php if ($activeMenu === "photo_gal_list") echo "active"; ?> "> <a href="<?php echo base_url('admin/photo_gal/list'); ?> "><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("photo_gal_list"); ?> </a> </li>
@@ -370,6 +370,7 @@
                 <li class=" <?php if ($activeMenu === "page_settings_list") echo "active"; ?> "><a href="<?php echo base_url('admin/page_settings/list'); ?>"><i class="fa fa-circle-o"></i> <?php echo $this->lang->line("page_settings_list"); ?> </a></li>
               </ul>
             </li>
+
             <!------Authors---->
             <li class="treeview <?php if ($activeMenu === "author_list" || $activeMenu === "add_author" || $activeMenu === "author_edit") echo "active"; ?> ">
               <a href="#">
