@@ -13,13 +13,13 @@
           <table id="userListTable" class="table table-bordered table-striped table_th_teal">
             <thead>
               <tr>
-                <th style="width: 5%;"><?php echo $this->lang->line('sl'); ?></th>
+                <th style="width: 5%;">   <?php echo $this->lang->line('sl'); ?></th>
 
-                <th style="width: 10%;"> Photo</th>
-                <th style="width: 10%;"> Priority</th>
-                <th style="width: 10%;"> Weblink</th>
+                <th style="width: 10%;">  <?php echo $this->lang->line('photo')?> </th>
+                <th style="width: 10%;">  <?php echo $this->lang->line('priority')?></th>
+                <th style="width: 60%;">  <?php echo $this->lang->line('weblink')?></th>
 
-                <th style="width: 10%;"><?php echo $this->lang->line('action'); ?></th>
+                <th style="width: 15%;text-align: center;">  <?php echo $this->lang->line('action'); ?>  </th>
               </tr>
             </thead>
             <tbody>
@@ -28,15 +28,15 @@
               foreach ($slider_list as $value) {
               ?>
                 <tr>
-                  <td> <?= $sl++; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $sl++; ?> </td>
 
-                  <td>
+                  <td style="vertical-align: middle;">
                     <img src="<?= base_url($value->photo) ?>" alt="" width="50px" height="50px">
                   </td>
-                  <td> <?= $value->priority; ?> </td>
-                  <td> <?= $value->weblink; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->priority; ?> </td>
+                  <td style="vertical-align: middle;"> <?= $value->weblink; ?> </td>
 
-                  <td>
+                  <td style="vertical-align: middle; text-align: center;">
                     <a href="<?php echo base_url('admin/slider/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"><i class="fa fa-edit"></i></a>
                     <a href="<?php echo base_url('admin/slider/delete/' . $value->id); ?>" class="btn btn-sm btn-danger" onclick='return confirm("Are You Sure?")'><i class="fa fa-trash"></i></a>
                   </td>

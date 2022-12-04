@@ -127,128 +127,119 @@ class Admin extends CI_Controller
   }
 
   // Manage Top_Slider
-  public function slider($param1 = 'add', $param2 = '', $param3 = '')
+  public function top_slider($param1 = 'add', $param2 = '', $param3 = '')
   {
+
     if ($param1 == 'add') {
+
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            $insert_top_slider['weblink']         = $this->input->post('weblink', true);
+            $insert_top_slider['priority']         = $this->input->post('priority', true);
+            $insert_top_slider['insert_by']        = $_SESSION['userid'];
+            $insert_top_slider['insert_time']      = date('Y-m-d H:i:s');
+
+            if (!empty($_FILES['photo']['name'])) {
+              $path_parts                 = pathinfo($_FILES["photo"]['name']);
+              $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+              $dir                        = date("YmdHis", time());
+              $config_c['file_name']      = $newFile_name . '_' . $dir;
+              $config_c['remove_spaces']  = TRUE;
+              $config_c['upload_path']    = 'assets/topSlider/';
+              $config_c['max_size']       = '20000'; //  less than 20 MB
+              $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+    
+              $this->load->library('upload', $config_c);
+              $this->upload->initialize($config_c);
+              if (!$this->upload->do_upload('photo')) {
+              } else {
+    
+                $upload_c = $this->upload->data();
+                $insert_top_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+                $this->image_size_fix($insert_top_slider['photo'], 400, 400);
+              }
+            }
+
+            $photo_top_slider = $this->db->insert('tbl_top_slider', $insert_top_slider);
+
+            if ($photo_top_slider) {
+              $this->session->set_flashData('message', "Data Added Successfully.");
+              redirect('admin/top-slider/', 'refresh');
+            } else {
+              $this->session->set_flashData('message', "Data Add Failed.");
+              redirect('admin/top-slider/', 'refresh');
+            }
+          }
+    } else if ($param1  == 'edit' && $param2 > 0) {
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $insert_slider['weblink']           = $this->input->post('weblink', true);
-        $insert_slider['priority']          = $this->input->post('priority', true);
-        $insert_slider['insert_time']       = date('Y-m-d H:i:s');
-        $insert_slider['insert_by']         = $_SESSION['userid'];
-        // $update_slider['insert_time']      = $this->input->post('insert_time', true);
+            $update_top_slider['weblink']         = $this->input->post('weblink', true);
+            $update_top_slider['priority']         = $this->input->post('priority', true);
 
-        if (!empty($_FILES['photo']['name'])) {
-          $path_parts                 = pathinfo($_FILES["photo"]['name']);
-          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-          $dir                        = date("YmdHis", time());
-          $config_c['file_name']      = $newFile_name . '_' . $dir;
-          $config_c['remove_spaces']  = TRUE;
-          $config_c['upload_path']    = 'assets/sliderPhoto/';
-          $config_c['max_size']       = '20000'; //  less than 20 MB
-          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
-
-          $this->load->library('upload', $config_c);
-          $this->upload->initialize($config_c);
-          if (!$this->upload->do_upload('photo')) {
-          } else {
-            $upload_c = $this->upload->data();
-            $insert_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-            $this->image_size_fix($insert_slider['photo'], 400, 400);
-          }
-        }
-        $add_slider = $this->db->insert('tbl_top_slider', $insert_slider);
-
-        if ($add_slider) {
-          $this->session->set_flashData('message', 'SLider Added Successfully!');
-          redirect('admin/slider/list', 'refresh');
-        } else {
-          $this->session->set_flashData('message', 'SLider Add Failed!');
-          redirect('admin/slider/list', 'refresh');
-        }
-      }
-      $data['title']             = 'Slider Add';
-      $data['activeMenu']        = 'slider_add';
-      $data['page']              = 'backEnd/admin/topSlider_add';
-    } elseif ($param1 == 'list') {
-
-      $data['slider_list']     = $this->db->order_by('id', 'desc')->get('tbl_top_slider')->result();
-      $data['title']        = 'Slider List';
-      $data['activeMenu']   = 'slider_list';
-      $data['page']         = 'backEnd/admin/topSlider_list';
-    } elseif ($param1 == 'edit' && $param2 > 0) {
-
-      $data['edit_info']      = $this->db->get_where('tbl_top_slider', array('id' => $param2));
-
-      if ($data['edit_info']->num_rows() > 0) {
-        $data['edit_info']    =   $data['edit_info']->row();
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-          $update_slider['weblink']        = $this->input->post('weblink', true);
-          $update_slider['priority']       = $this->input->post('priority', true);
-
-          $insert_slider['insert_by']      = $_SESSION['userid'];
-          $insert_slider['insert_time']    = date('Y-m-d H:i:s');
-          // $update_slider['insert_time']    = $this->input->post('insert_time', true);
-
-          if (!empty($_FILES['photo']['name'])) {
-
-            $path_parts                 = pathinfo($_FILES["photo"]['name']);
-            $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-            $dir                        = date("YmdHis", time());
-            $config_c['file_name']      = $newFile_name . '_' . $dir;
-            $config_c['remove_spaces']  = TRUE;
-            $config_c['upload_path']    = 'assets/sliderPhoto/';
-            $config_c['max_size']       = '20000'; //  less than 20 MB
-            $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
-
-            $this->load->library('upload', $config_c);
-            $this->upload->initialize($config_c);
-            if (!$this->upload->do_upload('photo')) {
-            } else {
-
-              $upload_c = $this->upload->data();
-              $update_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-              $this->image_size_fix($update_slider['photo'], 400, 500);
+            if (!empty($_FILES['photo']['name'])) {
+              $path_parts                 = pathinfo($_FILES["photo"]['name']);
+              $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+              $dir                        = date("YmdHis", time());
+              $config_c['file_name']      = $newFile_name . '_' . $dir;
+              $config_c['remove_spaces']  = TRUE;
+              $config_c['upload_path']    = 'assets/topSlider/';
+              $config_c['max_size']       = '20000'; //  less than 20 MB
+              $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+    
+              $this->load->library('upload', $config_c);
+              $this->upload->initialize($config_c);
+              if (!$this->upload->do_upload('photo')) {
+              } else {
+    
+                $upload_c = $this->upload->data();
+                $update_top_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+                $this->image_size_fix($update_top_slider['photo'], 400, 400);
+              }
             }
-          }
 
-          if ($this->AdminModel->update_slider_data($update_slider, $param2)) {
 
-            $this->session->set_flashData('message', 'Slider Updated Successfully!');
-            redirect('admin/slider/list', 'refresh');
-          } else {
+        if ($this->AdminModel->top_slider_update($update_top_slider, $param2)) {
 
-            $this->session->set_flashData('message', 'Slider Update Failed!');
-            redirect('admin/slider/list', 'refresh');
-          }
+          $this->session->set_flashData('message', "Data Updated Successfully.");
+          redirect('admin/top-slider', 'refresh');
+        } else {
+
+          $this->session->set_flashData('message', "Data Update Failed.");
+          redirect('admin/top-slider', 'refresh');
         }
+      }
+
+      $data['top_slider_info'] = $this->db->get_where('tbl_top_slider', array('id' => $param2));
+
+      if ($data['top_slider_info']->num_rows() > 0) {
+
+        $data['top_slider_info']    = $data['top_slider_info']->row();
+        $data['top_slider_id']        = $param2;
       } else {
 
-        $this->session->set_flashData('message', 'Wrong Attempt!');
-        redirect('admin/slider/list', 'refresh');
+        $this->session->set_flashData('message', "Wrong Attempt !");
+        redirect('admin/top-slider', 'refresh');
       }
-      $data['title']      = 'Slider Edit';
-      $data['activeMenu'] = 'slider_edit';
-      $data['page']       = 'backEnd/admin/topSlider_edit';
-    } elseif ($param1 == 'delete' && $param2 > 0) {
+    } elseif ($param1   == 'delete' && $param2 > 0) {
 
-      if ($this->AdminModel->delete_slider_data($param2)) {
-        $this->session->set_flashData('message', 'Slider Deleted Successfully!');
-        redirect('admin/slider/list', 'refresh');
+      if ($this->AdminModel->top_slider_delete($param2)) {
+
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
+        redirect('admin/top-slider', 'refresh');
       } else {
-        $this->session->set_flashData('message', 'Slider Deleted Failed!');
-        redirect('admin/slider/list', 'refresh');
+        $this->session->set_flashData('message', "Data Delete Failed.");
+        redirect('admin/top-slider', 'refresh');
       }
-    } else {
-      $this->session->set_flashData('message', 'Wrong Attempt!');
-      redirect('admin/slider/list', 'refresh');
     }
+
+    $data['title']      = 'Top Slider';
+    $data['activeMenu'] = 'top_slider';
+    $data['page']       = 'backEnd/admin/top_slider';
+    $data['top_slider_list'] = $this->db->order_by('priority', 'asc')->get('tbl_top_slider')->result();
+
     $this->load->view('backEnd/master_page', $data);
   }
-
   // Manage Question
   public function question($param1 = 'add', $param2 = '', $param3 = '')
   {
@@ -393,15 +384,19 @@ class Admin extends CI_Controller
           $this->session->set_flashData('message', 'Question Option Add Failed!');
         }
       }
-      $data['question_list'] = $this->db->order_by('id', 'desc')->get('tbl_question_options')->result();
+
+      $data['question_list'] = $this->db->order_by('id', 'desc')->get('tbl_question')->result();
+
       $data['title']         = 'Que Option Add';
       $data['activeMenu']    = 'que_option_add';
       $data['page']          = 'backend/admin/que_option_add';
     } elseif ($param1 == 'list') {
+
       $data['que_option_list'] = $this->db->order_by('id', 'desc')->get('tbl_question_options')->result();
       $data['title']        = 'Que Option List';
       $data['activeMenu']   = 'que_option_list';
       $data['page']         = 'backEnd/admin/que_option_list';
+
     } elseif ($param1 == 'edit' && $param2 > 0) {
 
       $data['edit_info']      = $this->db->get_where('tbl_question_options', array('id' => $param2));
@@ -416,8 +411,8 @@ class Admin extends CI_Controller
           $update_question['option_1']           = $this->input->post('option_1', true);
           $update_question['option_2']           = $this->input->post('option_2', true);
           $update_question['option_3']           = $this->input->post('option_3', true);
-          $update_question['correct_option']     = $this->input->post('correct_option', true);
           $update_question['option_4']           = $this->input->post('option_4', true);
+          $update_question['correct_option']     = $this->input->post('correct_option', true);
 
           $insert_question['insert_time']        = date('Y-m-d H:i:s');
           $insert_question['insert_by']          = $_SESSION['userid'];
@@ -456,7 +451,7 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
-  //Photo Album 2
+  //Photo Album 2....
   public function photo_album_2($param1 = 'add', $param2 = '', $param3 = '')
   {
 
@@ -482,11 +477,13 @@ class Admin extends CI_Controller
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $update_photo_album['album_title']      = $this->input->post('album_title', true);
-        $update_photo_album['priority']         = $this->input->post('priority', true);
+        $update_photo_album_2['album_title']      = $this->input->post('album_title', true);
+        $update_photo_album_2['priority']         = $this->input->post('priority', true);
+        $insert_photo_album_2['insert_time']      = date('Y-m-d H:i:s');
+        $insert_photo_album_2['insert_by']        = $_SESSION['userid'];
 
 
-        if ($this->AdminModel->photo_album_update($update_photo_album, $param2)) {
+        if ($this->AdminModel->photo_album_update($update_photo_album_2, $param2)) {
 
           $this->session->set_flashData('message', "Data Updated Successfully.");
           redirect('admin/photo-album_2', 'refresh');
@@ -497,12 +494,12 @@ class Admin extends CI_Controller
         }
       }
 
-      $data['photo_album_info'] = $this->db->get_where('tbl_photo_album_2', array('id' => $param2));
+      $data['photo_album_info_2'] = $this->db->get_where('tbl_photo_album_2', array('id' => $param2));
 
-      if ($data['photo_album_info']->num_rows() > 0) {
+      if ($data['photo_album_info_2']->num_rows() > 0) {
 
-        $data['photo_album_info']    = $data['photo_album_info']->row();
-        $data['photo_album_id'] = $param2;
+        $data['photo_album_info_2']    = $data['photo_album_info_2']->row();
+        $data['photo_album_id']        = $param2;
       } else {
 
         $this->session->set_flashData('message', "Wrong Attempt !");
@@ -528,7 +525,7 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
-  //Photo Gal
+  //Photo Gal.. 2
   public function photo_gal($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {

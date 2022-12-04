@@ -19,6 +19,7 @@ $lang['action']     = 'Action';
 $lang['delete']     = 'Delete';
 $lang['update']     = 'Update';
 $lang['submit']     = 'Submit';
+$lang['photo']      = 'Photo';
 
 // dashboard part
 $lang['dashboard']            = 'Dashboard';
@@ -45,9 +46,8 @@ $lang['add_slider']         = 'Add Slider';
 $lang['slider_list']        = 'Slider List';
 $lang['slider_edit']        = 'Slider Edit';
 $lang['weblink']            = 'Weblink';
-$lang['']                   = '';
-$lang['']            =  '';
-$lang['']            =  '';
+$lang['top_slider']         = 'Top Slider';
+
 
 // Manage Question
 $lang['manage_question']        = 'Manage Question';

@@ -219,14 +219,47 @@ class AdminModel extends CI_Model
     }
   }
   // SLider Update 
-  public function update_slider_data($update_data, $param2)
+  public function top_slider_update($update_top_slider, $param2)
   {
-    return $this->db->where('id', $param2)->update('tbl_top_slider', $update_data);
+
+    if(isset($update_top_slider['photo']) && file_exists($update_top_slider['photo'])){
+
+      $result = $this->db->select('photo')
+                        ->from('tbl_top_slider')
+                        ->where('id', $param2)
+                        ->get()
+                        ->row()->photo;
+               
+               if(file_exists($result)){
+                  unlink($result);
+               }         
+
+    }
+    
+
+    return $this->db->where('id', $param2)->update('tbl_top_slider', $update_top_slider);
+
+
+
+     
+
+
+    
   }
   // Slider Delete 
-  public function delete_slider_data($param2)
+  public function top_slider_delete($param2)
   {
-    return $this->db->where('id', $param2)->delete('tbl_top_slider');
+      $result = $this->db->select('photo')
+                          ->from('tbl_top_slider')
+                          ->where('id', $param2)
+                          ->get()
+                          ->row()->photo;
+
+                if(file_exists($result)){
+                  unlink($result);
+                }
+                
+          return $this->db->where('id', $param2)->delete('tbl_top_slider');      
   }
 
   // Get Question 
@@ -254,18 +287,7 @@ class AdminModel extends CI_Model
     return $this->db->where('id', $param2)->delete('tbl_question');
   }
   // Get Que-Option
-  public function get_que_option($id)
-  {
-    $this->db->select('tbl_question_options.*, tbl_question_options.name')
-      ->from('tbl_question_options');
-    $result = $this->db->get();
-
-    if ($result->num_rows() > 0) {
-      return $result->result();
-    } else {
-      return array();
-    }
-  }
+  
   //Update Que-Option
   public function update_que_options($update_data, $param2)
   {
@@ -318,10 +340,7 @@ class AdminModel extends CI_Model
     $results = array();
 
     $this->db->select(
-      'tbl_photo_gallery_2.id,
-       tbl_photo_gallery_2.photo_file,
-       tbl_photo_gallery_2.title,
-       tbl_photo_album_2.album_title as album_name'
+      'tbl_photo_gallery_2.id, tbl_photo_gallery_2.photo_file, tbl_photo_gallery_2.title, tbl_photo_album_2.album_title as album_name'
     );
 
     $this->db->join(

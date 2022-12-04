@@ -20,7 +20,11 @@
                   <div class="form-group">
                     <div class="col-sm-12">
                       <label>Question ID</label>
-                      <input name="question_id" placeholder="Enter Question ID" class="form-control inner_shadow_teal" required="" type="number">
+                      <select name="question_id" id="question_id" class="form-control select2">
+                        <?php foreach($question_list as $key =>$value){?>
+                          <option value="<?php echo $value->id?>"><?php echo $value->question_title?></option>
+                        <?php }?>  
+                      </select>
                     </div>
                   </div>
                 </div>

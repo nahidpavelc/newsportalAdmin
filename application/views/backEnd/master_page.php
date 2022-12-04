@@ -229,16 +229,11 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
-            <!-- Manage Top Slider -->
-            <li class="treeview <?php if ($activeMenu === "slider_list" || $activeMenu === "slider_add" || $activeMenu === "slider_edit") echo "active"; ?> ">
-              <a href="#">
-                <i class="fa fa-bullseye"></i> <span> <?php echo $this->lang->line("manage_slider"); ?> </span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+            <!-----Top Slider---->
+            <li class="treeview <?php if ($activeMenu === "top_slider") echo "active"; ?> ">
+              <a href="<?php echo base_url('admin/top-slider'); ?>">
+                <i class="fa fa-sliders"></i> <span> <?php echo $this->lang->line("top_slider"); ?> </span>
               </a>
-              <ul class="treeview-menu">
-                <li class=" <?php if ($activeMenu === "slider_add") echo "active"; ?> "><a href=" <?php echo base_url('admin/slider/add'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("add_slider") ?></a></li>
-
-                <li class=" <?php if ($activeMenu === "slider_list") echo "active"; ?> "><a href=" <?php echo base_url('admin/slider/list'); ?> "> <i class="fa fa-circle-o"></i> <?php echo $this->lang->line("slider_list") ?></a></li>
-              </ul>
             </li>
 
             <!-- Manage Question List  -->
@@ -416,6 +411,8 @@
                 <i class="fa fa-picture-o"></i> <span> <?php echo $this->lang->line("video_album"); ?> </span>
               </a>
             </li>
+
+
 
             <!-----Video Gallery----->
             <li class="treeview <?php if ($activeMenu === "video_gallery_add" || $activeMenu === "video_gallery_list" || $activeMenu === "video_gallery_edit") echo "active"; ?> ">
