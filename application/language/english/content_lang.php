@@ -40,6 +40,12 @@ $lang['one_add']            = 'One Add';
 $lang['one_list']           = 'One List';
 $lang['one_edit']           = 'One Edit';
 
+//Cover Photo
+$lang['cover_photo']        = 'Cover Photo';
+$lang['cover_photo_list']   = 'Cover Photo List';
+$lang['cover_photo_update'] = 'Cover Photo Update';
+$lang['cover_photo']        = 'Cover Photo';
+ 
 // Manage Top Slider 
 $lang['manage_slider']      = 'Manage Slider';
 $lang['add_slider']         = 'Add Slider';

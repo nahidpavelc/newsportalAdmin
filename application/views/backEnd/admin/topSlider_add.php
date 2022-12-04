@@ -6,7 +6,7 @@
         <div class="box-header with-border">
           <h3 class="box-title"><?php echo $this->lang->line("add_slider"); ?> </h3>
           <div class="box-tools pull-right">
-            <a href="<?php echo base_url() ?>admin/slider/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> <?php echo $this->lang->line("slider_list"); ?> </a>
+            <a href="<?php echo base_url() ?>admin/cover_photo/list" type="submit" class="btn bg-purple btn-sm" style="color: white;"> <i class="fa fa-list"></i> <?php echo $this->lang->line("cover_photo_list"); ?> </a>
           </div>
         </div>
 
@@ -58,7 +58,7 @@
               </div>
               <div class="col-md-4">
                 <center>
-                  <img name="photo" style="height:150px; width:150px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo"><br>
+                  <img name="photo" style="height:150px; width:84px; margin-bottom:10px;" src="<?php echo base_url('assets/upload.png') ?>" id="photo"><br>
                   <small>width : 400px, Height : 400px</small>
                   <input id="photo" type="file" name="photo" onchange="readphoto1(this)">
                 </center>
@@ -89,7 +89,7 @@
         $('#photo')
           .attr('src', e.target.result)
           .width(150)
-          .height(150);
+          .height(84);
       };
 
       reader.readAsDataURL(input.files[0]);

@@ -203,8 +203,53 @@ class AdminModel extends CI_Model
     $this->db->where('name', $name_index)->update('tbl_backend_theme', $update_theme);
     return true;
   }
+  // Get Cover Data
+  public function get_cover_photo_($id)
+  {
+    $this->db->select('tbl_cover_photo.*, tbl_cover_photo')
+    ->from('tbl_cover_photo');
 
-  // Get Slider Data 
+    $result = $this-> db->get();
+
+    if($result->num_row() > 0){
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
+  // Cover-Photo Update 
+  public function cover_photo_update($update_cover_photo, $param2)
+  {
+    if (isset($update_t['photo']) && file_exists($update_cover_photo['photo'])) {
+
+      $result = $this -> db -> select('photo')
+        -> from('tbl_cover_photo')
+        -> where('id', $param2)
+        -> get()
+        -> row() -> photo;
+
+      if (file_exists($result)) {
+        unlink($result);
+      }
+    }
+    return $this->db->where('id', $param2)->update('tbl_cover_photo', $update_cover_photo);
+  }
+  // Cover_Photo Delete 
+  public function cover_photo_delete($param2)
+  {
+    $result = $this->db->select('photo')
+      ->from('tbl_cover_photo')
+      ->where('id', $param2)
+      ->get()
+      ->row()->photo;
+
+    if (file_exists($result)) {
+      unlink($result);
+    }
+    return $this->db->where('id', $param2)->delete('tbl_cover_photo');
+  }
+
+  // Get Slider Data
   public function get_slider_($id)
   {
     $this->db->select('tbl_top_slider.*, tbl_top_slider.weblink')
@@ -222,44 +267,33 @@ class AdminModel extends CI_Model
   public function top_slider_update($update_top_slider, $param2)
   {
 
-    if(isset($update_top_slider['photo']) && file_exists($update_top_slider['photo'])){
+    if (isset($update_top_slider['photo']) && file_exists($update_top_slider['photo'])) {
 
       $result = $this->db->select('photo')
-                        ->from('tbl_top_slider')
-                        ->where('id', $param2)
-                        ->get()
-                        ->row()->photo;
-               
-               if(file_exists($result)){
-                  unlink($result);
-               }         
+        ->from('tbl_top_slider')
+        ->where('id', $param2)
+        ->get()
+        ->row()->photo;
 
+      if (file_exists($result)) {
+        unlink($result);
+      }
     }
-    
-
     return $this->db->where('id', $param2)->update('tbl_top_slider', $update_top_slider);
-
-
-
-     
-
-
-    
   }
   // Slider Delete 
   public function top_slider_delete($param2)
   {
-      $result = $this->db->select('photo')
-                          ->from('tbl_top_slider')
-                          ->where('id', $param2)
-                          ->get()
-                          ->row()->photo;
+    $result = $this->db->select('photo')
+      ->from('tbl_top_slider')
+      ->where('id', $param2)
+      ->get()
+      ->row()->photo;
 
-                if(file_exists($result)){
-                  unlink($result);
-                }
-                
-          return $this->db->where('id', $param2)->delete('tbl_top_slider');      
+    if (file_exists($result)) {
+      unlink($result);
+    }
+    return $this->db->where('id', $param2)->delete('tbl_top_slider');
   }
 
   // Get Question 
@@ -287,7 +321,7 @@ class AdminModel extends CI_Model
     return $this->db->where('id', $param2)->delete('tbl_question');
   }
   // Get Que-Option
-  
+
   //Update Que-Option
   public function update_que_options($update_data, $param2)
   {

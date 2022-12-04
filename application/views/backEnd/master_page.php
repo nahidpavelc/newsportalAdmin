@@ -229,10 +229,17 @@
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
+            <!-- Cover  Photo-->
+            <li class="treeview <?php if ($activeMenu === 'cover_photo') echo "active"; ?> ">
+              <a href=" <?php echo base_url('admin/cover_photo'); ?> ">
+                <i class="fa fa-picture-o" aria-hidden="true"><span> <?php echo $this->lang->line("cover_photo"); ?> </span></i>
+              </a>
+            </li>
+
             <!-----Top Slider---->
             <li class="treeview <?php if ($activeMenu === "top_slider") echo "active"; ?> ">
-              <a href="<?php echo base_url('admin/top-slider'); ?>">
-                <i class="fa fa-sliders"></i> <span> <?php echo $this->lang->line("top_slider"); ?> </span>
+              <a href="<?php echo base_url('admin/top-slider'); ?> ">
+                <i class="fa fa-sliders" aria-hidden="true"><span> <?php echo $this->lang->line("top_slider"); ?> </span></i>
               </a>
             </li>
 
