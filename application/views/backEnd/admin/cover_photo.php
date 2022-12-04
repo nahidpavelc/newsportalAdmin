@@ -117,15 +117,16 @@
                   </thead>
                   <tbody>
                     <?php
+                    $sl = 1;
                     foreach ($cover_photo_list as $value) {
                     ?>
                       <tr>
-                        <td><?php echo $key + 1; ?></td>
+                        <td style="vertical-align: middle;"> <?= $sl++; ?> </td>
                         <td>
-                          <img src="<?= base_url($value->question_photo) ?>" alt="" width="80px" height="80px">
+                        <img src="<?= base_url($value->photo) ?>" alt="" width="80px" height="80px">
                         </td>
-                        <td><?php echo $value->weblink; ?></td>
-                        <td><?php echo $value->priority; ?></td>
+                        <td><?= $value->weblink; ?></td>
+                        <td><?= $value->priority; ?></td>
 
                         <td>
                           <a href="<?= base_url('admin/cover_photo/edit/' . $value->id); ?>" class="btn btn-sm bg-teal"> <i class="fa fa-edit"></i> </a>
