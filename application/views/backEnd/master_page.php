@@ -228,6 +228,11 @@
           </li>
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
+            <!-- manage logo  -->
+            <li class="treeview <?php if ($activeMenu === 'manage_logo') echo "active"; ?> ">
+              <a href="<?php echo base_url('admin/manage_logo'); ?>">
+                <i class="fa fa-home" aria-hidden="true"></i> <span><?php echo $this->lang->line("manage_logo") ?></span> </a>
+            </li>
 
             <!-- Cover  Photo-->
             <li class="treeview <?php if ($activeMenu === 'cover_photo') echo "active"; ?> ">

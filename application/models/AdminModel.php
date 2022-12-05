@@ -203,15 +203,59 @@ class AdminModel extends CI_Model
     $this->db->where('name', $name_index)->update('tbl_backend_theme', $update_theme);
     return true;
   }
+  // Get Logo Data 
+  public function get_logo_($id)
+  {
+    $this->db->select('tbl_logo.*, tbl_logo')
+      ->from('tbl_logo');
+
+    $result = $this->db->get();
+
+    if ($result->num_row() > 0) {
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
+  // Update logo Data 
+  public function logo_update($update_manage_logo, $param2)
+  {
+    if (isset($update_manage_logo['photo']) && file_exists($update_manage_logo['photo'])) {
+
+      $result = $this->db->select('photo')
+        ->from('tbl_logo')
+        ->where('id', $param2)
+        ->get()
+        ->row()->photo;
+      if (file_exists($result)) {
+        unlink($result);
+      }
+    }
+    return $this->db->where('id', $param2)->update('tbl_logo', $update_manage_logo);
+  }
+  // Delete logo Data 
+  public function logo_delete($param2)
+  {
+    $result = $this->db->select('photo')
+      ->from('tbl_logo')
+      ->where('id', $param2)
+      ->get()
+      ->row()->photo;
+    if (file_exists($result)) {
+      unlink($result);
+    }
+    return $this->db->where('id', $param2)->delete('tbl_logo');
+  }
+
   // Get Cover Data
   public function get_cover_photo_($id)
   {
     $this->db->select('tbl_cover_photo.*, tbl_cover_photo')
-    ->from('tbl_cover_photo');
+      ->from('tbl_cover_photo');
 
-    $result = $this-> db->get();
+    $result = $this->db->get();
 
-    if($result->num_row() > 0){
+    if ($result->num_row() > 0) {
       return $result->result();
     } else {
       return array();
@@ -220,14 +264,13 @@ class AdminModel extends CI_Model
   // Cover-Photo Update 
   public function cover_photo_update($update_cover_photo, $param2)
   {
-    if (isset($update_t['photo']) && file_exists($update_cover_photo['photo'])) {
+    if (isset($update_cover_photo['photo']) && file_exists($update_cover_photo['photo'])) {
 
-      $result = $this -> db -> select('photo')
-        -> from('tbl_cover_photo')
-        -> where('id', $param2)
-        -> get()
-        -> row() -> photo;
-
+      $result = $this->db->select('photo')
+        ->from('tbl_cover_photo')
+        ->where('id', $param2)
+        ->get()
+        ->row()->photo;
       if (file_exists($result)) {
         unlink($result);
       }
@@ -313,11 +356,28 @@ class AdminModel extends CI_Model
   //Update_Question
   public function update_question($update_data, $param2)
   {
+    $result = $this->db->select('question_photo')
+      ->From('tbl_question')
+      ->where('id', $param2)
+      ->get()
+      ->row()->question_photo;
+    if (file_exists($result)) {
+      unlink($result);
+    }
     return $this->db->where('id', $param2)->update('tbl_question', $update_data);
   }
   //Delete_Question
   public function delete_question($param2)
   {
+    // return $this->db->where('id', $param2)->delete('tbl_question');
+    $result = $this->db->select('question_photo')
+      ->From('tbl_question')
+      ->where('id', $param2)
+      ->get()
+      ->row()->question_photo;
+    if (file_exists($result)) {
+      unlink($result);
+    }
     return $this->db->where('id', $param2)->delete('tbl_question');
   }
   // Get Que-Option
@@ -392,7 +452,6 @@ class AdminModel extends CI_Model
   //Photo Gal Delete
   public function photo_gal_delete($param2)
   {
-
     $result = $this->db->select('photo_file')
       ->from('tbl_photo_gallery_2')
       ->where('id', $param2)

@@ -40,6 +40,9 @@ $lang['one_add']            = 'One Add';
 $lang['one_list']           = 'One List';
 $lang['one_edit']           = 'One Edit';
 
+// Manage logo 
+$lang['manage_logo']        = 'Manage Logo';
+
 //Cover Photo
 $lang['cover_photo']        = 'Cover Photo';
 $lang['cover_photo_list']   = 'Cover Photo List';

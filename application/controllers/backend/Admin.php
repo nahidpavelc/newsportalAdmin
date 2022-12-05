@@ -125,95 +125,196 @@ class Admin extends CI_Controller
 
     $this->load->view('backEnd/master_page', $data);
   }
+  //Manage logo
+  public function manage_logo($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_manage_logo['weblink']          = $this->input->post('weblink', true);
+        $insert_manage_logo['priority']         = $this->input->post('priority', true);
+        $insert_manage_logo['insert_by']        = $_SESSION['userid'];
+        $insert_manage_logo['insert_time']      = date('Y-m-d H:i:s');
+
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/coverPhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+
+            $upload_c = $this->upload->data();
+            $insert_manage_logo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_manage_logo['photo'], 1280, 720);
+          }
+        }
+
+        $photo_manage_logo = $this->db->insert('tbl_logo', $insert_manage_logo);
+
+        if ($photo_manage_logo) {
+          $this->session->set_flashData('message', "Cove Photo Added Successfully.");
+          redirect('admin/manage_logo/', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Cover Photo Add Failed.");
+          redirect('admin/manage_logo/', 'refresh');
+        }
+      }
+    } elseif ($param1   == 'edit'   && $param2 > 0) {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $update_manage_logo['weblink']          = $this->input->post('weblink', true);
+        $update_manage_logo['priority']         = $this->input->post('priority', true);
+        $update_manage_logo['insert_by']        = $_SESSION['userid'];
+        $update_manage_logo['insert_time']      = date('Y-m-d H:i:s');
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/logo/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $update_manage_logo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($update_manage_logo['photo'], 400, 400);
+          }
+        }
+
+        if ($this->AdminModel->logo_update($update_manage_logo, $param2)) {
+          $this->session->set_flashData('message', "Photo Updated Successfully.");
+          redirect('admin/manage_logo', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Photo Update Failed.");
+          redirect('admin/manage_logo', 'refresh');
+        }
+      }
+
+      $data['manage_logo_info'] = $this->db->get_where('tbl_logo', array('id' => $param2));
+
+      if ($data['manage_logo_info']->num_rows() > 0) {
+
+        $data['manage_logo_info']      = $data['manage_logo_info']->row();
+        $data['manage_logo_id']        = $param2;
+      } else {
+
+        $this->session->set_flashData('message', "Wrong Attempt!");
+        redirect('admin/top-slider', 'refresh');
+      }
+    } elseif ($param1   == 'delete' && $param2 > 0) {
+      if ($this->AdminModel->logo_delete($param2)) {
+
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
+        redirect('admin/manage_logo', 'refresh');
+      } else {
+        $this->session->set_flashData('message', "Data Delete Failed.");
+        redirect('admin/manage_logo', 'refresh');
+      }
+    }
+    $data['title']             = 'Manage Logo';
+    $data['activeMenu']        = 'manage_logo';
+    $data['page']              = 'backEnd/admin/manage_logo';
+    $data['manage_logo_list']  = $this->db->order_by('priority', 'asc')->get('tbl_logo')->result();
+
+    $this->load->view('backEnd/master_page', $data);
+  }
 
   // Manage Cover_photo
   public function cover_photo($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $insert_cover_photo['weblink']          = $this->input->post('weblink', true);
+        $insert_cover_photo['priority']         = $this->input->post('priority', true);
+        $insert_cover_photo['insert_by']        = $_SESSION['userid'];
+        $insert_cover_photo['insert_time']      = date('Y-m-d H:i:s');
 
-            $insert_cover_photo['weblink']          = $this->input->post('weblink', true);
-            $insert_cover_photo['priority']         = $this->input->post('priority', true);
-            $insert_cover_photo['insert_by']        = $_SESSION['userid'];
-            $insert_cover_photo['insert_time']      = date('Y-m-d H:i:s');
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/coverPhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
-            if (!empty($_FILES['photo']['name'])) {
-              $path_parts                 = pathinfo($_FILES["photo"]['name']);
-              $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-              $dir                        = date("YmdHis", time());
-              $config_c['file_name']      = $newFile_name . '_' . $dir;
-              $config_c['remove_spaces']  = TRUE;
-              $config_c['upload_path']    = 'assets/coverPhoto/';
-              $config_c['max_size']       = '20000'; //  less than 20 MB
-              $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
-    
-              $this->load->library('upload', $config_c);
-              $this->upload->initialize($config_c);
-              if (!$this->upload->do_upload('photo')) {
-              } else {
-    
-                $upload_c = $this-> upload -> data();
-                $insert_cover_photo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-                $this->image_size_fix($insert_cover_photo['photo'], 400, 400);
-              }
-            }
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
 
-            $photo_cover_photo = $this->db->insert('tbl_cover_photo', $insert_cover_photo);
-
-            if ($photo_cover_photo) {
-              $this->session->set_flashData('message', "Cove Photo Added Successfully.");
-              redirect('admin/cover_photo/', 'refresh');
-            } else {
-              $this->session->set_flashData('message', "Cover Photo Add Failed.");
-              redirect('admin/cover_photo/', 'refresh');
-            }
+            $upload_c = $this->upload->data();
+            $insert_cover_photo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_cover_photo['photo'], 1280, 720);
           }
-    } else if ($param1  == 'edit' && $param2 > 0) {
+        }
+
+        $photo_cover_photo = $this->db->insert('tbl_cover_photo', $insert_cover_photo);
+
+        if ($photo_cover_photo) {
+          $this->session->set_flashData('message', "Cove Photo Added Successfully.");
+          redirect('admin/cover_photo/', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Cover Photo Add Failed.");
+          redirect('admin/cover_photo/', 'refresh');
+        }
+      }
+    } elseif ($param1   == 'edit'   && $param2 > 0) {
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $update_cover_photo['weblink']         = $this->input->post('weblink', true);
-            $update_cover_photo['priority']         = $this->input->post('priority', true);
+        $update_cover_photo['weblink']         = $this->input->post('weblink', true);
+        $update_cover_photo['priority']         = $this->input->post('priority', true);
 
-            if (!empty($_FILES['photo']['name'])) {
-              $path_parts                 = pathinfo($_FILES["photo"]['name']);
-              $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-              $dir                        = date("YmdHis", time());
-              $config_c['file_name']      = $newFile_name . '_' . $dir;
-              $config_c['remove_spaces']  = TRUE;
-              $config_c['upload_path']    = 'assets/coverPhoto/';
-              $config_c['max_size']       = '20000'; //  less than 20 MB
-              $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
-    
-              $this->load->library('upload', $config_c);
-              $this->upload->initialize($config_c);
-              if (!$this->upload->do_upload('photo')) {
-              } else {
-    
-                $upload_c = $this->upload->data();
-                $update_cover_photo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-                $this->image_size_fix($update_cover_photo['photo'], 400, 400);
-              }
-            }
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/coverPhoto/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
-
-        if ($this -> AdminModel -> cover_photo_update($update_cover_photo, $param2)) {
-
-          $this -> session -> set_flashData('message', "Photo Updated Successfully." );
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $update_cover_photo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($update_cover_photo['photo'], 1920, 1080);
+          }
+        }
+        if ($this->AdminModel->cover_photo_update($update_cover_photo, $param2)) {
+          $this->session->set_flashData('message', "Photo Updated Successfully.");
           redirect('admin/cover_photo', 'refresh');
         } else {
-
-          $this -> session -> set_flashData('message', "Photo Update Failed." );
+          $this->session->set_flashData('message', "Photo Update Failed.");
           redirect('admin/cover_photo', 'refresh');
         }
       }
 
       $data['cover_photo_info'] = $this->db->get_where('tbl_cover_photo', array('id' => $param2));
-
       if ($data['cover_photo_info']->num_rows() > 0) {
 
-        $data['cover_photo_info']    = $data['cover_photo_info']->row();
+        $data['cover_photo_info']      = $data['cover_photo_info']->row();
         $data['cover_photo_id']        = $param2;
       } else {
 
@@ -221,19 +322,18 @@ class Admin extends CI_Controller
         redirect('admin/top-slider', 'refresh');
       }
     } elseif ($param1   == 'delete' && $param2 > 0) {
-
-      if ($this->AdminModel->top_slider_delete($param2)) {
+      if ($this->AdminModel->cover_photo_delete($param2)) {
 
         $this->session->set_flashData('message', "Data Deleted Successfully.");
-        redirect('admin/top-slider', 'refresh');
+        redirect('admin/cover_photo', 'refresh');
       } else {
         $this->session->set_flashData('message', "Data Delete Failed.");
-        redirect('admin/top-slider', 'refresh');
+        redirect('admin/cover_photo', 'refresh');
       }
     }
-    $data['title']            = 'Cover Photo';
-    $data['activeMenu']       = 'cover_photo';
-    $data['page']             = 'backEnd/admin/cover_photo';
+    $data['title']             = 'Cover Photo';
+    $data['activeMenu']        = 'cover_photo';
+    $data['page']              = 'backEnd/admin/cover_photo';
     $data['cover_photo_list']  = $this->db->order_by('priority', 'asc')->get('tbl_cover_photo')->result();
 
     $this->load->view('backEnd/master_page', $data);
@@ -245,71 +345,71 @@ class Admin extends CI_Controller
 
     if ($param1 == 'add') {
 
-          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $insert_top_slider['weblink']         = $this->input->post('weblink', true);
-            $insert_top_slider['priority']         = $this->input->post('priority', true);
-            $insert_top_slider['insert_by']        = $_SESSION['userid'];
-            $insert_top_slider['insert_time']      = date('Y-m-d H:i:s');
+        $insert_top_slider['weblink']         = $this->input->post('weblink', true);
+        $insert_top_slider['priority']         = $this->input->post('priority', true);
+        $insert_top_slider['insert_by']        = $_SESSION['userid'];
+        $insert_top_slider['insert_time']      = date('Y-m-d H:i:s');
 
-            if (!empty($_FILES['photo']['name'])) {
-              $path_parts                 = pathinfo($_FILES["photo"]['name']);
-              $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-              $dir                        = date("YmdHis", time());
-              $config_c['file_name']      = $newFile_name . '_' . $dir;
-              $config_c['remove_spaces']  = TRUE;
-              $config_c['upload_path']    = 'assets/topSlider/';
-              $config_c['max_size']       = '20000'; //  less than 20 MB
-              $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
-    
-              $this->load->library('upload', $config_c);
-              $this->upload->initialize($config_c);
-              if (!$this->upload->do_upload('photo')) {
-              } else {
-    
-                $upload_c = $this->upload->data();
-                $insert_top_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-                $this->image_size_fix($insert_top_slider['photo'], 400, 400);
-              }
-            }
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/topSlider/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
 
-            $photo_top_slider = $this->db->insert('tbl_top_slider', $insert_top_slider);
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
 
-            if ($photo_top_slider) {
-              $this->session->set_flashData('message', "Data Added Successfully.");
-              redirect('admin/top-slider/', 'refresh');
-            } else {
-              $this->session->set_flashData('message', "Data Add Failed.");
-              redirect('admin/top-slider/', 'refresh');
-            }
+            $upload_c = $this->upload->data();
+            $insert_top_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_top_slider['photo'], 1920, 1080);
           }
+        }
+
+        $photo_top_slider = $this->db->insert('tbl_top_slider', $insert_top_slider);
+
+        if ($photo_top_slider) {
+          $this->session->set_flashData('message', "Data Added Successfully.");
+          redirect('admin/top-slider/', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Data Add Failed.");
+          redirect('admin/top-slider/', 'refresh');
+        }
+      }
     } else if ($param1  == 'edit' && $param2 > 0) {
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $update_top_slider['weblink']         = $this->input->post('weblink', true);
-            $update_top_slider['priority']         = $this->input->post('priority', true);
+        $update_top_slider['weblink']         = $this->input->post('weblink', true);
+        $update_top_slider['priority']         = $this->input->post('priority', true);
 
-            if (!empty($_FILES['photo']['name'])) {
-              $path_parts                 = pathinfo($_FILES["photo"]['name']);
-              $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
-              $dir                        = date("YmdHis", time());
-              $config_c['file_name']      = $newFile_name . '_' . $dir;
-              $config_c['remove_spaces']  = TRUE;
-              $config_c['upload_path']    = 'assets/topSlider/';
-              $config_c['max_size']       = '20000'; //  less than 20 MB
-              $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
-    
-              $this->load->library('upload', $config_c);
-              $this->upload->initialize($config_c);
-              if (!$this->upload->do_upload('photo')) {
-              } else {
-    
-                $upload_c = $this->upload->data();
-                $update_top_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-                $this->image_size_fix($update_top_slider['photo'], 400, 400);
-              }
-            }
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/topSlider/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+
+            $upload_c = $this->upload->data();
+            $update_top_slider['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($update_top_slider['photo'], 1920, 1080);
+          }
+        }
 
 
         if ($this->AdminModel->top_slider_update($update_top_slider, $param2)) {
@@ -431,11 +531,10 @@ class Admin extends CI_Controller
             $this->upload->initialize($config_c);
             if (!$this->upload->do_upload('question_photo')) {
             } else {
-
               $upload_c = $this->upload->data();
 
               $update_question['question_photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-              $this->image_size_fix($update_question['question_photo'], 400, 500);
+              $this->image_size_fix($update_question['question_photo'], 400, 400);
             }
           }
 
@@ -509,7 +608,6 @@ class Admin extends CI_Controller
       $data['title']        = 'Que Option List';
       $data['activeMenu']   = 'que_option_list';
       $data['page']         = 'backEnd/admin/que_option_list';
-
     } elseif ($param1 == 'edit' && $param2 > 0) {
 
       $data['edit_info']      = $this->db->get_where('tbl_question_options', array('id' => $param2));

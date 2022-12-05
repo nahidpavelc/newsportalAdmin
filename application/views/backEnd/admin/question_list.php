@@ -31,14 +31,12 @@
                   <td style="vertical-align: middle;"> <?= $sl++; ?> </td>
                   <td style="text-align:center; vertical-align:middle"> <?= $value->exam_id; ?> </td>
                   <td style=" vertical-align:middle"> <?= $value->question_title; ?> </td>
-                  <td>
-                    <img src="<?= base_url($value->question_photo) ?>" alt="" width="80px" height="80px">
-                  </td>
+                  <td> <img src="<?= base_url($value->question_photo) ?>" alt="" width="80px" height="80px"> </td>
                   <td style="vertical-align: middle;"> <?php if ($value->status == 1) {
-                          echo '<span class="label bg-green">Publish</span>';
-                        } else {
-                          echo '<span class="label bg-red">Unpublish</span>';
-                        } ?>
+                                                          echo '<span class="label bg-green">Publish</span>';
+                                                        } else {
+                                                          echo '<span class="label bg-red">Unpublish</span>';
+                                                        } ?>
                   </td>
 
                   <td style="vertical-align: middle;">
