@@ -125,7 +125,123 @@ class Admin extends CI_Controller
 
     $this->load->view('backEnd/master_page', $data);
   }
-  //Manage logo
+  // Manage Wallpaper
+  public function wall_paper($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_wallpaper['weblink']          = $this->input->post('weblink', true);
+        $insert_wallpaper['priority']         = $this->input->post('priority', true);
+        $insert_wallpaper['insert_by']        = $_SESSION['userid'];
+        $insert_wallpaper['insert_time']      = date('Y-m-d H:i:s');
+
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/logo/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          // $dst_img = imagecreatetruecolor($insert_manage_logo['photo'], 1280, 720);
+          // $transparent = imagecolorallocatealpha($dst_img, 0, 255, 0, 127);
+          // imagefill($dst_img, 0, 0, $transparent);
+          // $config_c($dst_img, 0, 0, $this->x_axis, $this->y_axis);
+          // imageAlphaBlending($dst_img, false);
+          // imageSaveAlpha($dst_img, true);
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+
+            $upload_c = $this->upload->data();
+            $insert_wallpaper['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($insert_wallpaper['photo'], 1280, 720);
+          }
+        }
+
+        $photo_wallpaper = $this->db->insert('tbl_logo', $insert_wallpaper);
+
+        if ($photo_wallpaper) {
+          $this->session->set_flashData('message', "Cove Photo Added Successfully.");
+          redirect('admin/wall_paper/', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Cover Photo Add Failed.");
+          redirect('admin/wall_paper/', 'refresh');
+        }
+      }
+    } elseif ($param1   == 'edit'   && $param2 > 0) {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $update_wallpaper['weblink']          = $this->input->post('weblink', true);
+        $update_wallpaper['priority']         = $this->input->post('priority', true);
+        $update_wallpaper['insert_by']        = $_SESSION['userid'];
+        $update_wallpaper['insert_time']      = date('Y-m-d H:i:s');
+        if (!empty($_FILES['photo']['name'])) {
+          $path_parts                 = pathinfo($_FILES["photo"]['name']);
+          $newFile_name               = preg_replace('/[^A-Za-z]/', "", $path_parts['filename']);
+          $dir                        = date("YmdHis", time());
+          $config_c['file_name']      = $newFile_name . '_' . $dir;
+          $config_c['remove_spaces']  = TRUE;
+          $config_c['upload_path']    = 'assets/logo/';
+          $config_c['max_size']       = '20000'; //  less than 20 MB
+          $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          $this->load->library('upload', $config_c);
+          $this->upload->initialize($config_c);
+
+          if (!$this->upload->do_upload('photo')) {
+          } else {
+            $upload_c = $this->upload->data();
+            $update_wa['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
+            $this->image_size_fix($update_wallpaper['photo'], 400, 400);
+          }
+        }
+
+        if ($this->AdminModel->logo_update($update_wallpaper, $param2)) {
+          $this->session->set_flashData('message', "Photo Updated Successfully.");
+          redirect('admin/wall_paper', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Photo Update Failed.");
+          redirect('admin/wall_paper', 'refresh');
+        }
+      }
+
+      $data['wallpaper_info'] = $this->db->get_where('tbl_logo', array('id' => $param2));
+
+      if ($data['wallpaper_info']->num_rows() > 0) {
+
+        $data['wallpaper_info']      = $data['wallpaper_info']->row();
+        $data['wallpaper_id']        = $param2;
+      } else {
+
+        $this->session->set_flashData('message', "Wrong Attempt!");
+        redirect('admin/top-slider', 'refresh');
+      }
+    } elseif ($param1   == 'delete' && $param2 > 0) {
+      if ($this->AdminModel->logo_delete($param2)) {
+
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
+        redirect('admin/wall_paper', 'refresh');
+      } else {
+        $this->session->set_flashData('message', "Data Delete Failed.");
+        redirect('admin/wall_paper', 'refresh');
+      }
+    }
+    $data['title']             = 'Manage Logo';
+    $data['activeMenu']        = 'wall_paper';
+    $data['page']              = 'backEnd/admin/wall_paper';
+    $data['wallpaper_list']  = $this->db->order_by('priority', 'asc')->get('tbl_logo')->result();
+
+    $this->load->view('backEnd/master_page', $data);
+  }
+
+  // Manage logo
   public function manage_logo($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {
@@ -142,9 +258,16 @@ class Admin extends CI_Controller
           $dir                        = date("YmdHis", time());
           $config_c['file_name']      = $newFile_name . '_' . $dir;
           $config_c['remove_spaces']  = TRUE;
-          $config_c['upload_path']    = 'assets/coverPhoto/';
+          $config_c['upload_path']    = 'assets/logo/';
           $config_c['max_size']       = '20000'; //  less than 20 MB
           $config_c['allowed_types']  = 'jpg|png|jpeg|jpg|JPG|JPG|PNG|JPEG';
+
+          // $dst_img = imagecreatetruecolor($insert_manage_logo['photo'], 1280, 720);
+          // $transparent = imagecolorallocatealpha($dst_img, 0, 255, 0, 127);
+          // imagefill($dst_img, 0, 0, $transparent);
+          // $config_c($dst_img, 0, 0, $this->x_axis, $this->y_axis);
+          // imageAlphaBlending($dst_img, false);
+          // imageSaveAlpha($dst_img, true);
 
           $this->load->library('upload', $config_c);
           $this->upload->initialize($config_c);
@@ -234,7 +357,7 @@ class Admin extends CI_Controller
     $this->load->view('backEnd/master_page', $data);
   }
 
-  // Manage Cover_photo
+  // Cover_photo
   public function cover_photo($param1 = 'add', $param2 = '', $param3 = '')
   {
     if ($param1 == 'add') {
@@ -262,7 +385,7 @@ class Admin extends CI_Controller
 
             $upload_c = $this->upload->data();
             $insert_cover_photo['photo'] = $config_c['upload_path'] . $upload_c['file_name'];
-            $this->image_size_fix($insert_cover_photo['photo'], 1280, 720);
+            $this->image_size_fix($insert_cover_photo['photo'], 1920, 1080);
           }
         }
 

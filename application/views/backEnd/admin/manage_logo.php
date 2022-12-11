@@ -19,14 +19,14 @@
                     <div class="col-md-8">
                       <div class="form-group">
                         <div class="col-sm-12">
-                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?> *</label>
-                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" required="" type="url" value="<?php echo $manage_logo_info->weblink; ?>">
+                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?> </label>
+                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" type="url" value="<?php echo $manage_logo_info->weblink; ?>">
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="col-sm-12">
                           <label><?php echo $this->lang->line('priority'); ?></label><small style="color: gray"><?php echo $this->lang->line('sorting_will_be_max_to_min'); ?></small>
-                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" value="<?php echo $manage_logo_info->priority; ?>" class="form-control inner_shadow_purple" required="" type="number">
+                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" value="<?php echo $manage_logo_info->priority; ?>" class="form-control inner_shadow_purple"  type="number">
                         </div>
                       </div>
                     </div>
@@ -65,14 +65,14 @@
                     <div class="col-md-8">
                       <div class="form-group">
                         <div class="col-sm-12">
-                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?> *</label>
-                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" required="" type="url">
+                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?> </label>
+                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" type="url">
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="col-sm-12">
                           <label><?php echo $this->lang->line('priority'); ?></label><small style="color: gray"><?php echo $this->lang->line('sorting_will_be_min_to_max'); ?></small>
-                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" required="" type="number">
+                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" type="number">
                         </div>
                       </div>
                     </div>

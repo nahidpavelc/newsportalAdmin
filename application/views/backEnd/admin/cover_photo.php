@@ -20,13 +20,13 @@
                       <div class="form-group">
                         <div class="col-sm-12">
                           <label for="title_one"><?php echo $this->lang->line("weblink"); ?> *</label>
-                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" required="" type="url" value="<?php echo $cover_photo_info->weblink; ?>">
+                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" type="url" value="<?php echo $cover_photo_info->weblink; ?>">
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="col-sm-12">
                           <label><?php echo $this->lang->line('priority'); ?></label><small style="color: gray"><?php echo $this->lang->line('sorting_will_be_max_to_min'); ?></small>
-                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" value="<?php echo $cover_photo_info->priority; ?>" class="form-control inner_shadow_purple" required="" type="number">
+                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" value="<?php echo $cover_photo_info->priority; ?>" class="form-control inner_shadow_purple" type="number">
                         </div>
                       </div>
                     </div>
@@ -65,14 +65,14 @@
                     <div class="col-md-8">
                       <div class="form-group">
                         <div class="col-sm-12">
-                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?> *</label>
-                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" required="" type="url">
+                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?></label>
+                          <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" type="url">
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="col-sm-12">
                           <label><?php echo $this->lang->line('priority'); ?></label><small style="color: gray"><?php echo $this->lang->line('sorting_will_be_min_to_max'); ?></small>
-                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" required="" type="number">
+                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple"  type="number">
                         </div>
                       </div>
                     </div>
@@ -118,12 +118,13 @@
                   <tbody>
                     <?php
                     $sl = 1;
-                    foreach ($cover_photo_list as $value) {
+                    foreach ($cover_photo_list as $key => $value) {
                     ?>
                       <tr>
                         <td style="vertical-align: middle;"> <?= $sl++; ?> </td>
                         <td>
-                          <img src="<?= base_url($value->photo) ?>" alt="" width="150px" height="84px">
+                          <img src="<?php if (file_exists($value->photo)) echo base_url($value->photo) ?>" alt="photo" style="width:90px;height:51px">
+                          <!-- <img src="<php= base_url($value->photo) ?>" alt="" width="150px" height="84px"> -->
                         </td>
                         <td><?= $value->weblink; ?></td>
                         <td><?= $value->priority; ?></td>

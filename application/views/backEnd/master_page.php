@@ -228,23 +228,32 @@
           </li>
 
           <?php if ($_SESSION['userType'] === 'admin') : ?>
+
+
+            <!-- wallpaper  -->
+            <li class="treeview <?php if ($activeMenu === 'wall_paper') echo "active"; ?> ">
+              <a href="<?php echo base_url('admin/wall_paper'); ?>">
+                <i class="fa fa-home" aria-hidden="true"> </i><span><?php echo $this->lang->line("wallpaper") ?></span> 
+              </a>
+            </li>
             <!-- manage logo  -->
             <li class="treeview <?php if ($activeMenu === 'manage_logo') echo "active"; ?> ">
               <a href="<?php echo base_url('admin/manage_logo'); ?>">
-                <i class="fa fa-home" aria-hidden="true"></i> <span><?php echo $this->lang->line("manage_logo") ?></span> </a>
+                <i class="fa fa-home" aria-hidden="true"></i> <span><?php echo $this->lang->line("manage_logo") ?></span>
+              </a>
             </li>
 
             <!-- Cover  Photo-->
             <li class="treeview <?php if ($activeMenu === 'cover_photo') echo "active"; ?> ">
               <a href=" <?php echo base_url('admin/cover_photo'); ?> ">
-                <i class="fa fa-picture-o" aria-hidden="true"><span> <?php echo $this->lang->line("cover_photo"); ?> </span></i>
+                <i class="fa fa-picture-o" aria-hidden="true"></i><span> <?php echo $this->lang->line("cover_photo"); ?> </span>
               </a>
             </li>
 
             <!-----Top Slider---->
             <li class="treeview <?php if ($activeMenu === "top_slider") echo "active"; ?> ">
               <a href="<?php echo base_url('admin/top-slider'); ?> ">
-                <i class="fa fa-sliders" aria-hidden="true"><span> <?php echo $this->lang->line("top_slider"); ?> </span></i>
+                <i class="fa fa-sliders" aria-hidden="true"></i><span> <?php echo $this->lang->line("top_slider"); ?> </span></i>
               </a>
             </li>
 
