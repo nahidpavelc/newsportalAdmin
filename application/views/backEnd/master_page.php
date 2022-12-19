@@ -230,10 +230,16 @@
           <?php if ($_SESSION['userType'] === 'admin') : ?>
 
 
+            <!-- cubicle  -->
+            <li class="treeview <?php if ($activeMenu === 'cubicle') echo "active"; ?> ">
+              <a href="<?php echo base_url('admin/cubicle'); ?>">
+                <i class="fa fa-home" aria-hidden="true"> </i><span><?php echo $this->lang->line("manage_cubicle_names") ?></span>
+              </a>
+            </li>
             <!-- wallpaper  -->
             <li class="treeview <?php if ($activeMenu === 'wall_paper') echo "active"; ?> ">
               <a href="<?php echo base_url('admin/wall_paper'); ?>">
-                <i class="fa fa-home" aria-hidden="true"> </i><span><?php echo $this->lang->line("wallpaper") ?></span> 
+                <i class="fa fa-home" aria-hidden="true"> </i><span><?php echo $this->lang->line("wallpaper") ?></span>
               </a>
             </li>
             <!-- manage logo  -->

@@ -125,6 +125,73 @@ class Admin extends CI_Controller
 
     $this->load->view('backEnd/master_page', $data);
   }
+  //Manage Cubicle
+  public function cubicle($param1 = 'add', $param2 = '', $param3 = '')
+  {
+    if ($param1 == 'add') {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $insert_cubicle['building_name']          = $this->input->post('building_name', true);
+        $insert_cubicle['priority']         = $this->input->post('priority', true);
+        $insert_cubicle['insert_by']        = $_SESSION['userid'];
+        $insert_cubicle['insert_time']      = date('Y-m-d H:i:s');
+
+        $insert_cubicle_list = $this->db->insert('tbl_cubicle_building', $insert_cubicle);
+
+        if ($insert_cubicle_list) {
+          $this->session->set_flashData('message', "Cubicle Added Successfully.");
+          redirect('admin/cubicle/', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "Cubicle Add Failed.");
+          redirect('admin/cubicle/', 'refresh');
+        }
+      }
+    } elseif ($param1   == 'edit'   && $param2 > 0) {
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $update_cubicle['building_name']          = $this->input->post('building_name', true);
+        $update_cubicle['priority']         = $this->input->post('priority', true);
+        $update_cubicle['insert_by']        = $_SESSION['userid'];
+        $update_cubicle['insert_time']      = date('Y-m-d H:i:s');
+
+        if ($this->AdminModel->cubicle_update($update_cubicle, $param2)) {
+          $this->session->set_flashData('message', "cubicle Updated Successfully.");
+          redirect('admin/cubicle', 'refresh');
+        } else {
+          $this->session->set_flashData('message', "cubicle Update Failed.");
+          redirect('admin/cubicle', 'refresh');
+        }
+      }
+
+      $data['cubicle_info'] = $this->db->get_where('tbl_cubicle_building', array('id' => $param2));
+      if ($data['cubicle_info']->num_rows() > 0) {
+
+        $data['cubicle_info']      = $data['cubicle_info']->row();
+        $data['cubicle_id']        = $param2;
+      } else {
+
+        $this->session->set_flashData('message', "Wrong Attempt!");
+        redirect('admin/cubicle', 'refresh');
+      }
+    } elseif ($param1   == 'delete' && $param2 > 0) {
+      if ($this->AdminModel->cubicle_delete($param2)) {
+
+        $this->session->set_flashData('message', "Data Deleted Successfully.");
+        redirect('admin/cubicle', 'refresh');
+      } else {
+        $this->session->set_flashData('message', "Data Delete Failed.");
+        redirect('admin/cubicle', 'refresh');
+      }
+    }
+    $data['title']             = 'Cubicle';
+    $data['activeMenu']        = 'cubicle';
+    $data['page']              = 'backEnd/admin/cubicle';
+    $data['cubicle_list']  = $this->db->order_by('priority', 'asc')->get('tbl_cubicle_building')->result();
+
+    $this->load->view('backEnd/master_page', $data);
+  }
+
   // Manage Wallpaper
   public function wall_paper($param1 = 'add', $param2 = '', $param3 = '')
   {
@@ -164,7 +231,7 @@ class Admin extends CI_Controller
           }
         }
 
-        $photo_wallpaper = $this->db->insert('tbl_logo', $insert_wallpaper);
+        $photo_wallpaper = $this->db->insert('tbl_wallpaper', $insert_wallpaper);
 
         if ($photo_wallpaper) {
           $this->session->set_flashData('message', "Cove Photo Added Successfully.");
@@ -212,7 +279,7 @@ class Admin extends CI_Controller
         }
       }
 
-      $data['wallpaper_info'] = $this->db->get_where('tbl_logo', array('id' => $param2));
+      $data['wallpaper_info'] = $this->db->get_where('tbl_wallpaper', array('id' => $param2));
 
       if ($data['wallpaper_info']->num_rows() > 0) {
 
@@ -236,7 +303,7 @@ class Admin extends CI_Controller
     $data['title']             = 'Manage Logo';
     $data['activeMenu']        = 'wall_paper';
     $data['page']              = 'backEnd/admin/wall_paper';
-    $data['wallpaper_list']  = $this->db->order_by('priority', 'asc')->get('tbl_logo')->result();
+    $data['wallpaper_list']  = $this->db->order_by('priority', 'asc')->get('tbl_wallpaper')->result();
 
     $this->load->view('backEnd/master_page', $data);
   }

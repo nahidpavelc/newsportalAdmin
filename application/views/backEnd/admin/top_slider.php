@@ -63,8 +63,8 @@
                     <div class="col-md-8">
                       <div class="form-group">
                         <div class="col-sm-12">
-                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?> 
-                        </label>
+                          <label for="title_one"><?php echo $this->lang->line("weblink"); ?>
+                          </label>
                           <input name="weblink" autocomplete="off" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('weblink'); ?>" type="url">
                         </div>
                       </div>
@@ -117,6 +117,7 @@
                     <?php
                     foreach ($top_slider_list as $key => $value) {
                     ?>
+                    
                       <tr>
                         <td><?php echo $key + 1; ?></td>
 

@@ -36,7 +36,7 @@
                         <div class="box-body box-profile">
                           <center>
                             <img id="wallpaper" class="img-responsive" src="<?php if (file_exists($wallpaper_info->photo)) echo base_url($wallpaper_info->photo);
-                                                                              else echo base_url('assets/upload.png') ?>" alt="Lecture Sheet Photo" style="width: 80px;"><small style="color: gray">width : 400px, Height : 400px</small>
+                                                                            else echo base_url('assets/upload.png') ?>" alt="Lecture Sheet Photo" style="width: 80px;"><small style="color: gray">width : 400px, Height : 400px</small>
                             <br>
                             <input type="file" name="photo" onchange="readpicture1(this);">
                           </center>

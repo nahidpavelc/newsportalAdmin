@@ -292,6 +292,54 @@ class AdminModel extends CI_Model
     return $this->db->where('id', $param2)->delete('tbl_cover_photo');
   }
 
+  // Get Cubicle Data
+  public function get_cubicle_($id)
+  {
+    $this->db->select('tbl_cubicle_building.*, tbl_cubicle_building.building_name')
+      ->from('tbl_cubicle_building');
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() > 0) {
+      return $result->result();
+    } else {
+      return array();
+    }
+  }
+  // Slider Update 
+  public function cubicle_update($update_cubicle, $param2)
+  {
+    if (isset($update_cubicle['photo']) && file_exists($update_cubicle['photo'])) {
+
+      $result = $this->db->select('photo')
+        ->from('tbl_cubicle_building')
+        ->where('id', $param2)
+        ->get()
+        ->row()->photo;
+
+      if (file_exists($result)) {
+        unlink($result);
+      }
+    }
+    return $this->db->where('id', $param2)->update('tbl_cubicle_building', $update_cubicle);
+  }
+  // Slider Delete 
+  public function cubicle_delete($param2)
+  {
+    $result = $this->db->select('photo')
+      ->from('tbl_cubicle_building')
+      ->where('id', $param2)
+      ->get()
+      ->row()->photo;
+
+    if (file_exists($result)) {
+      unlink($result);
+    }
+    return $this->db->where('id', $param2)->delete('tbl_cubicle_building');
+  }
+
+
+
   // Get Slider Data
   public function get_slider_($id)
   {
