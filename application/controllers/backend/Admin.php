@@ -141,9 +141,6 @@ class Admin extends CI_Controller
           $insert_cubicle_list = $this->db->insert('tbl_cubicle_building', $insert_cubicle);
         }
 
-
-
-
         if ($insert_cubicle_list) {
           $this->session->set_flashData('message', "Cubicle Added Successfully.");
           redirect('admin/cubicle/', 'refresh');
@@ -155,17 +152,16 @@ class Admin extends CI_Controller
     } elseif ($param1   == 'edit'   && $param2 > 0) {
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        $update_cubicle['building_name']          = $this->input->post('building_name', true);
+        $update_cubicle['building_name']    = $this->input->post('building_name', true);
         $update_cubicle['priority']         = $this->input->post('priority', true);
         $update_cubicle['insert_by']        = $_SESSION['userid'];
         $update_cubicle['insert_time']      = date('Y-m-d H:i:s');
 
         if ($this->AdminModel->cubicle_update($update_cubicle, $param2)) {
-          $this->session->set_flashData('message', "cubicle Updated Successfully.");
+          $this->session-> set_flashData('message', "Cubicle Update Successfully.");
           redirect('admin/cubicle', 'refresh');
         } else {
-          $this->session->set_flashData('message', "cubicle Update Failed.");
+          $this->session-> set_flashData('message', "Cubicle Update Failed.");
           redirect('admin/cubicle', 'refresh');
         }
       }

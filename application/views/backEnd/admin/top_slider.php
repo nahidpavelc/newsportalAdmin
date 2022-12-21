@@ -10,6 +10,7 @@
         </div>
         <div class="box-body">
           <?php if (isset($top_slider_info)) { ?>
+            <!-- Top_Slider_Edit  -->
             <div class="row">
               <div class="col-md-12">
                 <form action="<?php echo base_url('admin/top-slider/edit/' . $top_slider_id) ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -55,6 +56,7 @@
               </div>
             </div>
           <?php } else { ?>
+            <!-- Top_Slider_Add  -->
             <div class="row">
               <div class="col-md-12" style="margin:18px ;">
                 <form action="<?php echo base_url('admin/top-slider/add/') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -100,6 +102,7 @@
               </div>
             </div>
           <?php } ?>
+          <!-- Top_Slider_list  -->
           <div class="row">
             <div class="col-sm-12">
               <div class="custom_table_box">
@@ -117,7 +120,7 @@
                     <?php
                     foreach ($top_slider_list as $key => $value) {
                     ?>
-                    
+
                       <tr>
                         <td><?php echo $key + 1; ?></td>
 
