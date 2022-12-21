@@ -4,59 +4,59 @@
 Emon"	"Bangabandhu
 Sheikh Mujib
 Medical College,
-Faridpur..."
+  Faridpur..."
 269	0	"Miskat
 Tabassoom"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 268	0	"Umme Sadia
 Roza"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 267	0	Salma Jahan	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 266	0	"Abir Al Mahmud
 Suny"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 265	0	Hasin Raihan	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 264	0	Umme Kulsum	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 263	0	"Tasnimul Hasan
 Shuvo"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 262	0	Afia Humyra	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 261	0	Fuad Hassan	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
-260	0	Ridwan-Ul-Islam	"Shaheed Ziaur
+College, Bogura"
+260	0	Ridwan - Ul - Islam	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 259	0	Tahtihal Ifti	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 258	0	"Masuda Atia
 Prome"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 257	0	Eftiker Alam	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 256	0	"Humayra
 Tabassum"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 255	0	"Faysal Mahbub
 Joy"	"Shaheed Ziaur
 Rahman Medical
-College , Bogura"
+College, Bogura"
 254	0	"Md. Naimur
 Rahman"	"Khulna Medical
 College"
@@ -140,60 +140,60 @@ Hossain"	"Rangpur Medical
 College"
 223	0	Al Arish	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 222	0	"Sanaul Haque
-Sani"	"Sher-e-Bangla
+Sani"	"Sher - e - Bangla
 Medical College,
-Barishal"
+  Barishal"
 221	0	Maria Akter	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 220	0	"Md. Kamrul
-Islam Apu"	"Sher-e-Bangla
+Islam Apu"	"Sher - e - Bangla
 Medical College,
-Barishal"
+  Barishal"
 219	0	Siam Ferdous	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 218	0	Sakib Hossen	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 217	0	Kaniz Fatema	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 216	0	Ayesha Siddika	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 215	0	Jeesan Fardin	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 214	0	Jishan	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 213	0	"Samanta Islam
-Richi"	"Sher-e-Bangla
+Richi"	"Sher - e - Bangla
 Medical College,
-Barishal"
+  Barishal"
 212	0	Rumana Afroz	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 211	0	Fahmidul Islam	"Sher-e-Bangla
 Medical College,
-Barishal"
-210	7	Razib Hossain	
+  Barishal"
+210	7	Razib Hossain
 209	1371	"Md.
 Rayhanuzzaman
 Roky"	
 208	1370	"Mim Mosarof
 Onti"	
-207	1369	Ahnaf Ahmed	
+207	1369	Ahnaf Ahmed
 206	0	Nowsin Onika	"Sher-e-Bangla
 Medical College,
-Barishal"
+  Barishal"
 205	0	"Mounabrata
-Sarkar"	"Sher-e-Bangla
+Sarkar"	"Sher - e - Bangla
 Medical College,
-Barishal"
+  Barishal"
 204	0	"Abdul Hamid
 Kamran"	"M A G Osmani
 Medical College
@@ -202,7 +202,7 @@ Sylhet"
 Yousuf"	"M A G Osmani
 Medical College
 Sylhet"
-202	0	Md. Sumon	"M A G Osmani
+202	0	Md.Sumon	"M A G Osmani
 Medical College
 Sylhet"
 201	0	"Raunak Jahan

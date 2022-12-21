@@ -46,8 +46,8 @@
           <?php } else { ?>
             <!-- Manage Add  -->
             <div class="row">
-              <div class="col-md-12" style="margin:18px ;">
-                <form action="<?php echo base_url('admin/cubicle/add/') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+              <div class="col-md-12" style="margin:18px; ">
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                   <div class="col-md-1"></div>
                   <div class="col-md-10" style="box-shadow: 0px 0px 10px 0px purple;padding: 20px;">
                     <div class="col-md-12" id="newField">
@@ -55,14 +55,14 @@
                         <div class="col-sm-6">
                           <label for="title_one"><?php echo $this->lang->line("building_name"); ?>
                           </label>
-                          <input name="building_name" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('building_name'); ?>" type="text">
+                          <input name="building_name[]" id="building_name" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('building_name'); ?>" type="text">
                         </div>
                         <div class="col-sm-6">
                           <label><?php echo $this->lang->line('priority'); ?></label><small style="color: gray"><?php echo $this->lang->line('sorting_will_be_min_to_max'); ?></small>
-                          <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" type="number">
+                          <input name="priority[]" id="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" type="number">
                         </div>
 
-                        
+
                       </div>
                     </div>
                     <div id="addFieldTest"></div>
@@ -70,7 +70,7 @@
                     <div class="col-md-12">
                       <center>
                         <button type="reset" class="btn-sm btn btn-danger"> <?php echo $this->lang->line('reset'); ?> </button>
-                        <button type="submit" class="btn btn-sm bg-teal"> <?php echo $this->lang->line('save'); ?> </button>
+                        <button type="submit" class="btn btn-sm bg-teal" id="addSubmitForm"> <?php echo $this->lang->line('save'); ?> </button>
 
                         <span class="btn btn-sm bg-purple" onclick="add()" id="addField" class="btn btn-sm bg-purple"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         <span class="btn btn-sm bg-purple" onclick="remove()" id="removeField" class="btn btn-sm bg-purple"><i class="fa fa-minus" aria-hidden="true"></i></span>
@@ -84,7 +84,7 @@
             </div>
           <?php } ?>
           <!-- Manage List  -->
-          <div class="row">
+            <div class="row">
             <div class="col-sm-12">
               <div class="custom_table_box">
                 <table id="userListTable" class="table table-bordered table-striped table_th_purple custom_table">
@@ -119,7 +119,7 @@
                 </table>
               </div>
             </div>
-          </div>
+            </div>
         </div>
 
         <!-- /.box-body -->
@@ -131,33 +131,7 @@
     </div>
     <!--/.col (right) -->
   </div>
-  <div style="width:40%;">
-
-    <form>
-      <div class="">
-        <div class="col-lg-12">
-          <div id="row">
-            <div class="input-group m-3">
-              <div class="input-group-prepend">
-                <button class="btn btn-danger" id="DeleteRow" type="button">
-                  <i class="bi bi-trash"></i>
-                  Delete
-                </button>
-              </div>
-              <input type="text" class="form-control m-input">
-              <input type="text" class="form-control m-input">
-            </div>
-          </div>
-
-          <div id="newinput"></div>
-          <button id="rowAdder" type="button" class="btn btn-dark">
-            <span class="bi bi-plus-square-dotted">
-            </span> ADD
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
+  
 </section>
 
 <script type="text/javascript">
@@ -196,20 +170,38 @@
            <div class="col-sm-6">
              <label for="title_one"><?php echo $this->lang->line("building_name"); ?>
              </label>
-             <input name="building_name" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('building_name'); ?>" type="text">
+             <input name="building_name[]" class="form-control inner_shadow_purple" placeholder="<?php echo $this->lang->line('building_name'); ?>" type="text">
              </div>
              <div class="col-sm-6">
              <label><?php echo $this->lang->line('priority'); ?></label><small style="color: gray"><?php echo $this->lang->line('sorting_will_be_min_to_max'); ?></small>
-            <input name="priority" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" type="number">
+            <input name="priority[]" placeholder="<?php echo $this->lang->line('priority'); ?>" class="form-control inner_shadow_purple" type="number">
           </div>
         </div>
        </div>
       `);
     });
-    $("#addField").click(function() {
-      $("#newFieldTest").remove("#newField");
-    })
+  });
+</script>
 
+<script>
+  $(document).ready(function() {
+    $("form").submit(function(event) {
+      var formData = {
+        building_name: $("#building_name").val(),
+        priority: $("#priority").val(),
+      };
 
+      $.ajax({
+        type: "POST",
+        url: "admin/cubicle/add/",
+        data: formData,
+        dataType: "json",
+        encode: true,
+      }).done(function(data) {
+        console.log(data);
+      });
+
+      event.preventDefault();
+    });
   });
 </script>

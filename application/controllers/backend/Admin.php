@@ -131,12 +131,18 @@ class Admin extends CI_Controller
     if ($param1 == 'add') {
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $insert_cubicle['building_name']          = $this->input->post('building_name', true);
-        $insert_cubicle['priority']         = $this->input->post('priority', true);
-        $insert_cubicle['insert_by']        = $_SESSION['userid'];
-        $insert_cubicle['insert_time']      = date('Y-m-d H:i:s');
+        foreach ($this->input->post('building_name', true) as $key => $value) {
 
-        $insert_cubicle_list = $this->db->insert('tbl_cubicle_building', $insert_cubicle);
+          $insert_cubicle['building_name'] = $value;
+          $insert_cubicle['priority']         = $this->input->post('priority', true)[$key];
+          $insert_cubicle['insert_by']        = $_SESSION['userid'];
+          $insert_cubicle['insert_time']      = date('Y-m-d H:i:s');
+
+          $insert_cubicle_list = $this->db->insert('tbl_cubicle_building', $insert_cubicle);
+        }
+
+
+
 
         if ($insert_cubicle_list) {
           $this->session->set_flashData('message', "Cubicle Added Successfully.");
